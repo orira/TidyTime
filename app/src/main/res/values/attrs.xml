@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RobotoWidget">
+        <attr name="typeface" format="enum">
+            <enum name="THIN" value="0" />
+            <enum name="LIGHT" value="1" />
+            <enum name="REGULAR" value="2" />
+            <enum name="MEDIUM" value="3" />
+            <enum name="BOLD" value="4" />
+        </attr>
+    </declare-styleable>
+</resources>

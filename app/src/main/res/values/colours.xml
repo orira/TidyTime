@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#00b2ff</color>
+    <color name="primary_accent">#ff4d00</color>
+
+    <!-- Opacity Values
+         90% = e5
+         80% = cc -->
+    <color name="translucent_white_90">#e5ffffff</color>
+    <color name="translucent_white_80">#ccffffff</color>
+
+</resources>

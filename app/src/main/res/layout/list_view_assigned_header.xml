@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/translucent_white_90">
+
+    <ImageView
+        android:id="@+id/iv_profile_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true" />
+
+    <com.baws.tidytime.widget.RobotoTextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Assigned"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_large"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@id/iv_profile_picture"
+        android:layout_centerVertical="true"
+        custom:typeface="THIN" />
+</RelativeLayout>
