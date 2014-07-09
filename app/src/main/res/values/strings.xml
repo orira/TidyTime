@@ -2,7 +2,10 @@
 <resources>
 
     <string name="app_name">Tidy Time</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="pick_a_chore">Pick a chore</string>
+    <string name="pick_a_due_date">Pick a due date</string>
+    <string name="pick_a_child">Pick a child</string>
 
 </resources>

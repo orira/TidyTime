@@ -3,14 +3,49 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <com.iangclifton.android.floatlabel.FloatLabel
+        style="@style/Size.MatchParentWidth"
+        android:id="@+id/fl_chore_type"
+        android:hint="@string/pick_a_chore"
+        android:layout="@layout/floating_layout" />
 
     <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Label.MarginTop"
+        android:text="@string/pick_a_due_date"
+        custom:typeface="THIN" />
+
+    <EditText
+        style="@style/Input"
+        android:id="@+id/et_chore_date"
+        android:hint="@string/pick_a_due_date" />
+
+    <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Label.MarginTop.NewSection"
+        android:text="@string/pick_a_child"
+        android:gravity="center"
+        android:textSize="@dimen/text_medium"
+        custom:typeface="REGULAR" />
+
+    <GridView
+        style="@style/Size.MatchParentWidth"
+        android:id="@+id/gv_child_selector"
+        android:numColumns="3"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_default" />
+
+    <com.dd.CircularProgressButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Complete"
-        android:textColor="@android:color/black"
-        custom:typeface="LIGHT" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_default_x2" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
@@ -66,27 +68,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
                 previousPosition = previousPosition + previousChild.chores().size();
             }
         }
-
-        Log.e(TAG, "foo");
-        /*mHeaderPositions.put(0, mChildren.get(0));
-
-        int[] positions = new int[mChildren.size()];
-        positions[0] = 0;
-
-        for (int i = 1; i < mChildren.size(); i++) {
-            Child previousChild = mChildren.get(i - 1);
-            Child currentChild = mChildren.get(i);
-
-            int previousPosition = positions[i - 1];
-            int choreSie = currentChild.chores().size();
-            positions[i] = previousPosition + currentChild.chores().size() - 1;
-        }
-
-        for (int i = 1; i < mChildren.size(); i++) {
-            Child currentChild = mChildren.get(i);
-
-            mHeaderPositions.put(positions[i], currentChild );
-        }*/
     }
 
     @Override
@@ -119,12 +100,18 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         headerViewHolder.profilePicture.setImageDrawable(roundedAvatarDrawable);
 
         if (mHeaderPositions.get(position) == null) {
-            headerViewHolder.profileName.setText(((Child) mHeaderPositions.get(0)).firstName);
+            Child currentChild = (Child) mHeaderPositions.get(0);
+            headerViewHolder.profileName.setText(currentChild.firstName);
+            int color = Color.parseColor(currentChild.profileColour);
+            headerViewHolder.rootContainer.setBackgroundColor(color);
             Log.e(TAG, "position is null " + position);
         } else {
-            headerViewHolder.profileName.setText(((Child) mHeaderPositions.get(position)).firstName);
+            Child currentChild = (Child) mHeaderPositions.get(position);
+            headerViewHolder.profileName.setText(currentChild.firstName);
+            String colourString = currentChild.profileColour;
+            int color = Color.parseColor(currentChild.profileColour);
+            headerViewHolder.rootContainer.setBackgroundColor(color);
         }
-
 
         return view;
     }
@@ -138,11 +125,9 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     public int getCount() {
         int chores = 0;
 
-        for (Child child : mChildren)         {
+        for (Child child : mChildren) {
             chores += child.chores().size();
         }
-
-        //chores += mChildren.size();
 
         return chores;
     }
@@ -174,7 +159,10 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         return view;
     }
 
-    static class HeaderViewHolder {
+     static class HeaderViewHolder {
+        @InjectView(R.id.rl_root_container_main_header)
+        RelativeLayout rootContainer;
+
         @InjectView(R.id.iv_profile_picture)
         ImageView profilePicture;
 

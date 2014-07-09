@@ -3,23 +3,23 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root_container_main_header"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="@color/translucent_white_90">
+    android:paddingTop="@dimen/margin_default_quarter"
+    android:paddingBottom="@dimen/margin_default_quarter">
 
     <ImageView
+        style="@style/Avatar"
         android:id="@+id/iv_profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
     <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Size"
         android:id="@+id/tv_profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Assigned"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/text_large"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_toRightOf="@id/iv_profile_picture"

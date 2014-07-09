@@ -4,6 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.baws.tidytime.R;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class Child extends Model {
 
     @Column(name = "ProfilePicture")
     public String profilePicture;
+
+    @Column(name = "ProfileColour")
+    public String profileColour;
 
     public List<Chore> chores() {
         return getMany(Chore.class, "Child");
@@ -35,12 +39,15 @@ public class Child extends Model {
         switch (position) {
             case 0:
                 child.firstName = "Tayla-Paige";
+                child.profileColour = RED;
                 break;
             case 1:
                 child.firstName = "Kauri";
+                child.profileColour = BLUE;
                 break;
             case 2:
                 child.firstName = "Nevaeh";
+                child.profileColour = GREEN;
                 break;
         }
 
@@ -48,4 +55,8 @@ public class Child extends Model {
         
         return child;
     }
+
+    private static final String RED = "#ca4c4d";
+    private static final String BLUE = "#398eb5";
+    private static final String GREEN = "#4b9484";
 }
