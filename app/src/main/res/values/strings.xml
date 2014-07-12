@@ -7,5 +7,8 @@
     <string name="pick_a_chore">Pick a chore</string>
     <string name="pick_a_due_date">Pick a due date</string>
     <string name="pick_a_child">Pick a child</string>
+    <string name="label_chore_amount">Pick an amount</string>
+    <string name="select_date">Select a date</string>
+
 
 </resources>

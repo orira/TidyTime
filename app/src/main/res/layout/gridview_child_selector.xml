@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Avatar"
-    android:layout_height="45dp"
-    android:id="@+id/iv_profile_picture" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_profile_picture"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_default">
+
+    <com.baws.tidytime.widget.CircularImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/iv_profile_picture"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        app:shadow="true"
+        app:border="true"
+        app:border_color="@color/blue"
+        app:border_width="@dimen/margin_smallest" />
+</RelativeLayout>

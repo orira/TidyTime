@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.widget.CircularImageView;
 
 import java.util.List;
 
@@ -72,15 +74,38 @@ public class ChildSelectorAdapter extends BaseAdapter {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
         }
 
-        RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
-        viewHolder.imageView.setImageDrawable(roundedAvatarDrawable);
+        viewHolder.imageView.setImageBitmap(bitmap);
+        /*view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+                //view.animate().scaleX(1.2f).scaleY(1.2f);
+                view.animate().scaleX(1.2f).scaleY(1.2f).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        viewHolder.imageView.setBorderColor(mResources.getColor(R.color.primary_accent));
+                        viewHolder.imageView.addShadow(false);
+
+                    }
+                });
+                        *//*new Runnable() {
+                    @Override
+                    public void run() {
+                        viewHolder.imageView.addShadow();
+                        viewHolder.imageView.setBorderColor(mResources.getColor(R.color.primary_accent));
+                        viewHolder.imageView.setBorderWidth(10);
+                    }
+                });*//*
+            }
+        });*/
 
         return view;
     }
 
-    static class ViewHolder {
+    public static class ViewHolder {
         @InjectView(R.id.iv_profile_picture)
-        ImageView imageView;
+        public CircularImageView imageView;
 
         private ViewHolder(View view) {
             ButterKnife.inject(this, view);

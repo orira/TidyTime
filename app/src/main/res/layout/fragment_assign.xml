@@ -1,51 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/white">
 
-    <com.iangclifton.android.floatlabel.FloatLabel
-        style="@style/Size.MatchParentWidth"
-        android:id="@+id/fl_chore_type"
-        android:hint="@string/pick_a_chore"
-        android:layout="@layout/floating_layout" />
+    <com.baws.tidytime.widget.AnchorView
+        android:id="@+id/anchor_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:relativeWidth=".4" />
+
+    <!-- Chore Selection -->
+    <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Label.Left"
+        android:id="@+id/label_chore_selection"
+        android:text="@string/pick_a_chore"
+        android:layout_marginBottom="@dimen/margin_default_half"
+        custom:typeface="THIN" />
+
+    <Spinner
+        style="@style/AnchoreView.Left"
+        android:id="@+id/sp_chore_zone"
+        android:layout_alignRight="@id/anchor_view"
+        android:layout_below="@id/label_chore_selection" />
+
+    <Spinner
+        style="@style/AnchoreView.Right"
+        android:id="@+id/sp_chore_type"
+        android:layout_toRightOf="@id/anchor_view"
+        android:layout_below="@id/label_chore_selection" />
+
+    <!-- Date Selection -->
+    <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Label.Left.MarginTop"
+        android:id="@+id/label_chore_date"
+        android:text="@string/pick_a_due_date"
+        android:layout_below="@id/sp_chore_type"
+        custom:typeface="THIN" />
+
+    <com.baws.tidytime.widget.RobotoEditText
+        style="@style/AnchoreView.Right"
+        android:id="@+id/chore_date"
+        android:textSize="@dimen/text_small"
+        android:layout_toRightOf="@id/anchor_view"
+        android:layout_marginTop="9dp"
+        android:layout_below="@id/sp_chore_type"
+        android:textColor="@color/primary_accent"
+        android:focusable="false"
+        custom:typeface="THIN" />
+
+    <!-- Payment Selection -->
+    <com.baws.tidytime.widget.RobotoTextView
+        style="@style/Label.Left.MarginTop"
+        android:id="@+id/label_chore_amount"
+        android:text="@string/label_chore_amount"
+        android:layout_below="@id/chore_date"
+        custom:typeface="THIN" />
+
+    <Spinner
+        style="@style/AnchoreView.Right"
+        android:id="@+id/sp_amount"
+        android:layout_marginTop="@dimen/margin_default_half"
+        android:layout_toRightOf="@id/anchor_view"
+        android:layout_below="@id/chore_date" />
+
 
     <com.baws.tidytime.widget.RobotoTextView
         style="@style/Label.MarginTop"
-        android:text="@string/pick_a_due_date"
-        custom:typeface="THIN" />
-
-    <EditText
-        style="@style/Input"
-        android:id="@+id/et_chore_date"
-        android:hint="@string/pick_a_due_date" />
-
-    <com.baws.tidytime.widget.RobotoTextView
-        style="@style/Label.MarginTop.NewSection"
+        android:id="@+id/label_child"
         android:text="@string/pick_a_child"
-        android:gravity="center"
-        android:textSize="@dimen/text_medium"
-        custom:typeface="REGULAR" />
+        android:layout_below="@id/sp_amount"
+        custom:typeface="THIN" />
 
     <GridView
         style="@style/Size.MatchParentWidth"
         android:id="@+id/gv_child_selector"
         android:numColumns="3"
         android:gravity="center"
-        android:layout_marginTop="@dimen/margin_default" />
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_below="@id/label_child" />
 
-    <com.dd.CircularProgressButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/margin_default_x2" />
+    <!--<com.dd.CircularProgressButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_marginTop="@dimen/margin_default_x2" />-->
 
-</LinearLayout>
+</RelativeLayout>

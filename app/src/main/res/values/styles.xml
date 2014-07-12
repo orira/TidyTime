@@ -26,13 +26,24 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <!-- AnchorView Styles -->
+    <style name="AnchoreView" parent="Size.MatchParentWidth" />
+
+    <style name="AnchoreView.Left">
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="AnchoreView.Right">
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
 
     <!-- Label Styles -->
     <style name="Label" parent="Size.MatchParentWidth">
         <item name="android:lines">1</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textColor">@android:color/holo_blue_dark</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:textColor">@color/primary</item>
         <item name="android:paddingLeft">11dp</item>
     </style>
 
@@ -40,8 +51,20 @@
         <item name="android:layout_marginTop">@dimen/margin_default</item>
     </style>
 
-    <style name="Label.MarginTop.NewSection">
-        <item name="android:layout_marginTop">@dimen/margin_default_x2</item>
+    <style name="Label.MarginBottom">
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
+    </style>
+
+    <style name="Label.Left">
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="Label.Left.MarginBottom">
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
+    </style>
+
+    <style name="Label.Left.MarginTop">
+        <item name="android:layout_marginTop">@dimen/margin_default</item>
     </style>
 
     <!-- Input Styles -->
@@ -50,11 +73,19 @@
         <item name="android:inputType">text|textAutoCorrect|textCapSentences|textAutoComplete</item>
     </style>
 
-    <!-- Avatar Syles -->
+    <!-- Avatar Styles -->
     <style name="Avatar" parent="Size">
         <item name="android:scaleType">centerCrop</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
+
+    <!-- Spinner Styles -->
+    <style name="SpinnerDropDown" parent="Size.MatchParentWidth">
+        <item name="android:padding">@dimen/margin_default_half</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/primary_accent</item>
+    </style>
+
 
 
 

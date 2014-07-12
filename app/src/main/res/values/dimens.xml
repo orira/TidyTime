@@ -8,6 +8,7 @@
     <dimen name="margin_default_eighth">2dp</dimen>
     <dimen name="margin_default_quarter">4dp</dimen>
     <dimen name="margin_default_half">8dp</dimen>
+    <dimen name="margin_default_two_thirds">10dp</dimen>
     <dimen name="margin_default_three_quarters">12dp</dimen>
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_default_x1.5">24dp</dimen>

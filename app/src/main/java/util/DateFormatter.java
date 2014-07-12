@@ -12,13 +12,15 @@ import java.util.Date;
 public class DateFormatter {
 
     private static SimpleDateFormat formatter = new SimpleDateFormat("EEEE d MMMM");
+
     public static String getToday(Context context) {
         Date today = Calendar.getInstance().getTime();
-        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(context);
-        String formattedCurrentDate = dateFormat.format(today);
-
         String date = formatter.format(today);
 
         return date;
+    }
+
+    public static String formatDate(Date date) {
+        return formatter.format(date);
     }
 }

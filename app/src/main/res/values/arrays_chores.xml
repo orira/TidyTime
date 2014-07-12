@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="chore_zone_array">
+        <item>Bedroom</item>
+        <item>Bathroom</item>
+        <item>Kitchen</item>
+        <item>Lounge</item>
+        <item>Washhouse</item>
+        <item>Garage</item>
+        <item>Outside</item>
+    </string-array>
+
+    <string-array name="bedroom_chores_array">
+        <item>Make bed</item>
+        <item>Clean the room</item>
+        <item>Vacuum</item>
+        <item>Empty rubbish</item>
+    </string-array>
+
+    <string-array name="bathroom_chores_array">
+        <item>Remove wet clothes</item>
+        <item>Clean toilet</item>
+        <item>Clean shower</item>
+        <item>Empty rubbish</item>
+    </string-array>
+
+    <string-array name="kitchen_chores_array">
+        <item>Wash Dishes</item>
+        <item>Dry Dishes</item>
+        <item>Clean floor</item>
+        <item>Stack Dishwasher</item>
+        <item>Empty Dishwasher</item>
+        <item>Cook Dinner</item>
+        <item>Clean Windows</item>
+        <item>Clean Stovetop</item>
+        <item>Clean Oven</item>
+    </string-array>
+
+    <string-array name="lounge_chores_array">
+        <item>Vacuum floor</item>
+        <item>Clean windows</item>
+        <item>Tidy up</item>
+    </string-array>
+
+    <string-array name="washhouse_chores_array">
+        <item>Wash clothes</item>
+        <item>Hang clothes out</item>
+        <item>Bring clothes in</item>
+        <item>Iron clothes</item>
+        <item>Fold clothes</item>
+    </string-array>
+
+    <string-array name="garage_chores_array">
+        <item>Tidy up</item>
+        <item>Tidy up shoes</item>
+    </string-array>
+
+    <string-array name="outside_chores_array">
+        <item>Mow lawns</item>
+        <item>Weed garden</item>
+        <item>Clean car</item>
+    </string-array>
+
+    <string-array name="chore_amount_array">
+        <item>¢10</item>
+        <item>¢20</item>
+        <item>¢50</item>
+        <item>$1</item>
+        <item>$2</item>
+        <item>$5</item>
+        <item>$10</item>
+        <item>$20</item>
+    </string-array>
+
+</resources>
