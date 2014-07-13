@@ -3,12 +3,7 @@
 <com.baws.tidytime.widget.RobotoTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    style="@style/Spinner"
     android:id="@android:id/text1"
-    android:singleLine="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee"
     android:textAlignment="inherit"
-    android:textColor="@color/common_signin_btn_default_background"
-    android:paddingLeft="@dimen/margin_default_half"
-    custom:typeface="THIN" />
+    custom:typeface="REGULAR" />

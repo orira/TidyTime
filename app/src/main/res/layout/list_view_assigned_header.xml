@@ -5,15 +5,25 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_root_container_main_header"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_default_quarter"
-    android:paddingBottom="@dimen/margin_default_quarter">
+    android:paddingBottom="@dimen/margin_default_quarter"
+    android:paddingLeft="@dimen/margin_default">
 
-    <ImageView
+    <!--<ImageView
         style="@style/Avatar"
         android:id="@+id/iv_profile_picture"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin" />-->
+
+    <com.baws.tidytime.widget.CircularImageView
+        android:id="@+id/iv_profile_picture"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        custom:border="true"
+        custom:border_width="@dimen/margin_smallest"
+        custom:border_color="@android:color/secondary_text_dark"
+        custom:shadow="true" />
 
     <com.baws.tidytime.widget.RobotoTextView
         style="@style/Size"

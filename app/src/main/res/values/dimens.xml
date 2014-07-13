@@ -26,4 +26,6 @@
     <dimen name="text_xxlarge">50sp</dimen>
     <dimen name="text_xxxlarge">70sp</dimen>
     <dimen name="text_xxxxlarge">90sp</dimen>
+    <dimen name="assign_chore_input_top_margin">17dp</dimen>
+    <dimen name="profile_avatar_dimension">75dp</dimen>
 </resources>

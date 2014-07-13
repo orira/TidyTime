@@ -1,10 +1,12 @@
 package com.baws.tidytime.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,6 +18,7 @@ import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.widget.CircularImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -29,11 +32,20 @@ public class ChildSelectorAdapter extends BaseAdapter {
     private List<Child> mChildren;
     private LayoutInflater mLayoutInflater;
     private Resources mResources;
+    private List<ChildSelectorPresenter> mPresenters = new ArrayList<ChildSelectorPresenter>();
 
     public ChildSelectorAdapter(List<Child> children, Context context) {
         mChildren = children;
         mLayoutInflater = LayoutInflater.from(context);
         mResources = context.getResources();
+
+        initilisePresenters();
+    }
+
+    private void initilisePresenters() {
+        for (Child child : mChildren) {
+            mPresenters.add(new ChildSelectorPresenter(child));
+        }
     }
 
     @Override
@@ -42,8 +54,8 @@ public class ChildSelectorAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int postion) {
-        return mChildren.get(postion);
+    public Object getItem(int position) {
+        return mChildren.get(position);
     }
 
     @Override
@@ -52,8 +64,8 @@ public class ChildSelectorAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
+    public View getView(final int position, View view, ViewGroup viewGroup) {
+        final ViewHolder viewHolder;
 
         if (view != null) {
             viewHolder = (ViewHolder) view.getTag();
@@ -61,6 +73,12 @@ public class ChildSelectorAdapter extends BaseAdapter {
             view = mLayoutInflater.inflate(R.layout.gridview_child_selector, viewGroup, false);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
+
+            // On initialisation sometimes position 0 is called more than once leading to stale viewholder
+            // references, so we check for existence first.
+            if (mPresenters.get(position).getViewHolder() == null) {
+                mPresenters.get(position).setViewHolder(viewHolder);
+            }
         }
 
         Child child = mChildren.get(position);
@@ -75,35 +93,32 @@ public class ChildSelectorAdapter extends BaseAdapter {
         }
 
         viewHolder.imageView.setImageBitmap(bitmap);
-        /*view.setOnClickListener(new View.OnClickListener() {
+        viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ViewHolder viewHolder = (ViewHolder) view.getTag();
+                View parentView = (View) view.getParent();
+                ViewHolder parentViewHolder = (ViewHolder) parentView.getTag();
 
-                //view.animate().scaleX(1.2f).scaleY(1.2f);
-                view.animate().scaleX(1.2f).scaleY(1.2f).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        viewHolder.imageView.setBorderColor(mResources.getColor(R.color.primary_accent));
-                        viewHolder.imageView.addShadow(false);
+                for (int i = 0; i < mPresenters.size(); i++) {
+                    ChildSelectorPresenter presenter = mPresenters.get(i);
+                    if (presenter.getViewHolder().equals(parentViewHolder)) {
+                        presenter.setSelected(true);
+                    } else {
+                        presenter.setSelected(false);
+                    }
 
-                    }
-                });
-                        *//*new Runnable() {
-                    @Override
-                    public void run() {
-                        viewHolder.imageView.addShadow();
-                        viewHolder.imageView.setBorderColor(mResources.getColor(R.color.primary_accent));
-                        viewHolder.imageView.setBorderWidth(10);
-                    }
-                });*//*
+                    presenter.setViewState();
+                }
             }
-        });*/
+        });
 
         return view;
     }
 
     public static class ViewHolder {
+        @InjectView(R.id.container_profile_picture)
+        RelativeLayout container;
+
         @InjectView(R.id.iv_profile_picture)
         public CircularImageView imageView;
 

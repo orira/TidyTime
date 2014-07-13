@@ -40,7 +40,7 @@ dependencies {
     compile 'com.iangclifton.android:floatlabel:1.0'
 
     // Morph Button
-    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.0.3'
+    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.0.4'
 
     // Sticky Headers
     compile 'se.emilsjolander:stickylistheaders:2.4.1'

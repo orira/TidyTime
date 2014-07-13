@@ -3,9 +3,6 @@
 <com.baws.tidytime.widget.RobotoTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    style="@style/SpinnerDropDown"
+    style="@style/Spinner.Padding"
     android:id="@android:id/text1"
-    android:padding="@dimen/margin_default_half"
-    android:singleLine="true"
-    android:ellipsize="marquee"
-    custom:typeface="THIN" />
+    custom:typeface="REGULAR" />

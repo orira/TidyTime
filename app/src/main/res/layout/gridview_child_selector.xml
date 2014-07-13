@@ -5,15 +5,19 @@
     android:id="@+id/container_profile_picture"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_default">
+    android:padding="@dimen/margin_default"
+    android:alpha=".6">
 
     <com.baws.tidytime.widget.CircularImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/iv_profile_picture"
-        android:layout_height="50dp"
-        android:layout_width="50dp"
-        app:shadow="true"
+        android:layout_height="@dimen/profile_avatar_dimension"
+        android:layout_width="@dimen/profile_avatar_dimension"
         app:border="true"
-        app:border_color="@color/blue"
-        app:border_width="@dimen/margin_smallest" />
+        app:border_width="@dimen/margin_smallest"
+        app:border_color="@android:color/secondary_text_dark"
+        app:shadow="true"
+        app:selector="true"
+        app:selector_color="@color/primary_translucent"
+        app:selector_stroke_width="@dimen/margin_smallest" />
 </RelativeLayout>

@@ -37,6 +37,10 @@
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
+    <style name="AnchoreView.Right.TopMargin">
+        <item name="android:layout_marginTop">@dimen/assign_chore_input_top_margin</item>
+    </style>
+
 
     <!-- Label Styles -->
     <style name="Label" parent="Size.MatchParentWidth">
@@ -64,7 +68,7 @@
     </style>
 
     <style name="Label.Left.MarginTop">
-        <item name="android:layout_marginTop">@dimen/margin_default</item>
+        <item name="android:layout_marginTop">@dimen/margin_default_x1.5</item>
     </style>
 
     <!-- Input Styles -->
@@ -73,18 +77,23 @@
         <item name="android:inputType">text|textAutoCorrect|textCapSentences|textAutoComplete</item>
     </style>
 
-    <!-- Avatar Styles -->
-    <style name="Avatar" parent="Size">
-        <item name="android:scaleType">centerCrop</item>
-        <item name="android:adjustViewBounds">true</item>
-    </style>
-
     <!-- Spinner Styles -->
-    <style name="SpinnerDropDown" parent="Size.MatchParentWidth">
-        <item name="android:padding">@dimen/margin_default_half</item>
+    <style name="Spinner" parent="Size.MatchParentWidth">
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@color/primary_accent</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:paddingLeft">@dimen/margin_default_half</item>
     </style>
+
+    <style name="Spinner.Padding">
+        <item name="android:paddingBottom">@dimen/margin_default</item>
+        <item name="android:paddingRight">@dimen/margin_default_half</item>
+        <item name="android:paddingLeft">@dimen/margin_default_half</item>
+        <item name="android:paddingTop">@dimen/margin_default</item>
+    </style>
+
+
 
 
 

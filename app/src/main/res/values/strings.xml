@@ -9,6 +9,7 @@
     <string name="pick_a_child">Pick a child</string>
     <string name="label_chore_amount">Pick an amount</string>
     <string name="select_date">Select a date</string>
+    <string name="create_chore">Create Chore</string>
 
 
 </resources>

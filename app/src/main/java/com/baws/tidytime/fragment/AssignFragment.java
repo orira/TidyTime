@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.baws.tidytime.R;
@@ -17,7 +16,7 @@ import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.view.DateView;
-import com.baws.tidytime.widget.CircularImageView;
+import com.dd.CircularProgressButton;
 
 import java.util.Date;
 
@@ -30,8 +29,7 @@ import util.DateFormatter;
  */
 public class AssignFragment extends Fragment implements DateView {
 
-    private static final String TAG = "AssingFragment";
-    private static final float SCALE_FACTOR = 1.2f;
+    private static final String TAG = "AssignFragment";
 
     @InjectView(R.id.sp_chore_zone)
     Spinner mChoreZoneSpinner;
@@ -46,9 +44,10 @@ public class AssignFragment extends Fragment implements DateView {
     Spinner mAmount;
 
     @InjectView(R.id.gv_child_selector)
-    GridView mChildSelector;
+    GridView mChildSelectorGridView;
 
-    private View selectedView;
+    @InjectView(R.id.btn_create_chore)
+    CircularProgressButton mButton;
 
     private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -56,49 +55,43 @@ public class AssignFragment extends Fragment implements DateView {
             int chores = 0;
 
             switch (position) {
-                case 0:
+                case 1:
                     chores = R.array.bedroom_chores_array;
                     break;
-                case 1:
+                case 2:
                     chores = R.array.bathroom_chores_array;
                     break;
-                case 2:
+                case 3:
                     chores = R.array.kitchen_chores_array;
                     break;
-                case 3:
+                case 4:
                     chores = R.array.lounge_chores_array;
                     break;
-                case 4:
+                case 5:
                     chores = R.array.washhouse_chores_array;
                     break;
-                case 5:
+                case 6:
                     chores = R.array.garage_chores_array;
                     break;
-                case 6:
+                case 7:
                     chores = R.array.outside_chores_array;
                     break;
             }
 
-            ArrayAdapter<CharSequence> typeAdapter =
-                    ArrayAdapter.createFromResource(getActivity(), chores, R.layout.spinner_item);
-            typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-            mChoreTypeSpinner.setAdapter(typeAdapter);
+            // A selection has occured display the spinner
+            if (chores != 0) {
+                ArrayAdapter<CharSequence> typeAdapter =
+                        ArrayAdapter.createFromResource(getActivity(), chores, R.layout.spinner_item);
+                typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                mChoreTypeSpinner.setAdapter(typeAdapter);
+                mChoreTypeSpinner.setVisibility(View.VISIBLE);
+            } else {
+                mChoreTypeSpinner.setVisibility(View.GONE);
+            }
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {}
-    };
-
-    private AdapterView.OnItemSelectedListener typeSelector = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
     };
 
     public static AssignFragment get() {
@@ -128,8 +121,6 @@ public class AssignFragment extends Fragment implements DateView {
         mChoreZoneSpinner.setAdapter(zoneAdapter);
         mChoreZoneSpinner.setOnItemSelectedListener(zoneSelector);
 
-        mChoreTypeSpinner.setOnItemSelectedListener(typeSelector);
-
         mChoreDate.setText(DateFormatter.getToday(getActivity()));
         mChoreDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,33 +135,19 @@ public class AssignFragment extends Fragment implements DateView {
         amountAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mAmount.setAdapter(amountAdapter);
 
-        mChildSelector.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity()));
-        mChildSelector.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity()));
+
+        mButton.setIndeterminateProgressMode(true);
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final ChildSelectorAdapter.ViewHolder viewHolder = (ChildSelectorAdapter.ViewHolder) view.getTag();
-
-                if (selectedView != null) {
-                    // Animate old view to default
-                    selectedView.animate().scaleX(1).scaleY(1).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((ChildSelectorAdapter.ViewHolder) selectedView.getTag()).imageView.setBorderColor(getResources().getColor(R.color.primary));
-                        }
-                    });
-
-                    // Set new view to selected
-                    selectedView = view;
+            public void onClick(View view) {
+                if (mButton.getProgress() == 0) {
+                    mButton.setProgress(50);
+                } else if (mButton.getProgress() == 100) {
+                    mButton.setProgress(0);
                 } else {
-                    selectedView = view;
+                    mButton.setProgress(100);
                 }
-
-                view.animate().scaleX(SCALE_FACTOR).scaleY(SCALE_FACTOR).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        viewHolder.imageView.setBorderColor(getResources().getColor(R.color.primary_accent));
-                    }
-                });
             }
         });
     }

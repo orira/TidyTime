@@ -1,8 +1,8 @@
 #Automatically generated header file. Editing this file may cause problems.
-#Sat Jul 12 14:36:01 NZST 2014
+#Sat Jul 12 18:16:12 NZST 2014
 serverVersion=2.0.2
 dexState=UPDATED
 package=com.baws.tidytime
-version=190
+version=192
 serverVersionCode=36
 appTheme=@style/AppTheme

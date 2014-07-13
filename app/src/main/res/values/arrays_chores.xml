@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="chore_zone_array">
+        <item>Pick a chore</item>
         <item>Bedroom</item>
         <item>Bathroom</item>
         <item>Kitchen</item>
