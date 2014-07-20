@@ -10,26 +10,118 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
+import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
 
 import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import util.DateFormatter;
 
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignFragment extends Fragment implements DateView {
+public class AssignFragment extends Fragment implements DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
+
+    private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+            int choresArray = getChoresArray(position);
+
+            if (choresArray != 0) {
+                mChoreZone = ((TextView) view).getText().toString();
+
+                // A selection has occured display the type spinner
+                ArrayAdapter<CharSequence> typeAdapter =
+                        ArrayAdapter.createFromResource(getActivity(), choresArray, R.layout.spinner_item);
+                typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                mChoreTypeSpinner.setAdapter(typeAdapter);
+                mChoreTypeSpinner.setOnItemSelectedListener(typeSelector);
+                mChoreTypeSpinner.setVisibility(View.VISIBLE);
+                validateInput();
+            } else {
+                mChoreTypeSpinner.setVisibility(View.GONE);
+                mChoreZone = null;
+                mChoreType = null;
+                validateInput();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {}
+
+        private int getChoresArray(int position) {
+            int choresArray = 0;
+
+            switch (position) {
+                case 1:
+                    choresArray = R.array.bedroom_chores_array;
+                    break;
+                case 2:
+                    choresArray = R.array.bathroom_chores_array;
+                    break;
+                case 3:
+                    choresArray = R.array.kitchen_chores_array;
+                    break;
+                case 4:
+                    choresArray = R.array.lounge_chores_array;
+                    break;
+                case 5:
+                    choresArray = R.array.washhouse_chores_array;
+                    break;
+                case 6:
+                    choresArray = R.array.garage_chores_array;
+                    break;
+                case 7:
+                    choresArray = R.array.outside_chores_array;
+                    break;
+            }
+
+            return choresArray;
+        }
+    };
+
+    private AdapterView.OnItemSelectedListener typeSelector = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            mChoreType = ((TextView) view).getText().toString();
+            validateInput();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
+
+    private String mChoreZone;
+    private String mChoreType;
+    private Child mChildSelected;
+
+    @InjectView(R.id.label_chore_selection)
+    RobotoTextView mLabelChoreSelection;
+
+    @InjectView(R.id.label_chore_date)
+    RobotoTextView mLabelChoreDate;
+
+    @InjectView(R.id.label_chore_amount)
+    RobotoTextView mLabelChoreAmount;
+
+    @InjectView(R.id.label_child)
+    RobotoTextView mLabelChild;
 
     @InjectView(R.id.sp_chore_zone)
     Spinner mChoreZoneSpinner;
@@ -48,51 +140,6 @@ public class AssignFragment extends Fragment implements DateView {
 
     @InjectView(R.id.btn_create_chore)
     CircularProgressButton mButton;
-
-    private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            int chores = 0;
-
-            switch (position) {
-                case 1:
-                    chores = R.array.bedroom_chores_array;
-                    break;
-                case 2:
-                    chores = R.array.bathroom_chores_array;
-                    break;
-                case 3:
-                    chores = R.array.kitchen_chores_array;
-                    break;
-                case 4:
-                    chores = R.array.lounge_chores_array;
-                    break;
-                case 5:
-                    chores = R.array.washhouse_chores_array;
-                    break;
-                case 6:
-                    chores = R.array.garage_chores_array;
-                    break;
-                case 7:
-                    chores = R.array.outside_chores_array;
-                    break;
-            }
-
-            // A selection has occured display the spinner
-            if (chores != 0) {
-                ArrayAdapter<CharSequence> typeAdapter =
-                        ArrayAdapter.createFromResource(getActivity(), chores, R.layout.spinner_item);
-                typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                mChoreTypeSpinner.setAdapter(typeAdapter);
-                mChoreTypeSpinner.setVisibility(View.VISIBLE);
-            } else {
-                mChoreTypeSpinner.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {}
-    };
 
     public static AssignFragment get() {
         AssignFragment fragment = new AssignFragment();
@@ -135,25 +182,77 @@ public class AssignFragment extends Fragment implements DateView {
         amountAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mAmount.setAdapter(amountAdapter);
 
-        mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity()));
-
-        mButton.setIndeterminateProgressMode(true);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mButton.getProgress() == 0) {
-                    mButton.setProgress(50);
-                } else if (mButton.getProgress() == 100) {
-                    mButton.setProgress(0);
-                } else {
-                    mButton.setProgress(100);
-                }
-            }
-        });
+        mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
     }
 
     @Override
     public void onDateSelected(Date date) {
         mChoreDate.setText(DateFormatter.formatDate(date));
+        validateInput();
+    }
+
+    @Override
+    public void onChildSelected(Child child) {
+        mChildSelected = child;
+        validateInput();
+    }
+
+    @OnClick(R.id.btn_create_chore)
+    public void  onCreateChoreSelected() {
+        float middle = - ((View) mButton.getParent()).getHeight() / 2;
+        float buttonHeight = mButton.getHeight() / 2;
+        float translation = middle + buttonHeight;
+
+        if (mButton.getProgress() == 0) {
+            mButton.setIndeterminateProgressMode(true);
+            mButton.setProgress(50);
+            displayInput(false);
+            mButton.animate().translationY(translation);
+        } else if (mButton.getProgress() == 100) {
+            mButton.setProgress(0);
+            mButton.animate().translationY(1).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    displayInput(true);
+                }
+            });
+        } else {
+            mButton.setProgress(100);
+        }
+    }
+
+    private void displayInput(boolean display) {
+        int alphaValue = display ? 1 : 0;
+
+        mLabelChoreSelection.animate().alpha(alphaValue);
+        mLabelChoreDate.animate().alpha(alphaValue);
+        mLabelChoreAmount.animate().alpha(alphaValue);
+        mLabelChild.animate().alpha(alphaValue);
+        mChoreZoneSpinner.animate().alpha(alphaValue);
+        mChoreTypeSpinner.animate().alpha(alphaValue);
+        mChoreDate.animate().alpha(alphaValue);
+        mAmount.animate().alpha(alphaValue);
+        mChildSelectorGridView.animate().alpha(alphaValue);
+    }
+
+    private void validateInput() {
+        boolean enabled = false;
+        float alphaValue = .3f;
+
+        if (mChoreZone != null && mChoreType != null && mChildSelected != null) {
+            enabled = true;
+            alphaValue = 1;
+        }
+
+        // Hack!!! only way to pass the correct variable to the inner class without having to have
+        // multiple end actions
+        final boolean finalEnabled = enabled;
+
+        mButton.animate().alpha(alphaValue).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                mButton.setEnabled(finalEnabled);
+            }
+        });
     }
 }

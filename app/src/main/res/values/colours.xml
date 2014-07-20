@@ -13,4 +13,7 @@
     <color name="translucent_white_90">#e5ffffff</color>
     <color name="translucent_white_80">#ccffffff</color>
 
+    <color name="translucent_black_90">#e5000000</color>
+    <color name="translucent_black_80">#cc000000</color>
+
 </resources>

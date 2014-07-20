@@ -18,6 +18,13 @@
         android:layout_height="wrap_content"
         custom:relativeWidth=".4" />
 
+    <!-- Nested container to provide padding -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
+
     <!-- Chore Selection -->
     <com.baws.tidytime.widget.RobotoTextView
         style="@style/Label.Left"
@@ -100,6 +107,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_medium"
         android:layout_below="@id/gv_child_selector"
+        android:enabled="false"
+        android:alpha="@dimen/disabled_element"
         custom:cpb_cornerRadius="48dp"
         custom:cpb_iconComplete="@drawable/ic_action_accept"
         custom:cpb_iconError="@drawable/ic_action_cancel"

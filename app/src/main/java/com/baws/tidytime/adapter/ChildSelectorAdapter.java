@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.baws.tidytime.R;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.widget.CircularImageView;
 
 import java.util.ArrayList;
@@ -29,15 +30,17 @@ import butterknife.InjectView;
  */
 public class ChildSelectorAdapter extends BaseAdapter {
 
-    private List<Child> mChildren;
-    private LayoutInflater mLayoutInflater;
-    private Resources mResources;
+    private final List<Child> mChildren;
+    private final LayoutInflater mLayoutInflater;
+    private final Resources mResources;
     private List<ChildSelectorPresenter> mPresenters = new ArrayList<ChildSelectorPresenter>();
+    private final ChildSelectorView mChildSelectorView;
 
-    public ChildSelectorAdapter(List<Child> children, Context context) {
+    public ChildSelectorAdapter(List<Child> children, Context context, ChildSelectorView childSelectorView) {
         mChildren = children;
         mLayoutInflater = LayoutInflater.from(context);
         mResources = context.getResources();
+        mChildSelectorView = childSelectorView;
 
         initilisePresenters();
     }
@@ -103,6 +106,7 @@ public class ChildSelectorAdapter extends BaseAdapter {
                     ChildSelectorPresenter presenter = mPresenters.get(i);
                     if (presenter.getViewHolder().equals(parentViewHolder)) {
                         presenter.setSelected(true);
+                        mChildSelectorView.onChildSelected(presenter.getChild());
                     } else {
                         presenter.setSelected(false);
                     }

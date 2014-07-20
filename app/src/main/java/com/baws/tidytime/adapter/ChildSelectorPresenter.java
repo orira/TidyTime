@@ -36,4 +36,8 @@ public class ChildSelectorPresenter {
     public ViewHolder getViewHolder() {
         return mViewHolder;
     }
+
+    public Child getChild() {
+        return mChild;
+    }
 }
