@@ -105,7 +105,8 @@ public class ChildSelectorAdapter extends BaseAdapter {
                 for (int i = 0; i < mPresenters.size(); i++) {
                     ChildSelectorPresenter presenter = mPresenters.get(i);
                     if (presenter.getViewHolder().equals(parentViewHolder)) {
-                        presenter.setSelected(true);
+                        boolean selectionState = presenter.isViewSelected() ? false : true;
+                        presenter.setSelected(selectionState);
                         mChildSelectorView.onChildSelected(presenter.getChild());
                     } else {
                         presenter.setSelected(false);

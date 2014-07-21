@@ -12,10 +12,14 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.baws.tidytime.BusUtil;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.presenter.AssignFragmentPresenter;
+import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
+import com.baws.tidytime.view.AssignFragmentView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
 import com.baws.tidytime.widget.RobotoTextView;
@@ -26,12 +30,12 @@ import java.util.Date;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import util.DateFormatter;
+import util.DateUtil;
 
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignFragment extends Fragment implements DateView, ChildSelectorView {
+public class AssignFragment extends Fragment implements AssignFragmentView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
 
@@ -51,12 +55,12 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
                 mChoreTypeSpinner.setAdapter(typeAdapter);
                 mChoreTypeSpinner.setOnItemSelectedListener(typeSelector);
                 mChoreTypeSpinner.setVisibility(View.VISIBLE);
-                validateInput();
+                mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
             } else {
                 mChoreTypeSpinner.setVisibility(View.GONE);
                 mChoreZone = null;
                 mChoreType = null;
-                validateInput();
+                mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
             }
         }
 
@@ -98,7 +102,7 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
             mChoreType = ((TextView) view).getText().toString();
-            validateInput();
+            mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
         }
 
         @Override
@@ -106,6 +110,8 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
 
         }
     };
+
+    private AssignFragmentPresenter mPresenter;
 
     private String mChoreZone;
     private String mChoreType;
@@ -162,13 +168,21 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
     @Override
     public void onStart() {
         super.onStart();
+        mPresenter = new AssignFragmentPresenterImpl(this);
+    }
 
+    @Override
+    public void initialiseChoreZoneAdapter() {
         ArrayAdapter<CharSequence> zoneAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chore_zone_array, R.layout.spinner_item);
         zoneAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mChoreZoneSpinner.setAdapter(zoneAdapter);
         mChoreZoneSpinner.setOnItemSelectedListener(zoneSelector);
+    }
 
-        mChoreDate.setText(DateFormatter.getToday(getActivity()));
+    @Override
+    public void initialiseDate() {
+        mChoreDate.setText(DateUtil.getToday(getActivity()));
+
         mChoreDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,51 +191,57 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
                 calendar.show(getActivity().getSupportFragmentManager(), "calendarDialogFragment");
             }
         });
+    }
 
+    @Override
+    public void initialiseIncentive() {
         ArrayAdapter<CharSequence> amountAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chore_amount_array, R.layout.spinner_item);
         amountAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mAmount.setAdapter(amountAdapter);
+    }
 
+    @Override
+    public void initialiseChildSelector() {
         mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
     }
 
     @Override
     public void onDateSelected(Date date) {
-        mChoreDate.setText(DateFormatter.formatDate(date));
-        validateInput();
+        mChoreDate.setText(DateUtil.formatDate(date));
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
     @Override
     public void onChildSelected(Child child) {
         mChildSelected = child;
-        validateInput();
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
-    @OnClick(R.id.btn_create_chore)
-    public void  onCreateChoreSelected() {
+    @Override
+    public void enableButton(final boolean enabled) {
+        float alphaValue = enabled ? 1 : .3f;
+
+        mButton.animate().alpha(alphaValue).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                mButton.setEnabled(enabled);
+            }
+        });
+    }
+
+    @Override
+    public void displayLoadingState() {
         float middle = - ((View) mButton.getParent()).getHeight() / 2;
         float buttonHeight = mButton.getHeight() / 2;
         float translation = middle + buttonHeight;
 
-        if (mButton.getProgress() == 0) {
-            mButton.setIndeterminateProgressMode(true);
-            mButton.setProgress(50);
-            displayInput(false);
-            mButton.animate().translationY(translation);
-        } else if (mButton.getProgress() == 100) {
-            mButton.setProgress(0);
-            mButton.animate().translationY(1).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    displayInput(true);
-                }
-            });
-        } else {
-            mButton.setProgress(100);
-        }
+        mButton.setIndeterminateProgressMode(true);
+        mButton.setProgress(50);
+        mButton.animate().translationY(translation);
     }
 
-    private void displayInput(boolean display) {
+    @Override
+    public void displayInput(boolean display) {
         int alphaValue = display ? 1 : 0;
 
         mLabelChoreSelection.animate().alpha(alphaValue);
@@ -235,24 +255,33 @@ public class AssignFragment extends Fragment implements DateView, ChildSelectorV
         mChildSelectorGridView.animate().alpha(alphaValue);
     }
 
-    private void validateInput() {
-        boolean enabled = false;
-        float alphaValue = .3f;
+    @Override
+    public void enableInput(boolean enable) {
+        mChoreZoneSpinner.setEnabled(enable);
+        mChoreTypeSpinner.setEnabled(enable);
+        mChoreDate.setEnabled(enable);
+        mAmount.setEnabled(enable);
+        mChildSelectorGridView.setEnabled(enable);
+        mButton.setEnabled(enable);
+    }
 
-        if (mChoreZone != null && mChoreType != null && mChildSelected != null) {
-            enabled = true;
-            alphaValue = 1;
-        }
+    @Override
+    public void setButtonProgress(int progress) {
+        mButton.setProgress(progress);
+    }
 
-        // Hack!!! only way to pass the correct variable to the inner class without having to have
-        // multiple end actions
-        final boolean finalEnabled = enabled;
-
-        mButton.animate().alpha(alphaValue).withEndAction(new Runnable() {
+    @Override
+    public void restoreButtonPosition() {
+        mButton.animate().translationY(1).withEndAction(new Runnable() {
             @Override
             public void run() {
-                mButton.setEnabled(finalEnabled);
+                mPresenter.onButtonReturnedToDefaultState();
             }
         });
+    }
+
+    @OnClick(R.id.btn_create_chore)
+    public void onCreateChoreSelected() {
+        mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
     }
 }

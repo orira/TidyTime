@@ -40,4 +40,8 @@ public class ChildSelectorPresenter {
     public Child getChild() {
         return mChild;
     }
+
+    public boolean isViewSelected() {
+        return mSelected;
+    }
 }
