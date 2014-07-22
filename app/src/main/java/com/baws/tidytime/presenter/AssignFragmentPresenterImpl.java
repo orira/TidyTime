@@ -1,10 +1,11 @@
 package com.baws.tidytime.presenter;
 
+import android.content.Context;
 import android.os.Handler;
 
-import com.baws.tidytime.BusUtil;
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.event.ChoreCreatedEvent;
+import com.baws.tidytime.fragment.AssignFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.BusModule;
 import com.baws.tidytime.view.AssignFragmentView;
@@ -24,12 +25,14 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     @Inject
     Bus mBus;
 
+    Context mContext;
+
     private AssignFragmentView mFragmentView;
 
-    public AssignFragmentPresenterImpl(AssignFragmentView fragmentView) {
+    public AssignFragmentPresenterImpl(AssignFragmentView fragmentView, Context context) {
         super();
         mBus.register(this);
-        //BusUtil.get().register(this);
+        mContext = context;
         mFragmentView = fragmentView;
         initialiseView();
     }
@@ -40,17 +43,23 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     }
 
     private void initialiseView() {
-        mFragmentView.initialiseChoreZoneAdapter();
+        mFragmentView.initialiseChoreSpinners();
         mFragmentView.initialiseDate();
         mFragmentView.initialiseIncentive();
         mFragmentView.initialiseChildSelector();
     }
 
     @Override
-    public void onChoreZoneSelected(String zone) {
+    public void onChoreZoneSelected(String zone, int zonePosition) {
         boolean display = zone != null;
-        mFragmentView.setZone(zone);
+        mFragmentView.setChoreZone(zone);
+        mFragmentView.setChoreTypeAdapter(zonePosition);
         mFragmentView.displayChoreTypeSpinner(display);
+    }
+
+    @Override
+    public void onChoreTypeSelected(String type) {
+        mFragmentView.setChoreType(type);
     }
 
     @Override
@@ -76,7 +85,7 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     @Override
     public void onButtonReturnedToDefaultState() {
         mFragmentView.setButtonProgress(0);
-        mFragmentView.initialiseChoreZoneAdapter();
+        mFragmentView.initialiseChoreSpinners();
         mFragmentView.initialiseDate();
         mFragmentView.initialiseIncentive();
         mFragmentView.initialiseChildSelector();

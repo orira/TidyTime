@@ -39,7 +39,7 @@
         android:id="@+id/sp_chore_zone"
         android:layout_toRightOf="@id/anchor_view" />
 
-    <Spinner
+    <com.baws.tidytime.widget.ChoreTypeSpinner
         style="@style/AnchoreView.Right"
         android:id="@+id/sp_chore_type"
         android:layout_toRightOf="@id/anchor_view"

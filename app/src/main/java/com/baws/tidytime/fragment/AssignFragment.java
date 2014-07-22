@@ -12,7 +12,6 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.baws.tidytime.BusUtil;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
@@ -22,6 +21,7 @@ import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
 import com.baws.tidytime.view.AssignFragmentView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
+import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
@@ -40,80 +40,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
 
     private static final String TAG = "AssignFragment";
 
-    /*private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-            int choresArray = getChoresArray(position);
-
-            if (choresArray != 0) {
-                mChoreZone = ((TextView) view).getText().toString();
-
-                // A selection has occured display the type spinner
-                ArrayAdapter<CharSequence> typeAdapter =
-                        ArrayAdapter.createFromResource(getActivity(), choresArray, R.layout.spinner_item);
-                typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                mChoreTypeSpinner.setAdapter(typeAdapter);
-                mChoreTypeSpinner.setOnItemSelectedListener(typeSelector);
-                mChoreTypeSpinner.setVisibility(View.VISIBLE);
-                mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
-            } else {
-                mChoreTypeSpinner.setVisibility(View.GONE);
-                mChoreZone = null;
-                mChoreType = null;
-                mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {}
-
-        private int getChoresArray(int position) {
-            int choresArray = 0;
-
-            switch (position) {
-                case 1:
-                    choresArray = R.array.bedroom_chores_array;
-                    break;
-                case 2:
-                    choresArray = R.array.bathroom_chores_array;
-                    break;
-                case 3:
-                    choresArray = R.array.kitchen_chores_array;
-                    break;
-                case 4:
-                    choresArray = R.array.lounge_chores_array;
-                    break;
-                case 5:
-                    choresArray = R.array.washhouse_chores_array;
-                    break;
-                case 6:
-                    choresArray = R.array.garage_chores_array;
-                    break;
-                case 7:
-                    choresArray = R.array.outside_chores_array;
-                    break;
-            }
-
-            return choresArray;
-        }
-    };*/
-
-    private AdapterView.OnItemSelectedListener typeSelector = new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            mChoreType = ((TextView) view).getText().toString();
-            mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
-    };
-
     private AssignFragmentPresenter mPresenter;
-
     private String mChoreZone;
     private String mChoreType;
     private Child mChildSelected;
@@ -134,7 +61,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     ChoreZoneSpinner mChoreZoneSpinner;
 
     @InjectView(R.id.sp_chore_type)
-    Spinner mChoreTypeSpinner;
+    ChoreTypeSpinner mChoreTypeSpinner;
 
     @InjectView(R.id.chore_date)
     EditText mChoreDate;
@@ -169,16 +96,13 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     @Override
     public void onStart() {
         super.onStart();
-        mPresenter = new AssignFragmentPresenterImpl(this);
+        mPresenter = new AssignFragmentPresenterImpl(this, getActivity());
     }
 
     @Override
-    public void initialiseChoreZoneAdapter() {
-        /*ArrayAdapter<CharSequence> zoneAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chore_zone_array, R.layout.spinner_item);
-        zoneAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        mChoreZoneSpinner.setAdapter(zoneAdapter);
-        mChoreZoneSpinner.setOnItemSelectedListener(zoneSelector);*/
+    public void initialiseChoreSpinners() {
         mChoreZoneSpinner.setCallback(this);
+        mChoreTypeSpinner.setCallback(this);
     }
 
     @Override
@@ -208,8 +132,13 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     }
 
     @Override
-    public void setZone(String zone) {
+    public void setChoreZone(String zone) {
         mChoreZone = zone;
+    }
+
+    @Override
+    public void setChoreTypeAdapter(int zonePosition) {
+        mChoreTypeSpinner.setAdapter(0);
     }
 
     @Override
@@ -220,8 +149,18 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     }
 
     @Override
-    public void onChoreZoneSelected(String zone) {
-        mPresenter.onChoreZoneSelected(zone);
+    public void onChoreZoneSelected(String zone, int zonePosition) {
+        mPresenter.onChoreZoneSelected(zone, zonePosition);
+    }
+
+    @Override
+    public void onChoreTypeSelected(String type) {
+        mPresenter.onChoreTypeSelected(type);
+    }
+
+    @Override
+    public void setChoreType(String type) {
+        mChoreType = type;
     }
 
     @Override
@@ -298,8 +237,6 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
             }
         });
     }
-
-
 
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
