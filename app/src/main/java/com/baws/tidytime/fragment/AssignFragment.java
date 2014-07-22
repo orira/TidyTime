@@ -22,6 +22,7 @@ import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
 import com.baws.tidytime.view.AssignFragmentView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
+import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
 
@@ -39,7 +40,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
 
     private static final String TAG = "AssignFragment";
 
-    private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
+    /*private AdapterView.OnItemSelectedListener zoneSelector = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
@@ -96,7 +97,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
 
             return choresArray;
         }
-    };
+    };*/
 
     private AdapterView.OnItemSelectedListener typeSelector = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -130,7 +131,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     RobotoTextView mLabelChild;
 
     @InjectView(R.id.sp_chore_zone)
-    Spinner mChoreZoneSpinner;
+    ChoreZoneSpinner mChoreZoneSpinner;
 
     @InjectView(R.id.sp_chore_type)
     Spinner mChoreTypeSpinner;
@@ -173,10 +174,11 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
 
     @Override
     public void initialiseChoreZoneAdapter() {
-        ArrayAdapter<CharSequence> zoneAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chore_zone_array, R.layout.spinner_item);
+        /*ArrayAdapter<CharSequence> zoneAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.chore_zone_array, R.layout.spinner_item);
         zoneAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         mChoreZoneSpinner.setAdapter(zoneAdapter);
-        mChoreZoneSpinner.setOnItemSelectedListener(zoneSelector);
+        mChoreZoneSpinner.setOnItemSelectedListener(zoneSelector);*/
+        mChoreZoneSpinner.setCallback(this);
     }
 
     @Override
@@ -203,6 +205,23 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     @Override
     public void initialiseChildSelector() {
         mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
+    }
+
+    @Override
+    public void setZone(String zone) {
+        mChoreZone = zone;
+    }
+
+    @Override
+    public void displayChoreTypeSpinner(boolean display) {
+        int visibility = display ? View.VISIBLE : View.GONE;
+
+        mChoreTypeSpinner.setVisibility(visibility);
+    }
+
+    @Override
+    public void onChoreZoneSelected(String zone) {
+        mPresenter.onChoreZoneSelected(zone);
     }
 
     @Override
@@ -279,6 +298,8 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
             }
         });
     }
+
+
 
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {

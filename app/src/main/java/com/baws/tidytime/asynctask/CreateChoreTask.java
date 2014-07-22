@@ -6,18 +6,34 @@ import com.baws.tidytime.BusUtil;
 import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
+import com.baws.tidytime.module.BusModule;
+import com.squareup.otto.Bus;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import util.DateUtil;
 
 /**
  * Created by wadereweti on 21/07/14.
  */
-public class CreateChoreTask extends AsyncTask<String, Void, Boolean> {
+public class CreateChoreTask extends AbstractTask<String, Void, Boolean> {
+
+    @Inject
+    Bus mBus;
 
     private Child child;
 
     public CreateChoreTask(Child mChildSelected) {
+        super();
         child = mChildSelected;
+    }
+
+    @Override
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new BusModule());
     }
 
     @Override
@@ -42,6 +58,6 @@ public class CreateChoreTask extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean created) {
-        BusUtil.get().post(new ChoreCreatedEvent(created));
+        mBus.post(new ChoreCreatedEvent(created));
     }
 }

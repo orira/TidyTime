@@ -34,7 +34,7 @@
         android:layout_marginTop="@dimen/margin_default_half"
         custom:typeface="BOLD" />
 
-    <Spinner
+    <com.baws.tidytime.widget.ChoreZoneSpinner
         style="@style/AnchoreView.Right"
         android:id="@+id/sp_chore_zone"
         android:layout_toRightOf="@id/anchor_view" />

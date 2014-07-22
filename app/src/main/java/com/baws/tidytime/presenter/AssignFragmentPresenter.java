@@ -6,7 +6,9 @@ import com.baws.tidytime.model.Child;
  * Created by wadereweti on 22/07/14.
  */
 public interface AssignFragmentPresenter {
+    void onChoreZoneSelected(String zone);
     void validateInput(String choreZone, String choreType, Child childSelected);
     void onCreateChoreRequested(int progress, Child child, String choreType, String choreDate);
     void onButtonReturnedToDefaultState();
+
 }
