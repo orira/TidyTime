@@ -39,8 +39,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     private final LayoutInflater mInflater;
     private final Resources mResources;
     private List<Chore> mChores = new ArrayList<Chore>();
-    private Map mHeaderPositions = new HashMap();
-    private final List<Child> mChildren;
 
     public AssignedChoreAdapter(Context context, List<Child> children) {
         mInflater = LayoutInflater.from(context);
@@ -49,69 +47,47 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         for (Child child : children) {
             mChores.addAll(child.chores());
         }
-
-        mChildren = children;
-        setupHeaderPositions();
-    }
-
-    private void setupHeaderPositions() {
-
-        int previousPosition = 0;
-        for (int i = 0; i < mChildren.size(); i++) {
-            Child currentChild = mChildren.get(i);
-
-            if (i == 0) {
-                mHeaderPositions.put(i, currentChild);
-            } else {
-                Child previousChild = mChildren.get(i - 1);
-                mHeaderPositions.put(previousPosition + previousChild.chores().size(), currentChild);
-                previousPosition = previousPosition + previousChild.chores().size();
-            }
-        }
     }
 
     @Override
     public View getHeaderView(int position, View view, ViewGroup viewGroup) {
         HeaderViewHolder headerViewHolder;
 
-        if (view != null) {
-            headerViewHolder = (HeaderViewHolder) view.getTag();
-        } else {
+        /** When checking the holder correctly we get incorrect behaviour with the bitmap **/
+        /*if (view == null) {
             view = mInflater.inflate(R.layout.list_view_assigned_header, viewGroup, false);
             headerViewHolder = new HeaderViewHolder(view);
             view.setTag(headerViewHolder);
-        }
-
-        Bitmap bitmap;
-
-        if ((mHeaderPositions.get(position) == null)) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
         } else {
-            if (((Child) mHeaderPositions.get(position)).firstName.equals("Tayla-Paige")) {
-                bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
-            } else if (((Child) mHeaderPositions.get(position)).firstName.equals("Kauri")) {
-                bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
-            } else {
-                bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
-            }
+            headerViewHolder = (HeaderViewHolder) view.getTag();
+        }*/
+
+        view = mInflater.inflate(R.layout.list_view_assigned_header, viewGroup, false);
+        headerViewHolder = new HeaderViewHolder(view);
+        view.setTag(headerViewHolder);
+
+        Bitmap bitmap = null;
+
+        Child child = mChores.get(position).child;
+
+        if (child.firstName.equals("Tayla-Paige")) {
+            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
+        } else if (child.firstName.equals("Kauri")) {
+            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
+        } else if (child.firstName.equals("Nevaeh")) {
+            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
+        } else {
+            bitmap = null;
         }
 
         RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
         headerViewHolder.profilePicture.setImageDrawable(roundedAvatarDrawable);
+        headerViewHolder.profilePicture.invalidateDrawable(roundedAvatarDrawable);
+        headerViewHolder.profilePicture.invalidate();
 
-        if (mHeaderPositions.get(position) == null) {
-            Child currentChild = (Child) mHeaderPositions.get(0);
-            headerViewHolder.profileName.setText(currentChild.firstName);
-            int color = Color.parseColor(currentChild.profileColour);
-            headerViewHolder.rootContainer.setBackgroundColor(color);
-            Log.e(TAG, "position is null " + position);
-        } else {
-            Child currentChild = (Child) mHeaderPositions.get(position);
-            headerViewHolder.profileName.setText(currentChild.firstName);
-            String colourString = currentChild.profileColour;
-            int color = Color.parseColor(currentChild.profileColour);
-            headerViewHolder.rootContainer.setBackgroundColor(color);
-        }
+        headerViewHolder.profileName.setText(child.firstName);
+        int color = Color.parseColor(child.profileColour);
+        headerViewHolder.rootContainer.setBackgroundColor(color);
 
         return view;
     }
@@ -123,13 +99,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
     @Override
     public int getCount() {
-        int chores = 0;
-
-        for (Child child : mChildren) {
-            chores += child.chores().size();
-        }
-
-        return chores;
+        return mChores.size();
     }
 
     @Override

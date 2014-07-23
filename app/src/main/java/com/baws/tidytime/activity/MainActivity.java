@@ -100,10 +100,17 @@ public class MainActivity extends AbstractActivity implements MainView {
         mViewPager.setOnPageChangeListener(pageChangeListener);
     }
 
+    @Override
+    public void updateAssignedChores() {
+        AssignedFragment assignedFragment = (AssignedFragment) ((MainViewPagerAdapter) mViewPager.getAdapter()).getItem(0);
+        assignedFragment.updateView();
+
+    }
+
     private List<Fragment> createFragments() {
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(AssignedFragment.get());
-        fragments.add(AssignFragment.get());
+        fragments.add(AssignFragment.get(this));
         fragments.add(CompleteFragment.get());
 
         return fragments;

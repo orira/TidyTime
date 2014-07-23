@@ -1,6 +1,6 @@
 package com.baws.tidytime;
 
-import com.activeandroid.app.*;
+import com.activeandroid.app.Application;
 import com.baws.tidytime.module.ApplicationModule;
 
 import java.util.Arrays;

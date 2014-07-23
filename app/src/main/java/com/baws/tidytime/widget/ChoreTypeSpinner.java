@@ -9,7 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.view.AssignFragmentView;
+import com.baws.tidytime.view.AssignView;
 
 /**
  * Created by wadereweti on 22/07/14.
@@ -21,7 +21,7 @@ public class ChoreTypeSpinner extends Spinner implements SpinnerView{
         setAdapter(0);
     }
 
-    public void setCallback(AssignFragmentView assignFragmentView) {
+    public void setCallback(AssignView assignFragmentView) {
         setOnItemSelectedListener(new TypeSelector(assignFragmentView));
     }
 
@@ -67,9 +67,9 @@ public class ChoreTypeSpinner extends Spinner implements SpinnerView{
 
     private class TypeSelector implements OnItemSelectedListener {
 
-        private AssignFragmentView mAssignFragmentView;
+        private AssignView mAssignFragmentView;
 
-        private TypeSelector(AssignFragmentView assignFragmentView) {
+        private TypeSelector(AssignView assignFragmentView) {
             mAssignFragmentView = assignFragmentView;
         }
 

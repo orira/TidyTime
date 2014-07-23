@@ -5,10 +5,10 @@ import android.os.Handler;
 
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.event.ChoreCreatedEvent;
-import com.baws.tidytime.fragment.AssignFragment;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.module.BusModule;
-import com.baws.tidytime.view.AssignFragmentView;
+import com.baws.tidytime.view.AssignView;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import util.AnimationLength;
 
 /**
  * Created by wadereweti on 22/07/14.
@@ -27,9 +29,10 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
 
     Context mContext;
 
-    private AssignFragmentView mFragmentView;
+    private AssignView mFragmentView;
+    private Chore mCreatedChore;
 
-    public AssignFragmentPresenterImpl(AssignFragmentView fragmentView, Context context) {
+    public AssignFragmentPresenterImpl(AssignView fragmentView, Context context) {
         super();
         mBus.register(this);
         mContext = context;
@@ -85,7 +88,7 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     @Override
     public void onButtonReturnedToDefaultState() {
         mFragmentView.setButtonProgress(0);
-        mFragmentView.initialiseChoreSpinners();
+        mFragmentView.resetZoneSpinner();
         mFragmentView.initialiseDate();
         mFragmentView.initialiseIncentive();
         mFragmentView.initialiseChildSelector();
@@ -96,12 +99,13 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     @Subscribe
     public void answerAvailable(ChoreCreatedEvent event) {
         int progress = event.isCreated() ? 100 : -1;
+        mCreatedChore = event.getChore();
         mFragmentView.setButtonProgress(progress);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mFragmentView.restoreButtonPosition();
             }
-        }, 600);
+        }, AnimationLength.LONG);
     }
 }

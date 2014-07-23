@@ -1,7 +1,7 @@
 package com.baws.tidytime.adapter;
 
-import com.baws.tidytime.model.Child;
 import com.baws.tidytime.adapter.ChildSelectorAdapter.ViewHolder;
+import com.baws.tidytime.model.Child;
 
 /**
  * Created by Raukawa on 7/13/2014.

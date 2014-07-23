@@ -1,32 +1,34 @@
 package com.baws.tidytime.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.module.AssignViewModule;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
-import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
-import com.baws.tidytime.view.AssignFragmentView;
+import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
+import com.baws.tidytime.view.MainView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,14 +38,17 @@ import util.DateUtil;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignFragment extends Fragment implements AssignFragmentView, DateView, ChildSelectorView {
+public class AssignFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
 
-    private AssignFragmentPresenter mPresenter;
     private String mChoreZone;
     private String mChoreType;
     private Child mChildSelected;
+    private MainView mMainView;
+
+    @Inject
+    AssignFragmentPresenter mPresenter;
 
     @InjectView(R.id.label_chore_selection)
     RobotoTextView mLabelChoreSelection;
@@ -75,12 +80,13 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     @InjectView(R.id.btn_create_chore)
     CircularProgressButton mButton;
 
-    public static AssignFragment get() {
+    public static AssignFragment get(MainView mainView) {
         AssignFragment fragment = new AssignFragment();
 
         Bundle args = new Bundle();
-        //args.putInt("someInt", someInt);
         fragment.setArguments(args);
+
+        fragment.setMainView(mainView);
 
         return fragment;
     }
@@ -94,9 +100,8 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mPresenter = new AssignFragmentPresenterImpl(this, getActivity());
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new AssignViewModule(this, getActivity()));
     }
 
     @Override
@@ -138,7 +143,7 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
 
     @Override
     public void setChoreTypeAdapter(int zonePosition) {
-        mChoreTypeSpinner.setAdapter(0);
+        mChoreTypeSpinner.setAdapter(zonePosition);
     }
 
     @Override
@@ -238,8 +243,17 @@ public class AssignFragment extends Fragment implements AssignFragmentView, Date
         });
     }
 
+    @Override
+    public void resetZoneSpinner() {
+        mChoreZoneSpinner.setSelection(0);
+    }
+
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
         mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
+    }
+
+    public void setMainView(MainView mainView) {
+        mMainView = mainView;
     }
 }

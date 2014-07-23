@@ -1,7 +1,5 @@
 package com.baws.tidytime.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.activity.MainActivity;
 import com.baws.tidytime.adapter.AssignedChoreAdapter;
-import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.view.AssignedView;
+import com.baws.tidytime.view.MainView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -21,8 +21,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignedFragment extends Fragment {
-
+public class AssignedFragment extends Fragment implements AssignedView {
 
     @InjectView(R.id.lv_assigned_chores)
     StickyListHeadersListView mAssignedChoresListView;
@@ -31,7 +30,6 @@ public class AssignedFragment extends Fragment {
         AssignedFragment fragment = new AssignedFragment();
 
         Bundle args = new Bundle();
-        //args.putInt("someInt", someInt);
         fragment.setArguments(args);
 
         return fragment;
@@ -51,5 +49,10 @@ public class AssignedFragment extends Fragment {
 
         StickyListHeadersAdapter adapter = new AssignedChoreAdapter(getActivity(), Child.getAll());
         mAssignedChoresListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void updateView() {
+        ((AssignedChoreAdapter) mAssignedChoresListView.getAdapter()).notifyDataSetChanged();
     }
 }

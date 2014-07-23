@@ -1,20 +1,16 @@
 package com.baws.tidytime.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.widget.CircularImageView;

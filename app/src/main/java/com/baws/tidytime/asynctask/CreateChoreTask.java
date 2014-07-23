@@ -1,8 +1,5 @@
 package com.baws.tidytime.asynctask;
 
-import android.os.AsyncTask;
-
-import com.baws.tidytime.BusUtil;
 import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
@@ -19,7 +16,7 @@ import util.DateUtil;
 /**
  * Created by wadereweti on 21/07/14.
  */
-public class CreateChoreTask extends AbstractTask<String, Void, Boolean> {
+public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
 
     @Inject
     Bus mBus;
@@ -37,7 +34,7 @@ public class CreateChoreTask extends AbstractTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... strings) {
+    protected Chore doInBackground(String... strings) {
         Chore chore = new Chore();
         chore.description = strings[0];
         chore.assignedDate = DateUtil.getCurrentDate();
@@ -53,11 +50,11 @@ public class CreateChoreTask extends AbstractTask<String, Void, Boolean> {
             e.printStackTrace();
         }
 
-        return true;
+        return chore;
     }
 
     @Override
-    protected void onPostExecute(Boolean created) {
-        mBus.post(new ChoreCreatedEvent(created));
+    protected void onPostExecute(Chore chore) {
+        mBus.post(new ChoreCreatedEvent(true, chore));
     }
 }

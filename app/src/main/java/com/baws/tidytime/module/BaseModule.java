@@ -7,8 +7,9 @@ import dagger.Module;
  */
 @Module(
     includes = {
-    ApplicationModule.class,
-    BusModule.class
+        ApplicationModule.class,
+        AssignViewModule.class,
+        BusModule.class
     }
 )
 public class BaseModule {

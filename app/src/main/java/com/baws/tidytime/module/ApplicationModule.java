@@ -31,8 +31,7 @@ public class ApplicationModule {
         mApplication = application;
     }
 
-    @Provides
-    @ForApplication
+    @Provides @ForApplication
     public TidyTimeApplication provideApplication() {
         return mApplication;
     }
