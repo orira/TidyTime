@@ -12,6 +12,8 @@ import java.util.List;
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragments;
+    private final String[] TITLES = {"Assigned", "Assign", "Complete"};
+
 
     public MainViewPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragments) {
         super(fragmentManager);
@@ -19,12 +21,19 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
-        return mFragments.get(position);
+    public CharSequence getPageTitle(int position) {
+        return TITLES[position];
     }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return TITLES.length;
+        //return mFragments.size();
     }
+
+    @Override
+    public Fragment getItem(int position) {
+        return mFragments.get(position);
+    }
+
 }

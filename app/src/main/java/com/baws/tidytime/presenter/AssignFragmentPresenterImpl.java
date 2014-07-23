@@ -94,6 +94,7 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
         mFragmentView.initialiseChildSelector();
         mFragmentView.displayInput(true);
         mFragmentView.enableInput(true);
+        mFragmentView.updateAssignedChores();
     }
 
     @Subscribe

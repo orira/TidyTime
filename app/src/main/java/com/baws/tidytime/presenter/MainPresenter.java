@@ -11,9 +11,11 @@ public class MainPresenter {
     
     public MainPresenter(MainView view) {
         mView = view;
+        init();
     }
 
-    public void init() {
+    private void init() {
         mView.initialiseViewPager();
+        mView.initialiseTabStrip();
     }
 }

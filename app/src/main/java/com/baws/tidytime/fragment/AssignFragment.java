@@ -248,6 +248,11 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
         mChoreZoneSpinner.setSelection(0);
     }
 
+    @Override
+    public void updateAssignedChores() {
+        mMainView.updateAssignedChores();
+    }
+
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
         mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());

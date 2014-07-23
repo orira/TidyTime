@@ -49,6 +49,8 @@ public class AssignedFragment extends Fragment implements AssignedView {
 
         StickyListHeadersAdapter adapter = new AssignedChoreAdapter(getActivity(), Child.getAll());
         mAssignedChoresListView.setAdapter(adapter);
+        mAssignedChoresListView.setDivider(null);
+        mAssignedChoresListView.setDividerHeight(0);
     }
 
     @Override
