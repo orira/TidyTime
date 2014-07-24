@@ -5,4 +5,4 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     style="@style/Spinner.Padding"
     android:id="@android:id/text1"
-    custom:typeface="REGULAR" />
+    custom:typeface="THIN" />

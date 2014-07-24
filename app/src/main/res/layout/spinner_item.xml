@@ -6,4 +6,4 @@
     style="@style/Spinner"
     android:id="@android:id/text1"
     android:textAlignment="inherit"
-    custom:typeface="REGULAR" />
+    custom:typeface="THIN" />

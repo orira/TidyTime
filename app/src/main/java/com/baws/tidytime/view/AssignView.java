@@ -15,10 +15,8 @@ public interface AssignView {
     void enableInput(boolean enable);
     void setButtonProgress(int progress);
     void onChoreZoneSelected(String zone, int zonePosition);
-    void setChoreZone(String zone);
     void setChoreTypeAdapter(int zonePosition);
     void onChoreTypeSelected(String zone);
-    void setChoreType(String zone);
     void restoreButtonPosition();
     void resetZoneSpinner();
     void updateAssignedChores();

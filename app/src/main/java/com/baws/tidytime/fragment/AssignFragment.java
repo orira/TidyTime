@@ -137,11 +137,6 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     }
 
     @Override
-    public void setChoreZone(String zone) {
-        mChoreZone = zone;
-    }
-
-    @Override
     public void setChoreTypeAdapter(int zonePosition) {
         mChoreTypeSpinner.setAdapter(zonePosition);
     }
@@ -155,17 +150,15 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
 
     @Override
     public void onChoreZoneSelected(String zone, int zonePosition) {
+        mChoreZone = zone;
         mPresenter.onChoreZoneSelected(zone, zonePosition);
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
     @Override
     public void onChoreTypeSelected(String type) {
-        mPresenter.onChoreTypeSelected(type);
-    }
-
-    @Override
-    public void setChoreType(String type) {
         mChoreType = type;
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
     @Override

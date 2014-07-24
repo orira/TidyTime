@@ -32,7 +32,7 @@
         android:layout_alignParentTop="true"
         android:text="@string/pick_a_chore"
         android:layout_marginTop="@dimen/margin_default_half"
-        custom:typeface="BOLD" />
+        custom:typeface="THIN" />
 
     <com.baws.tidytime.widget.ChoreZoneSpinner
         style="@style/AnchoreView.Right"
@@ -54,17 +54,17 @@
         android:text="@string/pick_a_due_date"
         android:layout_marginTop="@dimen/margin_default_x1.5"
         android:layout_below="@id/sp_chore_type"
-        custom:typeface="BOLD" />
+        custom:typeface="THIN" />
 
     <com.baws.tidytime.widget.RobotoEditText
         style="@style/AnchoreView.Right.TopMargin"
         android:id="@+id/chore_date"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_regular"
         android:layout_toRightOf="@id/anchor_view"
         android:layout_below="@id/sp_chore_type"
-        android:textColor="@color/primary_accent"
+        android:textColor="@color/application_colour_dark"
         android:focusable="false"
-        custom:typeface="REGULAR" />
+        custom:typeface="THIN" />
 
     <!-- Payment Selection -->
     <com.baws.tidytime.widget.RobotoTextView
@@ -72,7 +72,7 @@
         android:id="@+id/label_chore_amount"
         android:text="@string/label_chore_amount"
         android:layout_below="@id/chore_date"
-        custom:typeface="BOLD" />
+        custom:typeface="THIN" />
 
     <Spinner
         style="@style/AnchoreView.Right.TopMargin"
@@ -87,7 +87,7 @@
         android:text="@string/pick_a_child"
         android:layout_below="@id/sp_amount"
         android:layout_marginTop="@dimen/margin_default_x1.75"
-        custom:typeface="BOLD" />
+        custom:typeface="THIN" />
 
     <GridView
         style="@style/Size.MatchParentWidth"
@@ -105,10 +105,11 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/margin_default"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_medium"
+        android:textSize="@dimen/text_regular"
         android:layout_below="@id/gv_child_selector"
         android:enabled="false"
         android:alpha="@dimen/disabled_element"
+        custom:cpb_colorIdle="@color/application_colour"
         custom:cpb_cornerRadius="48dp"
         custom:cpb_iconComplete="@drawable/ic_action_accept"
         custom:cpb_iconError="@drawable/ic_action_cancel"

@@ -18,6 +18,7 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
+import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 
 import java.util.ArrayList;
@@ -87,7 +88,9 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
         headerViewHolder.profileName.setText(child.firstName);
         int color = Color.parseColor(child.profileColour);
-        headerViewHolder.rootContainer.setBackgroundColor(color);
+        //headerViewHolder.rootContainer.setBackgroundColor(color);
+        ((CircularImageView) headerViewHolder.profilePicture).setBorderColor(color);
+        headerViewHolder.profileName.setTextColor(color);
 
         return view;
     }

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#00b2ff</color>
-    <color name="primary_accent">#ff4d00</color>
+    <color name="application_colour">#77DD77</color>
+    <color name="application_colour_dark">#278d27</color>
+
+    <color name="complimentary_colour">#DE78DE</color>
+    <color name="complimentary_colour_dark">#8e288e</color>
+
+    <color name="primary_text">#222B2F</color>
+    <color name="secondary_text">#7c8589</color>
 
     <!-- Opacity Values
          90% = e5
          80% = cc
          50% = 7f -->
-    <color name="primary_translucent">#7f00b2ff</color>
-    <color name="primary_accent_translucent">#7fff4d00</color>
+    <color name="application_colour_translucent">#7f77DD77</color>
 
     <color name="translucent_white_90">#e5ffffff</color>
     <color name="translucent_white_80">#ccffffff</color>

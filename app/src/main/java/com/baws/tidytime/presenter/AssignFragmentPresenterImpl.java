@@ -55,14 +55,8 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
     @Override
     public void onChoreZoneSelected(String zone, int zonePosition) {
         boolean display = zone != null;
-        mFragmentView.setChoreZone(zone);
         mFragmentView.setChoreTypeAdapter(zonePosition);
         mFragmentView.displayChoreTypeSpinner(display);
-    }
-
-    @Override
-    public void onChoreTypeSelected(String type) {
-        mFragmentView.setChoreType(type);
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
+import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.view.MainView;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import util.TypefaceUtil;
 
 
 public class MainActivity extends AbstractActivity implements MainView {
@@ -65,6 +67,11 @@ public class MainActivity extends AbstractActivity implements MainView {
     @Override
     public void initialiseTabStrip() {
         mTabStrip.setViewPager(mViewPager);
+        mTabStrip.setTypeface(TypefaceUtil.getFont(this, RobotoTypeface.LIGHT), 0);
+        mTabStrip.setIndicatorColorResource(R.color.application_colour);
+        mTabStrip.setIndicatorHeight(5);
+        //mTabStrip.setTabBackground(getResources().getDrawable(R.drawable.selector_tab_strip));
+        mTabStrip.setTabBackground(R.drawable.selector_tab_strip);
     }
 
     @Override

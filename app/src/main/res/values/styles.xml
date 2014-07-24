@@ -1,8 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/application_colour</item>
+        <item name="android:titleTextStyle">@style/ActionBar.Title</item>
+    </style>
+
+    <style name="ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_large</item>
     </style>
 
     <!-- Default Size styles -->
@@ -45,9 +55,9 @@
     <!-- Label Styles -->
     <style name="Label" parent="Size.MatchParentWidth">
         <item name="android:lines">1</item>
-        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textSize">@dimen/text_regular</item>
         <item name="android:textIsSelectable">false</item>
-        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColor">@color/secondary_text</item>
         <item name="android:paddingLeft">11dp</item>
     </style>
 
@@ -73,14 +83,14 @@
 
     <!-- Input Styles -->
     <style name="Input" parent="Size.MatchParentWidth">
-        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textColor">@color/application_colour_dark</item>
         <item name="android:inputType">text|textAutoCorrect|textCapSentences|textAutoComplete</item>
     </style>
 
     <!-- Spinner Styles -->
     <style name="Spinner" parent="Size.MatchParentWidth">
-        <item name="android:textSize">@dimen/text_small</item>
-        <item name="android:textColor">@color/primary_accent</item>
+        <item name="android:textSize">@dimen/text_regular</item>
+        <item name="android:textColor">@color/application_colour_dark</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:paddingLeft">@dimen/margin_default_half</item>
@@ -92,10 +102,4 @@
         <item name="android:paddingLeft">@dimen/margin_default_half</item>
         <item name="android:paddingTop">@dimen/margin_default</item>
     </style>
-
-
-
-
-
-
 </resources>

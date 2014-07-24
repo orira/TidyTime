@@ -20,6 +20,7 @@
     <!-- Text Sizes -->
     <dimen name="text_micro">12sp</dimen>
     <dimen name="text_small">14sp</dimen>
+    <dimen name="text_regular">16sp</dimen>
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_large">22sp</dimen>
     <dimen name="text_xlarge">32sp</dimen>
