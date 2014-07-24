@@ -7,42 +7,42 @@ import android.view.View;
  * Created by Raukawa on 7/24/2014.
  */
 public class ParallaxTransformer implements ViewPager.PageTransformer {
-    private static final float MIN_SCALE = 0.85f;
-    private static final float MIN_ALPHA = 0.5f;
 
+    private int id;
+    private int border = 0;
+    private float speed = 0.2f;
+
+    public ParallaxTransformer(int id) {
+        this.id = id;
+    }
+
+    @Override
     public void transformPage(View view, float position) {
-        int pageWidth = view.getWidth();
-        int pageHeight = view.getHeight();
 
-        if (position < -1) { // [-Infinity,-1)
-            // This page is way off-screen to the left.
-            // set x for parallax
-            //view.setAlpha(0);
+        View parallaxView = view.findViewById(id);
 
-        } else if (position <= 1) { // [-1,1]
-            // Modify the default slide transition to shrink the page as well
-            float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
-            float vertMargin = pageHeight * (1 - scaleFactor) / 2;
-            float horzMargin = pageWidth * (1 - scaleFactor) / 2;
-            if (position < 0) {
-                view.setTranslationX(horzMargin - vertMargin / 2);
-            } else {
-                view.setTranslationX(-horzMargin + vertMargin / 2);
+        if (parallaxView != null) {
+            if (position > -1 && position < 1) {
+                float width = parallaxView.getWidth();
+                parallaxView.setTranslationX(-(position * width * speed));
+                float sc = ((float)view.getWidth() - border)/ view.getWidth();
+                if (position == 0) {
+                    view.setScaleX(1);
+                    view.setScaleY(1);
+                } else {
+                    view.setScaleX(sc);
+                    view.setScaleY(sc);
+                }
             }
-
-            // Scale the page down (between MIN_SCALE and 1)
-            view.setScaleX(scaleFactor);
-            view.setScaleY(scaleFactor);
-
-            // Fade the page relative to its size.
-                /*view.setAlpha(MIN_ALPHA +
-                        (scaleFactor - MIN_SCALE) /
-                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));*/
-
-        } else { // (1,+Infinity]
-            // This page is way off-screen to the right.
-            //view.setAlpha(0);
         }
+    }
+
+    public void setBorder(int px) {
+        border = px;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }
 

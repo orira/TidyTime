@@ -17,7 +17,6 @@
 
     <!-- CircularImageView for custom shape -->
     <declare-styleable name="CircularImageView">
-
         <!-- Specifies whether or not to draw a circular border around the image. -->
         <attr name="border" format="boolean"></attr>
         <!-- Specifies the color of the border draw around the image. (if enabled) -->

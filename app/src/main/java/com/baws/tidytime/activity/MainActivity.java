@@ -88,7 +88,9 @@ public class MainActivity extends AbstractActivity implements MainView {
     public void initialiseViewPager() {
         MainViewPagerAdapter mainAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), createFragments());
         mViewPager.setAdapter(mainAdapter);
-        mViewPager.setPageTransformer(true, new ParallaxTransformer());
+        ParallaxTransformer transformer = new ParallaxTransformer(R.id.container_assign);
+        transformer.setBorder(20);
+        mViewPager.setPageTransformer(false, transformer);
     }
 
     @Override

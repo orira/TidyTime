@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_default">
+
+    <com.baws.tidytime.widget.CircularImageView
+        android:id="@+id/iv_profile_picture"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/image_placeholder"
+        android:layout_marginBottom="@dimen/margin_default"
+        custom:border="true"
+        custom:border_width="@dimen/margin_smallest"
+        custom:border_color="@color/application_colour"
+        custom:shadow="true" />
+
+    <com.iangclifton.android.floatlabel.FloatLabel
+        android:id="@+id/fl_enter_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_profile_picture"
+        android:layout="@layout/floating_layout" />
+
+</RelativeLayout>

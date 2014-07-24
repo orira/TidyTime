@@ -11,7 +11,9 @@
     <string name="select_date">Select a date</string>
     <string name="create_chore">Create Chore</string>
     <string name="add_person">Add Person</string>
+
     <string name="create_child">Create A Child</string>
+    <string name="enter_name">Enter First Name</string>
 
 
 </resources>
