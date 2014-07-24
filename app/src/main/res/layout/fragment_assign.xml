@@ -62,8 +62,8 @@
         android:textSize="@dimen/text_regular"
         android:layout_toRightOf="@id/anchor_view"
         android:layout_below="@id/sp_chore_type"
-        android:textColor="@color/application_colour_dark"
-        android:focusable="false"
+        android:textColor="@color/primary_text"
+        android:cursorVisible="false"
         custom:typeface="THIN" />
 
     <!-- Payment Selection -->
@@ -109,7 +109,7 @@
         android:layout_below="@id/gv_child_selector"
         android:enabled="false"
         android:alpha="@dimen/disabled_element"
-        custom:cpb_colorIdle="@color/application_colour"
+        custom:cpb_colorIdle="@color/complimentary_colour"
         custom:cpb_cornerRadius="48dp"
         custom:cpb_iconComplete="@drawable/ic_action_accept"
         custom:cpb_iconError="@drawable/ic_action_cancel"

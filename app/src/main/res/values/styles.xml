@@ -3,6 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>
+        <item name="android:dropDownSpinnerStyle">@style/SpinnerAppTheme</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/apptheme_list_selector_holo_light</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/apptheme_activated_background_holo_light</item>
+        <item name="android:editTextBackground">@drawable/apptheme_edit_text_holo_light</item>
     </style>
 
     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -13,6 +18,11 @@
     <style name="ActionBar.Title">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="SpinnerAppTheme" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/apptheme_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/apptheme_list_selector_holo_light</item>
     </style>
 
     <!-- Default Size styles -->
@@ -83,14 +93,14 @@
 
     <!-- Input Styles -->
     <style name="Input" parent="Size.MatchParentWidth">
-        <item name="android:textColor">@color/application_colour_dark</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:inputType">text|textAutoCorrect|textCapSentences|textAutoComplete</item>
     </style>
 
     <!-- Spinner Styles -->
     <style name="Spinner" parent="Size.MatchParentWidth">
         <item name="android:textSize">@dimen/text_regular</item>
-        <item name="android:textColor">@color/application_colour_dark</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:paddingLeft">@dimen/margin_default_half</item>
