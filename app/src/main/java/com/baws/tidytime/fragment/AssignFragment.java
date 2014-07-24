@@ -47,45 +47,23 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     private Child mChildSelected;
     private MainView mMainView;
 
-    @Inject
-    AssignFragmentPresenter mPresenter;
-
-    @InjectView(R.id.label_chore_selection)
-    RobotoTextView mLabelChoreSelection;
-
-    @InjectView(R.id.label_chore_date)
-    RobotoTextView mLabelChoreDate;
-
-    @InjectView(R.id.label_chore_amount)
-    RobotoTextView mLabelChoreAmount;
-
-    @InjectView(R.id.label_child)
-    RobotoTextView mLabelChild;
-
-    @InjectView(R.id.sp_chore_zone)
-    ChoreZoneSpinner mChoreZoneSpinner;
-
-    @InjectView(R.id.sp_chore_type)
-    ChoreTypeSpinner mChoreTypeSpinner;
-
-    @InjectView(R.id.chore_date)
-    EditText mChoreDate;
-
-    @InjectView(R.id.sp_amount)
-    Spinner mAmount;
-
-    @InjectView(R.id.gv_child_selector)
-    GridView mChildSelectorGridView;
-
-    @InjectView(R.id.btn_create_chore)
-    CircularProgressButton mButton;
+    @Inject AssignFragmentPresenter mPresenter;
+    @InjectView(R.id.label_chore_selection) RobotoTextView mLabelChoreSelection;
+    @InjectView(R.id.label_chore_date) RobotoTextView mLabelChoreDate;
+    @InjectView(R.id.label_chore_amount) RobotoTextView mLabelChoreAmount;
+    @InjectView(R.id.label_child) RobotoTextView mLabelChild;
+    @InjectView(R.id.sp_chore_zone) ChoreZoneSpinner mChoreZoneSpinner;
+    @InjectView(R.id.sp_chore_type) ChoreTypeSpinner mChoreTypeSpinner;
+    @InjectView(R.id.chore_date) EditText mChoreDate;
+    @InjectView(R.id.sp_amount) Spinner mAmount;
+    @InjectView(R.id.gv_child_selector) GridView mChildSelectorGridView;
+    @InjectView(R.id.btn_create_chore) CircularProgressButton mButton;
 
     public static AssignFragment get(MainView mainView) {
         AssignFragment fragment = new AssignFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
-
         fragment.setMainView(mainView);
 
         return fragment;

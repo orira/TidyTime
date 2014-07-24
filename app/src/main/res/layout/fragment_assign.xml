@@ -95,7 +95,8 @@
         android:numColumns="3"
         android:gravity="center"
         android:layout_marginTop="@dimen/margin_default"
-        android:layout_below="@id/label_child" />
+        android:layout_below="@id/label_child"
+        android:listSelector="@android:color/transparent" />
 
     <com.dd.CircularProgressButton
         android:id="@+id/btn_create_chore"
