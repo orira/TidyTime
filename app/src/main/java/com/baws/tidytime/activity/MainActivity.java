@@ -1,10 +1,13 @@
 package com.baws.tidytime.activity;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.baws.tidytime.R;
@@ -46,6 +49,30 @@ public class MainActivity extends AbstractActivity implements MainView {
 
         constructChildren();
         mMainPresenter = new MainPresenter(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_child:
+                createNewPerson();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void createNewPerson() {
+        Intent intent = new Intent(this, CreateChildActivity.class);
+        Bundle bundle = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.scale_down_alpha).toBundle();
+        startActivity(intent, bundle);
     }
 
     private void constructChildren() {

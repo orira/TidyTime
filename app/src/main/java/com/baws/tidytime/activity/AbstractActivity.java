@@ -25,18 +25,23 @@ public class AbstractActivity extends FragmentActivity {
     }
 
     private void initialisesActionBar() {
-        SpannableString s = new SpannableString(getResources().getString(R.string.app_name));
-        s.setSpan(new TypefaceSpan(this, RobotoTypeface.LIGHT), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        // Update the action bar title with the TypefaceSpan instance
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(s);
+        setTitle(null);
 
         // Set some padding between icon and title
         ImageView icon = (ImageView) findViewById(android.R.id.home);
         FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
         iconLp.rightMargin = (int) getResources().getDimension(R.dimen.margin_default_x1_5);
         icon.setLayoutParams(iconLp);
+    }
+
+    protected void setTitle(String title) {
+        String actionBarTitle = title != null ? title : getResources().getString(R.string.app_name);
+        SpannableString s = new SpannableString(actionBarTitle);
+        s.setSpan(new TypefaceSpan(this, RobotoTypeface.LIGHT), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Update the action bar title with the TypefaceSpan instance
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(s);
     }
 }

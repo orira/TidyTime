@@ -38,10 +38,10 @@ public class ChildSelectorAdapter extends BaseAdapter {
         mResources = context.getResources();
         mChildSelectorView = childSelectorView;
 
-        initilisePresenters();
+        initialisePresenters();
     }
 
-    private void initilisePresenters() {
+    private void initialisePresenters() {
         for (Child child : mChildren) {
             mPresenters.add(new ChildSelectorPresenter(child));
         }
@@ -118,11 +118,8 @@ public class ChildSelectorAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        @InjectView(R.id.container_profile_picture)
-        RelativeLayout container;
-
-        @InjectView(R.id.iv_profile_picture)
-        public CircularImageView imageView;
+        @InjectView(R.id.container_profile_picture) RelativeLayout container;
+        @InjectView(R.id.iv_profile_picture) public CircularImageView imageView;
 
         private ViewHolder(View view) {
             ButterKnife.inject(this, view);
