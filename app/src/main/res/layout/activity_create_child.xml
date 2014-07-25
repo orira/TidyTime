@@ -12,12 +12,16 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/image_placeholder"
+        android:background="@drawable/image_placeholder"
         android:layout_marginBottom="@dimen/margin_default"
         custom:border="true"
         custom:border_width="@dimen/margin_smallest"
         custom:border_color="@color/application_colour"
-        custom:shadow="true" />
+        custom:shadow="true"
+        custom:selector="true"
+        custom:selector_color="@color/application_colour_translucent"
+        custom:selector_stroke_color="@color/application_colour_dark"
+        custom:selector_stroke_width="@dimen/margin_smallest" />
 
     <com.iangclifton.android.floatlabel.FloatLabel
         android:id="@+id/fl_enter_name"
@@ -25,5 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_profile_picture"
         android:layout="@layout/floating_layout" />
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fl_enter_name" />
 
 </RelativeLayout>

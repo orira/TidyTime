@@ -14,6 +14,7 @@
 
     <string name="create_child">Create A Child</string>
     <string name="enter_name">Enter First Name</string>
+    <string name="error_no_details_entered">Please enter a name, or add a photo</string>
 
 
 </resources>

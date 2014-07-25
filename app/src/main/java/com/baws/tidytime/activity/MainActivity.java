@@ -99,7 +99,6 @@ public class MainActivity extends AbstractActivity implements MainView {
         mTabStrip.setTypeface(TypefaceUtil.getFont(this, RobotoTypeface.LIGHT), 0);
         mTabStrip.setIndicatorColorResource(R.color.application_colour);
         mTabStrip.setIndicatorHeight(5);
-        //mTabStrip.setTabBackground(getResources().getDrawable(R.drawable.selector_tab_strip));
         mTabStrip.setTabBackground(R.drawable.selector_tab_strip);
     }
 
@@ -107,7 +106,6 @@ public class MainActivity extends AbstractActivity implements MainView {
     public void updateAssignedChores() {
         AssignedFragment assignedFragment = (AssignedFragment) ((MainViewPagerAdapter) mViewPager.getAdapter()).getItem(0);
         assignedFragment.updateView();
-
     }
 
     private List<Fragment> createFragments() {
