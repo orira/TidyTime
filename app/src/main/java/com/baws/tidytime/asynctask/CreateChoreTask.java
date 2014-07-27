@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import util.DateUtil;
+import com.baws.tidytime.util.DateUtil;
 
 /**
  * Created by wadereweti on 21/07/14.

@@ -13,6 +13,7 @@
     android:background="@color/white">
 
     <RelativeLayout
+        android:id="@+id/container_assign_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -30,14 +31,21 @@
             android:text="@string/pick_a_child"
             custom:typeface="THIN" />
 
-        <GridView
+        <!--<GridView
             style="@style/Size.MatchParentWidth"
             android:id="@+id/gv_child_selector"
             android:numColumns="3"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_below="@id/label_child"
-            android:listSelector="@android:color/transparent" />
+            android:listSelector="@android:color/transparent" />-->
+
+        <GridLayout
+            style="@style/Size.MatchParentWidth"
+            android:id="@+id/gv_child_selector"
+            android:columnCount="3"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_below="@id/label_child" />
 
         <!-- Chore Selection -->
         <com.baws.tidytime.widget.RobotoTextView

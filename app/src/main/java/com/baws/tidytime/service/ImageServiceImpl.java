@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import util.Constants;
+import com.baws.tidytime.util.Constants;
 
 /**
  * Created by wadereweti on 25/07/14.
@@ -24,25 +24,24 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public void saveImage (Bitmap thumbnail, int orientation, Child child) {
+    public String saveImage (Bitmap bitmap, int orientation, Child child) {
+        if (bitmap == null) {
+            return null;
+        }
+
         File file = new File(mContext.getExternalFilesDir(Constants.BASE_EXTERNAL_DIRECTORY_IMAGES), child.firstName + ".png");
 
-        saveImageToFile(thumbnail, child, orientation, file);
-    }
-
-    private void saveImageToFile(Bitmap thumbnail, Child child, int orientation, File file) {
         FileOutputStream fileOutputStream;
 
         try {
             fileOutputStream = new FileOutputStream(file);
-            thumbnail.compress(Bitmap.CompressFormat.PNG, 95, fileOutputStream);
-            child.profilePicture = file.getPath();
-            //child.imageOrientation = orientation;
-            child.save();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 95, fileOutputStream);
         } catch(FileNotFoundException e) {
             // do something here
             Log.e(TAG, "Couldn't save image");
         }
+
+        return file.getPath();
     }
 }
 

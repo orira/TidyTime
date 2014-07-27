@@ -18,6 +18,7 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
+import com.baws.tidytime.util.BitmapUtil;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 
@@ -44,6 +45,12 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     public AssignedChoreAdapter(Context context, List<Child> children) {
         mInflater = LayoutInflater.from(context);
         mResources = context.getResources();
+
+        setData(children);
+    }
+
+    public void setData(List<Child> children) {
+        mChores.clear();
 
         for (Child child : children) {
             mChores.addAll(child.chores());
@@ -78,7 +85,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         } else if (child.firstName.equals("Nevaeh")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
         } else {
-            bitmap = null;
+            bitmap = BitmapUtil.fetchAvatarBitmap(child);
         }
 
         RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);

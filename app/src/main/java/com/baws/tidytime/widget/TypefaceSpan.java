@@ -4,7 +4,6 @@ package com.baws.tidytime.widget;
  * Created by Raukawa on 7/24/2014.
  */
 
-import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v4.util.LruCache;
@@ -14,7 +13,7 @@ import android.text.style.MetricAffectingSpan;
 import com.baws.tidytime.activity.AbstractActivity;
 import com.baws.tidytime.typeface.RobotoTypeface;
 
-import util.TypefaceUtil;
+import com.baws.tidytime.util.TypefaceUtil;
 
 
 /**

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import butterknife.InjectView;
  * Created by wadereweti on 9/07/14.
  */
 public class ChildSelectorAdapter extends BaseAdapter {
+
+    private static final String TAG = "ChildSelectorAdapter";
 
     private final List<Child> mChildren;
     private final LayoutInflater mLayoutInflater;
@@ -83,12 +86,17 @@ public class ChildSelectorAdapter extends BaseAdapter {
         Child child = mChildren.get(position);
         Bitmap bitmap;
 
+        Log.e(TAG, "child first name is " + child.firstName);
+
         if (child.firstName.equals("Tayla-Paige")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
         } else if (child.firstName.equals("Kauri")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
-        } else {
+        } else if (child.firstName.equals("Nevaeh")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
+        } else {
+            bitmap = BitmapFactory.decodeFile(child.profilePicture);
+            /*bitmap = BitmapFactory.decodeResource(mResources, R.drawable.ic_action_person);*/
         }
 
         viewHolder.imageView.setImageBitmap(bitmap);

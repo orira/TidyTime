@@ -1,26 +1,30 @@
 package com.baws.tidytime.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.adapter.ChildSelectorAdapter;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.AssignViewModule;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
+import com.baws.tidytime.util.BitmapUtil;
 import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
 import com.baws.tidytime.view.MainView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
+import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
 
@@ -33,7 +37,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import util.DateUtil;
+import com.baws.tidytime.util.DateUtil;
 
 /**
  * Created by wadereweti on 6/07/14.
@@ -41,6 +45,8 @@ import util.DateUtil;
 public class AssignFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
+    private static final float SCALE_SELECTED = 1.3f;
+    private static final float SCALE_DEFAULT = 1;
 
     private String mChoreZone;
     private String mChoreType;
@@ -48,6 +54,7 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     private MainView mMainView;
 
     @Inject AssignFragmentPresenter mPresenter;
+    @InjectView(R.id.container_assign_fragment) RelativeLayout mContainer;
     @InjectView(R.id.label_chore_selection) RobotoTextView mLabelChoreSelection;
     @InjectView(R.id.label_chore_date) RobotoTextView mLabelChoreDate;
     @InjectView(R.id.label_chore_amount) RobotoTextView mLabelChoreAmount;
@@ -56,7 +63,8 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     @InjectView(R.id.sp_chore_type) ChoreTypeSpinner mChoreTypeSpinner;
     @InjectView(R.id.chore_date) EditText mChoreDate;
     @InjectView(R.id.sp_amount) Spinner mAmount;
-    @InjectView(R.id.gv_child_selector) GridView mChildSelectorGridView;
+    //@InjectView(R.id.gv_child_selector) GridView mChildSelectorGridView;
+    @InjectView(R.id.gv_child_selector) GridLayout mChildSelectorGridView;
     @InjectView(R.id.btn_create_chore) CircularProgressButton mButton;
 
     public static AssignFragment get(MainView mainView) {
@@ -75,6 +83,12 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
         ButterKnife.inject(this, view);
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initialiseChildSelector();
     }
 
     @Override
@@ -111,7 +125,43 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
 
     @Override
     public void initialiseChildSelector() {
-        mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
+        mChildSelectorGridView.removeAllViews();
+
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+        for (Child child : Child.getAll()) {
+            View view = inflater.inflate(R.layout.gridview_child_selector, mContainer, false);
+
+            RelativeLayout container = ButterKnife.findById(view, R.id.container_profile_picture);
+            container.setTag(child);
+
+            Bitmap avatarBitmap = BitmapUtil.fetchAvatarBitmap(child);
+
+            CircularImageView avatar = ButterKnife.findById(view, R.id.iv_profile_picture);
+            avatar.setImageBitmap(avatarBitmap);
+            avatar.setTag(false);
+
+            avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean selected = (Boolean) view.getTag();
+                    float scaleFactor = selected ? SCALE_DEFAULT : SCALE_SELECTED;
+                    float alpha = selected ? .6f : 1;
+
+                    mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
+
+                    view.setTag(!selected);
+                    ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alpha);
+
+                    mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+                }
+            });
+
+            mChildSelectorGridView.addView(view);
+        }
+
+
+        //mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
     }
 
     @Override
@@ -217,11 +267,6 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     @Override
     public void resetZoneSpinner() {
         mChoreZoneSpinner.setSelection(0);
-    }
-
-    @Override
-    public void updateAssignedChores() {
-        mMainView.updateAssignedChores();
     }
 
     @OnClick(R.id.btn_create_chore)

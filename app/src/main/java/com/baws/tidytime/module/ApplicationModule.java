@@ -3,6 +3,9 @@ package com.baws.tidytime.module;
 import android.content.res.Resources;
 
 import com.baws.tidytime.TidyTimeApplication;
+import com.baws.tidytime.asynctask.CreateChoreTask;
+import com.baws.tidytime.fragment.AssignFragment;
+import com.baws.tidytime.fragment.AssignedFragment;
 import com.baws.tidytime.module.annotation.ForApplication;
 import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
 
@@ -17,7 +20,9 @@ import dagger.Provides;
 @Module(
     injects = {
         TidyTimeApplication.class,
-        AssignFragmentPresenterImpl.class
+        AssignedFragment.class,
+        AssignFragmentPresenterImpl.class,
+        CreateChoreTask.class
     },
     includes = {
             BusModule.class

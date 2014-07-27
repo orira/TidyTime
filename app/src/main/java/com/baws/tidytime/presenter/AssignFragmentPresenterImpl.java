@@ -17,7 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import util.AnimationLength;
+import com.baws.tidytime.util.AnimationLength;
 
 /**
  * Created by wadereweti on 22/07/14.
@@ -88,7 +88,6 @@ public class AssignFragmentPresenterImpl extends AbstractPresenter implements As
         mFragmentView.initialiseChildSelector();
         mFragmentView.displayInput(true);
         mFragmentView.enableInput(true);
-        mFragmentView.updateAssignedChores();
     }
 
     @Subscribe

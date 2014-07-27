@@ -19,5 +19,4 @@ public interface AssignView {
     void onChoreTypeSelected(String zone);
     void restoreButtonPosition();
     void resetZoneSpinner();
-    void updateAssignedChores();
 }

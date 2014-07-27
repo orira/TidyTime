@@ -1,4 +1,4 @@
-package util;
+package com.baws.tidytime.util;
 
 /**
  * Created by wadereweti on 23/07/14.

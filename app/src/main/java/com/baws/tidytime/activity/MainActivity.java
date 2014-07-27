@@ -15,8 +15,6 @@ import com.baws.tidytime.adapter.MainViewPagerAdapter;
 import com.baws.tidytime.fragment.AssignFragment;
 import com.baws.tidytime.fragment.AssignedFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
-import com.baws.tidytime.model.Child;
-import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
 import com.baws.tidytime.typeface.RobotoTypeface;
@@ -27,7 +25,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import util.TypefaceUtil;
+import com.baws.tidytime.util.TypefaceUtil;
 
 
 public class MainActivity extends AbstractActivity implements MainView {
@@ -76,12 +74,12 @@ public class MainActivity extends AbstractActivity implements MainView {
     }
 
     private void constructChildren() {
-        if (Child.getAll().size() == 0) {
+        /*if (Child.getAll().size() == 0) {
             for (int i = 0; i < 3; i++) {
                 Child child = Child.create(i);
                 Chore.createChores(child, i);
             }
-        }
+        }*/
     }
 
     @Override
@@ -100,12 +98,6 @@ public class MainActivity extends AbstractActivity implements MainView {
         mTabStrip.setIndicatorColorResource(R.color.application_colour);
         mTabStrip.setIndicatorHeight(5);
         mTabStrip.setTabBackground(R.drawable.selector_tab_strip);
-    }
-
-    @Override
-    public void updateAssignedChores() {
-        AssignedFragment assignedFragment = (AssignedFragment) ((MainViewPagerAdapter) mViewPager.getAdapter()).getItem(0);
-        assignedFragment.updateView();
     }
 
     private List<Fragment> createFragments() {

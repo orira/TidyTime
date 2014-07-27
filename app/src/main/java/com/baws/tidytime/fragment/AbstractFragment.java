@@ -8,6 +8,7 @@ import com.baws.tidytime.TidyTimeApplication;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import dagger.ObjectGraph;
 
 /**
@@ -21,6 +22,12 @@ public class AbstractFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mFragmentObjectGraph = TidyTimeApplication.get().createScopedGraph(getModules().toArray());
         mFragmentObjectGraph.inject(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @Override

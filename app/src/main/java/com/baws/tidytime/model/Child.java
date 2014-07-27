@@ -18,6 +18,9 @@ public class Child extends Model {
     @Column(name = "ProfilePicture")
     public String profilePicture;
 
+    @Column(name = "ProfilePictureOrientation")
+    public int profilePictureOrientation;
+
     @Column(name = "ProfileColour")
     public String profileColour;
 
@@ -29,10 +32,63 @@ public class Child extends Model {
         return new Select()
                 .from(Child.class)
                 .execute();
-
     }
 
-    public static Child create(int position) {
+    public static Child get() {
+        Child child = new Child();
+        String profileColour;
+
+        List<Child> children = Child.getAll();
+        switch (children.size()) {
+            case 0:
+                profileColour = RED;
+                break;
+            case 1:
+                profileColour = PINK;
+                break;
+            case 2:
+                profileColour = PURPLE;
+                break;
+            case 3:
+                profileColour = LIGHT_BLUE;
+                break;
+            case 4:
+                profileColour = CYAN;
+                break;
+            case 5:
+                profileColour = TEAL;
+                break;
+            case 6:
+                profileColour = GREEN;
+                break;
+            case 7:
+                profileColour = LIGHT_GREEN;
+                break;
+            case 8:
+                profileColour = LIME;
+                break;
+            default:
+                profileColour = YELLOW;
+                break;
+        }
+
+        child.profileColour = profileColour;
+
+        return child;
+    }
+
+    private static final String RED = "#e51c23";
+    private static final String PINK = "#e91e63";
+    private static final String PURPLE = "#9c27b0";
+    private static final String LIGHT_BLUE = "#03a9f4";
+    private static final String CYAN = "#00bcd4";
+    private static final String TEAL = "#009688";
+    private static final String GREEN = "#259b24";
+    private static final String LIGHT_GREEN = "#8bc34a";
+    private static final String LIME = "#cddc39";
+    private static final String YELLOW = "#ffeb3b";
+
+    /*public static Child create(int position) {
 
         Child child = new Child();
         switch (position) {
@@ -51,11 +107,7 @@ public class Child extends Model {
         }
 
         child.save();
-        
-        return child;
-    }
 
-    private static final String RED = "#ca4c4d";
-    private static final String BLUE = "#398eb5";
-    private static final String GREEN = "#4b9484";
+        return child;
+    }*/
 }

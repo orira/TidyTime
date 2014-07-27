@@ -6,5 +6,4 @@ package com.baws.tidytime.view;
 public interface MainView {
     void initialiseViewPager();
     void initialiseTabStrip();
-    void updateAssignedChores();
 }

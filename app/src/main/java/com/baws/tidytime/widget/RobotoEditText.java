@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.baws.tidytime.R;
 import com.baws.tidytime.typeface.RobotoTypeface;
 
-import util.TypefaceUtil;
+import com.baws.tidytime.util.TypefaceUtil;
 
 /**
  * Created by wadereweti on 11/07/14.

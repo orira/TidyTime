@@ -1,6 +1,7 @@
 package com.baws.tidytime.module;
 
 import com.baws.tidytime.asynctask.CreateChoreTask;
+import com.baws.tidytime.fragment.AssignFragment;
 import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
 import com.squareup.otto.Bus;
 
@@ -14,10 +15,7 @@ import dagger.Provides;
  */
 
 @Module(
-    injects = {
-        AssignFragmentPresenterImpl.class,
-        CreateChoreTask.class
-    }
+    library = true
 )
 public class BusModule {
 

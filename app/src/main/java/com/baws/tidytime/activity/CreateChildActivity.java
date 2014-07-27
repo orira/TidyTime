@@ -3,16 +3,15 @@ package com.baws.tidytime.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,18 +20,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.adapter.ChildSelectorPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +34,9 @@ import butterknife.InjectView;
  */
 public class CreateChildActivity extends AbstractActivity implements CreateChildView {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String TAG = "CreateChildActivity";
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_FILE = 0;
 
     private CreateChildPresenter mPresenter;
 
@@ -110,25 +104,14 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     private void createNewPerson() {
         if (TextUtils.isEmpty(mNameEditText.getEditText().getText().toString())) {
             showErrorToast();
+        } else {
+            mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
         }
     }
 
     private void showErrorToast() {
         Toast.makeText(this, getString(R.string.error_no_details_entered), Toast.LENGTH_LONG).show();
     }
-
-    /*private void requestImageFromGallery() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image*//*");
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-    }
-
-    private void requestImageFromCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }*/
 
     private void selectImage() {
         final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
@@ -144,11 +127,8 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 } else if (items[item].equals("Choose from Library")) {
-                    /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image*//*");
-                    startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
-                            SELECT_FILE);*/
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, REQUEST_IMAGE_FILE);
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -161,60 +141,44 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            im.setImageBitmap(imageBitmap);
-            // mProfilePicture.setBackground(new BitmapDrawable(imageBitmap));
-            // mProfilePicture.setImageBitmap(imageBitmap);
-            mProfilePicture.setImageDrawable(new BitmapDrawable(imageBitmap));
+        Bitmap bitmap = null;
+        int orientation = 0;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
+            } else if (requestCode == REQUEST_IMAGE_FILE) {
+                try {
+                    Uri imageUri = data.getData();
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    orientation = getPhotoOrientation(imageUri);
+                } catch (Exception exception) {
+                    Log.e(TAG, "File not found, or io exception");
+                }
+            }
 
-            /*File file = new File(Environment.getExternalStorageDirectory() + File.separator + "image.jpg");
-            mProfilePicture.setImageBitmap(decodeSampledBitmapFromFile(file.getAbsolutePath(), 500, 250));*/
+            if (bitmap != null) {
+                im.setImageBitmap(bitmap);
+                mProfilePicture.setImageBitmap(bitmap);
+                mPresenter.onImageReturned(bitmap, orientation);
+            }
         }
     }
 
-    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight) { // BEST QUALITY MATCH
+    public int getPhotoOrientation(Uri uri) {
+        int orientation = 0;
+        Cursor cursor = getApplicationContext().getContentResolver().query(uri, new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-
-        // Calculate inSampleSize
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        int inSampleSize = 1;
-
-        if (height > reqHeight) {
-            inSampleSize = Math.round((float)height / (float)reqHeight);
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            orientation = cursor.getInt(0);
         }
 
-        int expectedWidth = width / inSampleSize;
-
-        if (expectedWidth > reqWidth) {
-            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
-            inSampleSize = Math.round((float)width / (float)reqWidth);
-        }
-
-
-        options.inSampleSize = inSampleSize;
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(path, options);
+        return orientation;
     }
 
     @Override
-    public void onCameraImageSelected() {
-
-    }
-
-    @Override
-    public void onGalleryImageSelected() {
+    public void onChildCreated() {
 
     }
 }

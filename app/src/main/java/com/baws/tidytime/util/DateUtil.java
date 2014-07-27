@@ -1,4 +1,4 @@
-package util;
+package com.baws.tidytime.util;
 
 import android.content.Context;
 
