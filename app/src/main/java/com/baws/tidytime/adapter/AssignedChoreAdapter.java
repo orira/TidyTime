@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
@@ -78,25 +79,32 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
         Child child = mChores.get(position).child;
 
-        if (child.firstName.equals("Tayla-Paige")) {
+        /*if (child.firstName.equals("Tayla-Paige")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
         } else if (child.firstName.equals("Kauri")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
         } else if (child.firstName.equals("Nevaeh")) {
             bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
         } else {
-            bitmap = BitmapUtil.fetchAvatarBitmap(child);
-        }
+            //bitmap = BitmapUtil.fetchAvatarBitmap(child.profilePicture);
+        }*/
 
-        RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
+
+        BitmapTask bitmapTask = new BitmapTask(headerViewHolder.profilePicture);
+        bitmapTask.execute(child.profilePicture);
+
+        /*RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
         headerViewHolder.profilePicture.setImageDrawable(roundedAvatarDrawable);
         headerViewHolder.profilePicture.invalidateDrawable(roundedAvatarDrawable);
-        headerViewHolder.profilePicture.invalidate();
+        headerViewHolder.profilePicture.invalidate();*/
+
+        //headerViewHolder.profilePicture.setImageBitmap(bitmap);
 
         headerViewHolder.profileName.setText(child.firstName);
         int color = Color.parseColor(child.profileColour);
         //headerViewHolder.rootContainer.setBackgroundColor(color);
-        ((CircularImageView) headerViewHolder.profilePicture).setBorderColor(color);
+        //((CircularImageView) headerViewHolder.profilePicture).setBorderColor(color);
+        headerViewHolder.profilePicture.setBorderColor(color);
         headerViewHolder.profileName.setTextColor(color);
 
         return view;
@@ -143,8 +151,11 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         @InjectView(R.id.rl_root_container_main_header)
         RelativeLayout rootContainer;
 
-        @InjectView(R.id.iv_profile_picture)
-        ImageView profilePicture;
+        /*@InjectView(R.id.iv_profile_picture)
+        ImageView profilePicture;*/
+
+         @InjectView(R.id.iv_profile_picture)
+        CircularImageView profilePicture;
 
         @InjectView(R.id.tv_profile_name)
         RobotoTextView profileName;

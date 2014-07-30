@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
  * Created by wadereweti on 25/07/14.
  */
 public interface CreateChildPresenter {
+    void initialise();
     void onImageReturned(Bitmap bitmap, int orientation);
     void createChildRequest(String name);
+
 }

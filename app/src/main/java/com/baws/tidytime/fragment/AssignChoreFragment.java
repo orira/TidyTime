@@ -1,7 +1,5 @@
 package com.baws.tidytime.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
-import com.baws.tidytime.module.AssignViewModule;
+import com.baws.tidytime.module.AssignChorePresenterModule;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
-import com.baws.tidytime.util.BitmapUtil;
 import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
@@ -42,11 +40,13 @@ import com.baws.tidytime.util.DateUtil;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
+public class AssignChoreFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
     private static final float SCALE_SELECTED = 1.3f;
     private static final float SCALE_DEFAULT = 1;
+    private static final String CHORE_STATE = "creatingChore";
+    private static final String PRESENTER = "presenter";
 
     private String mChoreZone;
     private String mChoreType;
@@ -67,14 +67,20 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     @InjectView(R.id.gv_child_selector) GridLayout mChildSelectorGridView;
     @InjectView(R.id.btn_create_chore) CircularProgressButton mButton;
 
-    public static AssignFragment get(MainView mainView) {
-        AssignFragment fragment = new AssignFragment();
+    public static AssignChoreFragment get(MainView mainView) {
+        AssignChoreFragment fragment = new AssignChoreFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
         fragment.setMainView(mainView);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -88,12 +94,20 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
     @Override
     public void onStart() {
         super.onStart();
-        initialiseChildSelector();
+        mPresenter.initialiseView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(CHORE_STATE, mButton.getProgress());
+        //outState.putParcelable(PRESENTER, (AssignFragmentPresenterImpl) mPresenter);
     }
 
     @Override
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new AssignViewModule(this, getActivity()));
+        return Arrays.<Object>asList(new AssignChorePresenterModule(this));
     }
 
     @Override
@@ -110,7 +124,7 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
             @Override
             public void onClick(View view) {
                 CalendarDialogFragment calendar = new CalendarDialogFragment();
-                calendar.setDateView(AssignFragment.this);
+                calendar.setDateView(AssignChoreFragment.this);
                 calendar.show(getActivity().getSupportFragmentManager(), "calendarDialogFragment");
             }
         });
@@ -135,10 +149,9 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
             RelativeLayout container = ButterKnife.findById(view, R.id.container_profile_picture);
             container.setTag(child);
 
-            Bitmap avatarBitmap = BitmapUtil.fetchAvatarBitmap(child);
-
             CircularImageView avatar = ButterKnife.findById(view, R.id.iv_profile_picture);
-            avatar.setImageBitmap(avatarBitmap);
+            BitmapTask bitmapTask = new BitmapTask(avatar);
+            bitmapTask.execute(child.profilePicture);
             avatar.setTag(false);
 
             avatar.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +172,6 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
 
             mChildSelectorGridView.addView(view);
         }
-
-
-        //mChildSelectorGridView.setAdapter(new ChildSelectorAdapter(Child.getAll(), getActivity(), this));
     }
 
     @Override
@@ -246,12 +256,16 @@ public class AssignFragment extends AbstractFragment implements AssignView, Date
         mChoreDate.setEnabled(enable);
         mAmount.setEnabled(enable);
         mChildSelectorGridView.setEnabled(enable);
-        mButton.setEnabled(enable);
+
+        // new api breaks animation when disabled
+        //mButton.setEnabled(enable);
     }
 
     @Override
     public void setButtonProgress(int progress) {
-        mButton.setProgress(progress);
+        if (mButton != null) {
+            mButton.setProgress(progress);
+        }
     }
 
     @Override

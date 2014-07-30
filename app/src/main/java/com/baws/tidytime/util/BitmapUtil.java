@@ -9,9 +9,10 @@ import com.baws.tidytime.model.Child;
  * Created by Raukawa on 7/26/2014.
  */
 public class BitmapUtil {
-    public static Bitmap fetchAvatarBitmap(Child child) {
+
+    public static Bitmap fetchAvatarBitmap(String filePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8;
-        return BitmapFactory.decodeFile(child.profilePicture, options);
+        options.inSampleSize = 6;
+        return BitmapFactory.decodeFile(filePath, options);
     }
 }

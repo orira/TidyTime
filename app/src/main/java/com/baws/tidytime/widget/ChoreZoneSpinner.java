@@ -42,8 +42,12 @@ public class ChoreZoneSpinner extends Spinner {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
             int choresArray = getChoresArray(position);
-            String zone = choresArray != 0 ? ((TextView) view).getText().toString() : null;
-            mAssignFragmentView.onChoreZoneSelected(zone, position);
+
+            // null on rotation, so check
+            if (view != null) {
+                String zone = choresArray != 0 ? ((TextView) view).getText().toString() : null;
+                mAssignFragmentView.onChoreZoneSelected(zone, position);
+            }
         }
 
         @Override

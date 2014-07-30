@@ -43,6 +43,4 @@ public class TidyTimeApplication extends Application {
     public ObjectGraph createScopedGraph(Object ... modules) {
         return mApplicationObjectGraph.plus(modules);
     }
-
-
 }

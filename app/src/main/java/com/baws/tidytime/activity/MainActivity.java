@@ -12,25 +12,31 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.MainViewPagerAdapter;
-import com.baws.tidytime.fragment.AssignFragment;
-import com.baws.tidytime.fragment.AssignedFragment;
+import com.baws.tidytime.fragment.AssignChoreFragment;
+import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
+import com.baws.tidytime.module.MainPresenterModule;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
 import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.view.MainView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.baws.tidytime.util.TypefaceUtil;
 
+import javax.inject.Inject;
+
 
 public class MainActivity extends AbstractActivity implements MainView {
 
     private static final String TAG = "MainActivity";
+
+    @Inject
     MainPresenter mMainPresenter;
 
     @InjectView(R.id.tab_strip)
@@ -44,9 +50,7 @@ public class MainActivity extends AbstractActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-
-        constructChildren();
-        mMainPresenter = new MainPresenter(this);
+        mMainPresenter.onViewInitialised();
     }
 
     @Override
@@ -67,19 +71,15 @@ public class MainActivity extends AbstractActivity implements MainView {
         }
     }
 
+    @Override
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new MainPresenterModule(this));
+    }
+
     private void createNewPerson() {
         Intent intent = new Intent(this, CreateChildActivity.class);
         Bundle bundle = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.scale_down_alpha).toBundle();
         startActivity(intent, bundle);
-    }
-
-    private void constructChildren() {
-        /*if (Child.getAll().size() == 0) {
-            for (int i = 0; i < 3; i++) {
-                Child child = Child.create(i);
-                Chore.createChores(child, i);
-            }
-        }*/
     }
 
     @Override
@@ -102,8 +102,8 @@ public class MainActivity extends AbstractActivity implements MainView {
 
     private List<Fragment> createFragments() {
         List<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(AssignedFragment.get());
-        fragments.add(AssignFragment.get(this));
+        fragments.add(AssignedChoreFragment.get());
+        fragments.add(AssignChoreFragment.get(this));
         fragments.add(CompleteFragment.get());
 
         return fragments;

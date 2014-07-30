@@ -1,33 +1,42 @@
 package com.baws.tidytime.presenter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.baws.tidytime.activity.CreateChildActivity;
+import com.baws.tidytime.asynctask.CreateChildTask;
+import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.service.ImageService;
 import com.baws.tidytime.service.ImageServiceImpl;
 import com.baws.tidytime.view.CreateChildView;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by wadereweti on 25/07/14.
  */
-public class CreateChildPresenterImpl implements CreateChildPresenter {
+public class CreateChildPresenterImpl extends AbstractPresenter implements CreateChildPresenter {
 
     private static final String TAG = "CreateChildPresenterImpl";
-    private static final int REQUEST_CAMERA = 1;
-    private static final int SELECT_FILE = 100;
 
     private CreateChildView mView;
-    private ImageService mImageService;
     private Bitmap mBitmap;
     private int mOrientation;
 
     public CreateChildPresenterImpl(CreateChildView view) {
         mView = view;
-        mImageService = new ImageServiceImpl((CreateChildActivity) view);
+    }
+
+    @Override
+    public void initialise() {
+        mView.initialiseActionBar();
+        mView.initialiseInput();
     }
 
     @Override
@@ -38,13 +47,14 @@ public class CreateChildPresenterImpl implements CreateChildPresenter {
 
     @Override
     public void createChildRequest(String name) {
-        Child child = Child.get();
-        child.firstName = name;
-        child.profilePicture = mImageService.saveImage(mBitmap, mOrientation, child);
-        child.profilePictureOrientation = mOrientation;
-        child.save();
-
-        List<Child> childList = Child.getAll();
-        Log.e(TAG, "foo");
+        new CreateChildTask(mBitmap, mOrientation).execute(name);
     }
+
+    @Subscribe
+    public void onChildCreated(ChildCreatedEvent event) {
+        if (event.getChild() != null) {
+            mView.onChildCreated();
+        }
+    }
+
 }

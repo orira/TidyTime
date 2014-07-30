@@ -7,16 +7,10 @@ import com.baws.tidytime.model.Chore;
  */
 public class ChoreCreatedEvent {
 
-    private boolean mCreated;
     private Chore mChore;
 
-    public ChoreCreatedEvent(boolean created, Chore chore) {
-        mCreated = created;
+    public ChoreCreatedEvent(Chore chore) {
         mChore = chore;
-    }
-
-    public boolean isCreated() {
-        return mCreated;
     }
 
     public Chore getChore() {

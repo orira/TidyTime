@@ -20,11 +20,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.module.CreateChildPresenterModule;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -38,7 +44,8 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_FILE = 0;
 
-    private CreateChildPresenter mPresenter;
+    @Inject
+    CreateChildPresenter mPresenter;
 
     @InjectView(R.id.iv_profile_picture) CircularImageView mProfilePicture;
     @InjectView(R.id.fl_enter_name) FloatLabel mNameEditText;
@@ -50,9 +57,14 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
         setContentView(R.layout.activity_create_child);
         ButterKnife.inject(this);
 
-        mPresenter = new CreateChildPresenterImpl(this);
         initialiseActionBar();
         initialiseInput();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPresenter.initialise();
     }
 
     @Override
@@ -81,17 +93,23 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
         reverseActivityAnimation();
     }
 
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new CreateChildPresenterModule(this));
+    }
+
     private void reverseActivityAnimation() {
         finish();
         overridePendingTransition(R.anim.scale_up_alpha, R.anim.slide_out_bottom);
     }
 
-    private void initialiseActionBar() {
+    @Override
+    public void initialiseActionBar() {
         super.setTitle(getString(R.string.create_child));
         getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
-    private void initialiseInput() {
+    @Override
+    public void initialiseInput() {
         mNameEditText.setLabel(R.string.enter_name);
         mProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +197,6 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
 
     @Override
     public void onChildCreated() {
-
+        reverseActivityAnimation();
     }
 }

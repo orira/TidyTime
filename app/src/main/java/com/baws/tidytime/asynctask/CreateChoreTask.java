@@ -45,7 +45,7 @@ public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
         chore.save();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -55,6 +55,6 @@ public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
 
     @Override
     protected void onPostExecute(Chore chore) {
-        mBus.post(new ChoreCreatedEvent(true, chore));
+        mBus.post(new ChoreCreatedEvent(chore));
     }
 }

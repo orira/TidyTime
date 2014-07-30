@@ -1,11 +1,16 @@
 package com.baws.tidytime.asynctask;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.baws.tidytime.TidyTimeApplication;
+import com.baws.tidytime.module.BusModule;
+import com.squareup.otto.Bus;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 
@@ -16,12 +21,15 @@ public abstract class AbstractTask<Params, Progress, Result> extends AsyncTask<P
 
     private ObjectGraph mPresenterObjectGraph;
 
+    @Inject
+    Bus mBus;
+
     public AbstractTask() {
         mPresenterObjectGraph = TidyTimeApplication.get().createScopedGraph(getModules().toArray());
         mPresenterObjectGraph.inject(this);
     }
 
     protected List<Object> getModules() {
-        return Arrays.<Object>asList();
+        return Arrays.<Object>asList(new BusModule());
     };
 }

@@ -9,19 +9,42 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.TidyTimeApplication;
 import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.widget.TypefaceSpan;
+
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import dagger.ObjectGraph;
 
 /**
  * Created by wadereweti on 6/07/14.
  */
 public class AbstractActivity extends FragmentActivity {
 
+    private ObjectGraph mFragmentObjectGraph;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mFragmentObjectGraph = TidyTimeApplication.get().createScopedGraph(getModules().toArray());
+        mFragmentObjectGraph.inject(this);
+
         initialisesActionBar();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.reset(this);
+        mFragmentObjectGraph = null;
+    }
+
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList();
     }
 
     private void initialisesActionBar() {

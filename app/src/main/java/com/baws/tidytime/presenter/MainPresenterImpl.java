@@ -5,16 +5,16 @@ import com.baws.tidytime.view.MainView;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class MainPresenter {
-    
-    private final MainView mView;
-    
-    public MainPresenter(MainView view) {
+public class MainPresenterImpl implements MainPresenter {
+
+    MainView mView;
+
+    public MainPresenterImpl(MainView view) {
         mView = view;
-        init();
     }
 
-    private void init() {
+    @Override
+    public void onViewInitialised() {
         mView.initialiseViewPager();
         mView.initialiseTabStrip();
     }

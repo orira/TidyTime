@@ -1,21 +1,16 @@
 package com.baws.tidytime.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.activity.MainActivity;
 import com.baws.tidytime.adapter.AssignedChoreAdapter;
-import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.BusModule;
 import com.baws.tidytime.view.AssignedView;
-import com.baws.tidytime.view.MainView;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,13 +19,12 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignedFragment extends AbstractFragment implements AssignedView {
+public class AssignedChoreFragment extends AbstractFragment implements AssignedView {
 
     private AssignedChoreAdapter mAdapter;
 
@@ -39,8 +33,8 @@ public class AssignedFragment extends AbstractFragment implements AssignedView {
     @InjectView(R.id.lv_assigned_chores)
     StickyListHeadersListView mAssignedChoresListView;
 
-    public static AssignedFragment get() {
-        AssignedFragment fragment = new AssignedFragment();
+    public static AssignedChoreFragment get() {
+        AssignedChoreFragment fragment = new AssignedChoreFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);

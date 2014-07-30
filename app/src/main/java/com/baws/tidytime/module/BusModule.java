@@ -1,9 +1,13 @@
 package com.baws.tidytime.module;
 
-import com.baws.tidytime.asynctask.CreateChoreTask;
-import com.baws.tidytime.fragment.AssignFragment;
-import com.baws.tidytime.presenter.AssignFragmentPresenterImpl;
+import com.baws.tidytime.asynctask.AbstractTask;
+import com.baws.tidytime.asynctask.BitmapTask;
+import com.baws.tidytime.asynctask.CreateChildTask;
+import com.baws.tidytime.fragment.AssignedChoreFragment;
+import com.baws.tidytime.presenter.AssignChorePresenterImpl;
+import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import javax.inject.Singleton;
 
@@ -15,13 +19,18 @@ import dagger.Provides;
  */
 
 @Module(
-    library = true
+    injects = {
+        AssignedChoreFragment.class,
+        AssignChorePresenterImpl.class,
+        CreateChildPresenterImpl.class,
+        BitmapTask.class,
+    }
 )
 public class BusModule {
 
     @Provides
     @Singleton
     Bus provideBus() {
-        return new Bus();
+        return new Bus(ThreadEnforcer.ANY);
     }
 }
