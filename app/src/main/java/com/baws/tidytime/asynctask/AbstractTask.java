@@ -1,10 +1,8 @@
 package com.baws.tidytime.asynctask;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.baws.tidytime.TidyTimeApplication;
-import com.baws.tidytime.module.BusModule;
 import com.squareup.otto.Bus;
 
 import java.util.Arrays;
@@ -30,6 +28,7 @@ public abstract class AbstractTask<Params, Progress, Result> extends AsyncTask<P
     }
 
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new BusModule());
+        //return Arrays.<Object>asList(new BusModule());
+        return Arrays.<Object>asList();
     };
 }

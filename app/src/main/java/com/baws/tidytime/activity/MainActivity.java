@@ -19,17 +19,17 @@ import com.baws.tidytime.module.MainPresenterModule;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
 import com.baws.tidytime.typeface.RobotoTypeface;
+import com.baws.tidytime.util.TypefaceUtil;
 import com.baws.tidytime.view.MainView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.baws.tidytime.util.TypefaceUtil;
-
-import javax.inject.Inject;
 
 
 public class MainActivity extends AbstractActivity implements MainView {

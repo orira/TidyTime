@@ -12,7 +12,8 @@ import dagger.Provides;
  * Created by wadereweti on 29/07/14.
  */
 @Module(
-    injects = MainActivity.class
+    injects = MainActivity.class,
+    complete = false
 )
 public class MainPresenterModule {
 

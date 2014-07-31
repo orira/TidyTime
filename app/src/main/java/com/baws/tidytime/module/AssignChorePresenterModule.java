@@ -1,7 +1,5 @@
 package com.baws.tidytime.module;
 
-import com.baws.tidytime.asynctask.AbstractTask;
-import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.presenter.AssignChorePresenterImpl;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
@@ -14,7 +12,8 @@ import dagger.Provides;
  * Created by wadereweti on 23/07/14.
  */
 @Module(
-    injects = AssignChoreFragment.class
+    injects = AssignChoreFragment.class,
+    complete = false
 )
 
 public class AssignChorePresenterModule {

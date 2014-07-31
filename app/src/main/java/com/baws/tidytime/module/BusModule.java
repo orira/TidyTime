@@ -1,8 +1,7 @@
 package com.baws.tidytime.module;
 
-import com.baws.tidytime.asynctask.AbstractTask;
 import com.baws.tidytime.asynctask.BitmapTask;
-import com.baws.tidytime.asynctask.CreateChildTask;
+import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.presenter.AssignChorePresenterImpl;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
@@ -24,6 +23,7 @@ import dagger.Provides;
         AssignChorePresenterImpl.class,
         CreateChildPresenterImpl.class,
         BitmapTask.class,
+        CreateChoreTask.class
     }
 )
 public class BusModule {

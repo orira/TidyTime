@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.typeface.RobotoTypeface;
-
 import com.baws.tidytime.util.TypefaceUtil;
 
 

@@ -5,6 +5,6 @@ import com.baws.tidytime.model.Child;
 /**
  * Created by wadereweti on 14/07/14.
  */
-public interface ChildSelectorView {
+public interface ChildSelectorView extends PresenterView {
     void onChildSelected(Child child);
 }

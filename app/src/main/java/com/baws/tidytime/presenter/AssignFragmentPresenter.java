@@ -1,6 +1,5 @@
 package com.baws.tidytime.presenter;
 
-import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 
 /**

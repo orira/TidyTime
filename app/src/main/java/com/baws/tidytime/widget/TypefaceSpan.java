@@ -12,7 +12,6 @@ import android.text.style.MetricAffectingSpan;
 
 import com.baws.tidytime.activity.AbstractActivity;
 import com.baws.tidytime.typeface.RobotoTypeface;
-
 import com.baws.tidytime.util.TypefaceUtil;
 
 

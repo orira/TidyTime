@@ -13,7 +13,7 @@ import dagger.Provides;
 
 @Module(
     injects = CreateChildTask.class,
-    includes = BusModule.class
+    complete = false
 )
 public class ServiceModule {
 

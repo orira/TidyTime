@@ -1,28 +1,21 @@
 package com.baws.tidytime.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.module.CreateChildPresenterModule;
+import com.baws.tidytime.module.CreateChildModule;
+import com.baws.tidytime.presenter.AbstractPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenter;
-import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
@@ -41,36 +34,37 @@ import butterknife.InjectView;
 public class CreateChildActivity extends AbstractActivity implements CreateChildView {
 
     private static final String TAG = "CreateChildActivity";
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_FILE = 0;
 
-    @Inject
-    CreateChildPresenter mPresenter;
-
+    @Inject CreateChildPresenter mPresenter;
     @InjectView(R.id.iv_profile_picture) CircularImageView mProfilePicture;
     @InjectView(R.id.fl_enter_name) FloatLabel mNameEditText;
-    @InjectView(R.id.imageview) ImageView im;
+    @InjectView(R.id.pb_create_child) ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child);
         ButterKnife.inject(this);
+    }
 
-        initialiseActionBar();
-        initialiseInput();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((AbstractPresenter) mPresenter).onResume(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mPresenter.initialise();
+        //mPresenter.initialise();
+        //mBus.post(new RecreatedViewEvent(this));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.create_child, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -81,7 +75,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
                 reverseActivityAnimation();
                 return true;
             case R.id.action_add_child:
-                createNewPerson();
+                mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -94,7 +88,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new CreateChildPresenterModule(this));
+        return Arrays.<Object>asList(new CreateChildModule(this));
     }
 
     private void reverseActivityAnimation() {
@@ -114,85 +108,37 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
         mProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImage();
+                mPresenter.photoRequested();
             }
         });
     }
 
-    private void createNewPerson() {
-        if (TextUtils.isEmpty(mNameEditText.getEditText().getText().toString())) {
-            showErrorToast();
-        } else {
-            mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
-        }
-    }
-
-    private void showErrorToast() {
+    @Override
+    public void onInvalidInput() {
         Toast.makeText(this, getString(R.string.error_no_details_entered), Toast.LENGTH_LONG).show();
     }
 
-    private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(CreateChildActivity.this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                    }
-                } else if (items[item].equals("Choose from Library")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, REQUEST_IMAGE_FILE);
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
+    @Override
+    public void showDialog(AlertDialog.Builder builder) {
         builder.show();
+    }
+
+    @Override
+    public void setProfileImage(Bitmap bitmap) {
+        mProfilePicture.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void displayCreateState() {
+        mProfilePicture.animate().alpha(0);
+        mNameEditText.animate().alpha(0);
+        mProgressBar.animate().alpha(1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = null;
-        int orientation = 0;
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                Bundle extras = data.getExtras();
-                bitmap = (Bitmap) extras.get("data");
-            } else if (requestCode == REQUEST_IMAGE_FILE) {
-                try {
-                    Uri imageUri = data.getData();
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                    orientation = getPhotoOrientation(imageUri);
-                } catch (Exception exception) {
-                    Log.e(TAG, "File not found, or io exception");
-                }
-            }
-
-            if (bitmap != null) {
-                im.setImageBitmap(bitmap);
-                mProfilePicture.setImageBitmap(bitmap);
-                mPresenter.onImageReturned(bitmap, orientation);
-            }
-        }
-    }
-
-    public int getPhotoOrientation(Uri uri) {
-        int orientation = 0;
-        Cursor cursor = getApplicationContext().getContentResolver().query(uri, new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
-
-        if (cursor.getCount() == 1) {
-            cursor.moveToFirst();
-            orientation = cursor.getInt(0);
-        }
-
-        return orientation;
+        mPresenter.onImageReturned(requestCode, resultCode, data);
     }
 
     @Override

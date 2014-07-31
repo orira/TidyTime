@@ -3,7 +3,6 @@ package com.baws.tidytime.module;
 import android.content.res.Resources;
 
 import com.baws.tidytime.TidyTimeApplication;
-import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.module.annotation.ForApplication;
 
 import javax.inject.Singleton;
@@ -17,6 +16,9 @@ import dagger.Provides;
 @Module(
     injects = {
         TidyTimeApplication.class,
+    },
+    includes = {
+        BusModule.class
     },
     library = true
 )

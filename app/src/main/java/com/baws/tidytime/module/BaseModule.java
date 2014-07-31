@@ -11,9 +11,10 @@ import dagger.Module;
         AssignChorePresenterModule.class,
         BusModule.class,
         ServiceModule.class,
-        CreateChildPresenterModule.class,
+        CreateChildModule.class,
         MainPresenterModule.class
-    }
+    },
+    complete = false
 )
 public class BaseModule {
 

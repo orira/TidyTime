@@ -3,30 +3,23 @@ package com.baws.tidytime.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
-import com.baws.tidytime.drawable.RoundedAvatarDrawable;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
-import com.baws.tidytime.util.BitmapUtil;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

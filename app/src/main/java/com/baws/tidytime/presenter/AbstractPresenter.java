@@ -1,11 +1,8 @@
 package com.baws.tidytime.presenter;
 
 import com.baws.tidytime.TidyTimeApplication;
-import com.baws.tidytime.event.RecreatedViewEvent;
-import com.baws.tidytime.module.BusModule;
 import com.baws.tidytime.view.PresenterView;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +14,8 @@ import dagger.ObjectGraph;
 /**
  * Created by Raukawa on 7/2/2014.
  */
-public class AbstractPresenter {
+public abstract class AbstractPresenter {
     private ObjectGraph mPresenterObjectGraph;
-    private PresenterView mView;
 
     @Inject
     Bus mBus;
@@ -31,11 +27,15 @@ public class AbstractPresenter {
     }
 
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new BusModule());
+        //return Arrays.<Object>asList(new BusModule());
+        return Arrays.<Object>asList();
     };
 
-    @Subscribe
+    /*@Subscribe
     public void viewRecreated(RecreatedViewEvent event) {
         mView = event.getView();
-    }
+    }*/
+
+    public abstract void onResume(PresenterView view);
+    protected abstract void initialiseView();
 }

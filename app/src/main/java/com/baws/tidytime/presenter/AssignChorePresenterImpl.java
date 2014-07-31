@@ -1,24 +1,13 @@
 package com.baws.tidytime.presenter;
 
-import android.content.Context;
 import android.os.Handler;
-import android.os.Parcelable;
 
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.event.ChoreCreatedEvent;
-import com.baws.tidytime.event.RecreatedViewEvent;
 import com.baws.tidytime.model.Child;
-import com.baws.tidytime.model.Chore;
-import com.baws.tidytime.module.BusModule;
-import com.baws.tidytime.view.AssignView;
-import com.squareup.otto.Bus;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import com.baws.tidytime.util.AnimationLength;
+import com.baws.tidytime.view.AssignView;
+import com.baws.tidytime.view.PresenterView;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -31,7 +20,11 @@ public class AssignChorePresenterImpl extends AbstractPresenter implements Assig
     public AssignChorePresenterImpl(AssignView fragmentView) {
         super();
         mView = fragmentView;
-        mBus.register(this);
+    }
+
+    @Override
+    public void onResume(PresenterView view) {
+        mView = (AssignView) view;
     }
 
     @Override

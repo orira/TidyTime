@@ -1,13 +1,11 @@
 package com.baws.tidytime.asynctask;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.ServiceModule;
 import com.baws.tidytime.service.ImageService;
-import com.squareup.otto.Bus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +42,12 @@ public class CreateChildTask extends AbstractTask<String, Void, Child> {
         child.profilePicture = mService.saveImage(mBitmap, mOrientation, child);
         child.profilePictureOrientation = mOrientation;
         child.save();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return child;
     }

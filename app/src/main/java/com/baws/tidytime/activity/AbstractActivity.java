@@ -12,9 +12,12 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.TidyTimeApplication;
 import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.widget.TypefaceSpan;
+import com.squareup.otto.Bus;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import dagger.ObjectGraph;
@@ -26,12 +29,17 @@ public class AbstractActivity extends FragmentActivity {
 
     private ObjectGraph mFragmentObjectGraph;
 
+    @Inject
+    Bus mBus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mFragmentObjectGraph = TidyTimeApplication.get().createScopedGraph(getModules().toArray());
         mFragmentObjectGraph.inject(this);
+
+        mBus.register(this);
 
         initialisesActionBar();
     }

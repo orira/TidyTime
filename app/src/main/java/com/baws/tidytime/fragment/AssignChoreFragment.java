@@ -16,6 +16,7 @@ import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.AssignChorePresenterModule;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
+import com.baws.tidytime.util.DateUtil;
 import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
@@ -35,7 +36,6 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.baws.tidytime.util.DateUtil;
 
 /**
  * Created by wadereweti on 6/07/14.

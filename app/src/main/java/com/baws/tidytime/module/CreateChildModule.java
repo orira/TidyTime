@@ -4,7 +4,8 @@ import com.baws.tidytime.activity.CreateChildActivity;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.baws.tidytime.view.CreateChildView;
-import com.squareup.otto.Bus;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,22 +14,23 @@ import dagger.Provides;
  * Created by wadereweti on 29/07/14.
  */
 @Module(
-    injects = CreateChildActivity.class
+    injects = CreateChildActivity.class,
+    complete = false
 )
-public class CreateChildPresenterModule {
+public class CreateChildModule {
 
     private CreateChildView mView;
 
-    public CreateChildPresenterModule(CreateChildView view) {
+    public CreateChildModule(CreateChildView view) {
         mView = view;
     }
 
-    @Provides
+    @Provides @Singleton
     CreateChildView provideView() {
         return mView;
     }
 
-    @Provides
+    @Provides @Singleton
     CreateChildPresenter providePresenter(CreateChildView view) {
         return new CreateChildPresenterImpl(view);
     }

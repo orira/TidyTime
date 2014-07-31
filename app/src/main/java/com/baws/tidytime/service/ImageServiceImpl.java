@@ -1,28 +1,28 @@
 package com.baws.tidytime.service;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.baws.tidytime.TidyTimeApplication;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.util.Constants;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import com.baws.tidytime.util.Constants;
-
-import javax.inject.Inject;
-
 /**
  * Created by wadereweti on 25/07/14.
  */
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
 
     private static final String TAG = "ImageServiceImpl";
 
-    @Inject
     TidyTimeApplication mContext;
+
+    public ImageServiceImpl() {
+        mContext = TidyTimeApplication.get();
+    }
 
     @Override
     public String saveImage (Bitmap bitmap, int orientation, Child child) {

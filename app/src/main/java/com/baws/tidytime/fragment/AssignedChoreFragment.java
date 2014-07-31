@@ -8,14 +8,7 @@ import android.view.ViewGroup;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.AssignedChoreAdapter;
 import com.baws.tidytime.model.Child;
-import com.baws.tidytime.module.BusModule;
 import com.baws.tidytime.view.AssignedView;
-import com.squareup.otto.Bus;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,8 +20,6 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class AssignedChoreFragment extends AbstractFragment implements AssignedView {
 
     private AssignedChoreAdapter mAdapter;
-
-    @Inject Bus mBus;
 
     @InjectView(R.id.lv_assigned_chores)
     StickyListHeadersListView mAssignedChoresListView;
@@ -42,10 +33,10 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
         return fragment;
     }
 
-    @Override
+    /*@Override
     protected List<Object> getModules() {
         return Arrays.<Object>asList(new BusModule());
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
