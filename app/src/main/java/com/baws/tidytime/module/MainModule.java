@@ -5,6 +5,8 @@ import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.presenter.MainPresenterImpl;
 import com.baws.tidytime.view.MainView;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -15,20 +17,20 @@ import dagger.Provides;
     injects = MainActivity.class,
     complete = false
 )
-public class MainPresenterModule {
+public class MainModule {
 
     private MainView mMainView;
 
-    public MainPresenterModule(MainView mainView) {
+    public MainModule(MainView mainView) {
         mMainView = mainView;
     }
 
-    @Provides
+    @Provides @Singleton
     MainView provideMainView() {
         return mMainView;
     }
 
-    @Provides
+    @Provides @Singleton
     MainPresenter provideMainPresenter(MainView mainView) {
         return new MainPresenterImpl(mainView);
     }

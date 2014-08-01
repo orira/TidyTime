@@ -15,7 +15,7 @@ import com.baws.tidytime.adapter.MainViewPagerAdapter;
 import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
-import com.baws.tidytime.module.MainPresenterModule;
+import com.baws.tidytime.module.MainModule;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
 import com.baws.tidytime.typeface.RobotoTypeface;
@@ -36,14 +36,9 @@ public class MainActivity extends AbstractActivity implements MainView {
 
     private static final String TAG = "MainActivity";
 
-    @Inject
-    MainPresenter mMainPresenter;
-
-    @InjectView(R.id.tab_strip)
-    PagerSlidingTabStrip mTabStrip;
-
-    @InjectView(R.id.vp_main)
-    ViewPager mViewPager;
+    @Inject MainPresenter mMainPresenter;
+    @InjectView(R.id.tab_strip) PagerSlidingTabStrip mTabStrip;
+    @InjectView(R.id.vp_main) ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +68,7 @@ public class MainActivity extends AbstractActivity implements MainView {
 
     @Override
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new MainPresenterModule(this));
+        return Arrays.<Object>asList(new MainModule(this));
     }
 
     private void createNewPerson() {

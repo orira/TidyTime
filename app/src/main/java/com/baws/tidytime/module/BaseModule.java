@@ -8,14 +8,13 @@ import dagger.Module;
 @Module(
     includes = {
         ApplicationModule.class,
-        AssignChorePresenterModule.class,
         BusModule.class,
+        TaskModule.class,
         ServiceModule.class,
+        MainModule.class,
+        AssignChorePresenterModule.class,
         CreateChildModule.class,
-        MainPresenterModule.class,
-        TaskModule.class
-    },
-    complete = false
+    }
 )
 public class BaseModule {
 

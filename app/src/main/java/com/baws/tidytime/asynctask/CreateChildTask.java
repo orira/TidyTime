@@ -13,8 +13,10 @@ import com.squareup.otto.Bus;
  */
 public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
 
-    Bus mBus;
-    ImageService mService;
+    private final Bus mBus;
+    private final ImageService mService;
+
+    private boolean mWorking = false;
 
     public CreateChildTask(Bus bus, ImageService service) {
         mBus = bus;
@@ -23,6 +25,8 @@ public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
 
     @Override
     protected Child doInBackground(ChildDto... dto) {
+        mWorking = true;
+
         ChildDto childDto = dto[0];
 
         Child child = Child.get();
@@ -43,7 +47,12 @@ public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
     @Override
     protected void onPostExecute(Child child) {
         super.onPostExecute(child);
+        mWorking = false;
 
         mBus.post(new ChildCreatedEvent(child));
+    }
+
+    public boolean isCurrentlyWorking() {
+        return mWorking;
     }
 }

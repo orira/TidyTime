@@ -123,7 +123,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
-    public void displayCreateState() {
+    public void displayCreationState() {
         mProfilePicture.animate().alpha(0);
         mNameEditText.animate().alpha(0);
         mProgressBar.animate().alpha(1);

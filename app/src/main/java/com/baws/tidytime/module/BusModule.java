@@ -20,17 +20,14 @@ import dagger.Provides;
 @Module(
     injects = {
         AssignedChoreFragment.class,
-        AssignChorePresenterImpl.class,
-        CreateChildPresenterImpl.class,
         BitmapTask.class,
         CreateChoreTask.class
     }
 )
 public class BusModule {
 
-    @Provides
-    @Singleton
+    @Provides @Singleton
     Bus provideBus() {
-        return new Bus(ThreadEnforcer.ANY);
+        return new Bus();
     }
 }

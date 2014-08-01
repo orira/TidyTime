@@ -12,6 +12,6 @@ public interface CreateChildView extends PresenterView {
     void onInvalidInput();
     void showDialog(AlertDialog.Builder builder);
     void setProfileImage(Bitmap bitmap);
-    void displayCreateState();
+    void displayCreationState();
     void onChildCreated();
 }

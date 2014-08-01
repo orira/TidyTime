@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,14 +13,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.TidyTimeApplication;
 import com.baws.tidytime.activity.CreateChildActivity;
 import com.baws.tidytime.asynctask.CreateChildTask;
 import com.baws.tidytime.dto.ChildDto;
 import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.util.ImageUtil;
 import com.baws.tidytime.view.CreateChildView;
-import com.baws.tidytime.view.PresenterView;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -41,7 +37,6 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
 
     private Bitmap mBitmap;
     private int mOrientation;
-    private boolean mCreateState = false;
 
     public CreateChildPresenterImpl(Bus bus, CreateChildView view, Context context, CreateChildTask task) {
         super(bus);
@@ -52,17 +47,11 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void onResume() {
-        mView.initialiseActionBar();
-        mView.initialiseInput();
-    }
-
-    @Override
-    public void initialiseView() {
-        if (!mCreateState) {
+        if (mTask.isCurrentlyWorking()) {
+            mView.displayCreationState();
+        } else {
             mView.initialiseActionBar();
             mView.initialiseInput();
-        } else {
-            mView.displayCreateState();
         }
     }
 
@@ -131,17 +120,15 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
             return;
         }
 
-        mView.displayCreateState();
+        mView.displayCreationState();
 
         ChildDto dto = new ChildDto(mBitmap, mOrientation, name);
         mTask.execute(dto);
-        //new CreateChildTask(mBitmap, mOrientation).execute(name);
     }
 
     @Subscribe
     public void onChildCreated(ChildCreatedEvent event) {
         if (event.getChild() != null) {
-            mCreateState = false;
             mView.onChildCreated();
         }
     }
