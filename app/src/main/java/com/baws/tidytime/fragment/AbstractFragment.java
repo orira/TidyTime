@@ -33,14 +33,10 @@ public class AbstractFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        mFragmentObjectGraph = null;
+
         super.onDestroyView();
         ButterKnife.reset(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mFragmentObjectGraph = null;
     }
 
     protected List<Object> getModules() {

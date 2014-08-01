@@ -14,14 +14,13 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
-import com.baws.tidytime.module.AssignChorePresenterModule;
-import com.baws.tidytime.presenter.AssignFragmentPresenter;
+import com.baws.tidytime.module.CreateChoreModule;
+import com.baws.tidytime.presenter.CreateChorePresenter;
 import com.baws.tidytime.util.DateUtil;
 import com.baws.tidytime.util.DimensionUtil;
-import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
+import com.baws.tidytime.view.CreateChoreView;
 import com.baws.tidytime.view.DateView;
-import com.baws.tidytime.view.MainView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.CircularImageView;
@@ -41,19 +40,19 @@ import butterknife.OnClick;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AssignChoreFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
+public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
 
     private String mChoreZone;
     private String mChoreType;
     private Child mChildSelected;
-    private MainView mMainView;
 
     private int mDefaultViewValue;
     private int mHiddenViewValue;
 
-    @Inject AssignFragmentPresenter mPresenter;
+    @Inject CreateChorePresenter mPresenter;
+
     @InjectView(R.id.container_assign_fragment) RelativeLayout mContainer;
     @InjectView(R.id.label_chore_selection) RobotoTextView mLabelChoreSelection;
     @InjectView(R.id.label_chore_date) RobotoTextView mLabelChoreDate;
@@ -66,19 +65,18 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
     @InjectView(R.id.gv_child_selector) GridLayout mChildSelectorGridView;
     @InjectView(R.id.btn_create_chore) CircularProgressButton mButton;
 
-    public static AssignChoreFragment get(MainView mainView) {
-        AssignChoreFragment fragment = new AssignChoreFragment();
+    public static CreateChoreFragment get() {
+        CreateChoreFragment fragment = new CreateChoreFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
-        fragment.setMainView(mainView);
 
         return fragment;
     }
 
     @Override
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new AssignChorePresenterModule(this));
+        return Arrays.<Object>asList(new CreateChoreModule(this));
     }
 
     @Override
@@ -112,7 +110,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
             @Override
             public void onClick(View view) {
                 CalendarDialogFragment calendar = new CalendarDialogFragment();
-                calendar.setDateView(AssignChoreFragment.this);
+                calendar.setDateView(CreateChoreFragment.this);
                 calendar.show(getActivity().getSupportFragmentManager(), getString(R.string.title_calendar_dialog_fragment));
             }
         });
@@ -259,6 +257,10 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
 
     @Override
     public void restoreButtonPosition() {
+        if (mButton == null) {
+            return;
+        }
+
         mButton.animate().translationY(mDefaultViewValue).withEndAction(new Runnable() {
             @Override
             public void run() {
@@ -275,9 +277,5 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
         mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
-    }
-
-    public void setMainView(MainView mainView) {
-        mMainView = mainView;
     }
 }

@@ -3,7 +3,7 @@ package com.baws.tidytime.view;
 /**
  * Created by wadereweti on 22/07/14.
  */
-public interface AssignView extends PresenterView {
+public interface CreateChoreView extends PresenterView {
     void initialiseChoreSpinners();
     void initialiseDate();
     void initialiseIncentive();

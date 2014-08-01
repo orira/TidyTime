@@ -12,10 +12,9 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.MainViewPagerAdapter;
-import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
-import com.baws.tidytime.module.ActivityModule;
+import com.baws.tidytime.fragment.CreateChoreFragment;
 import com.baws.tidytime.module.MainModule;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;
@@ -38,6 +37,7 @@ public class MainActivity extends AbstractActivity implements MainView {
     private static final String TAG = "MainActivity";
 
     @Inject MainPresenter mMainPresenter;
+
     @InjectView(R.id.tab_strip) PagerSlidingTabStrip mTabStrip;
     @InjectView(R.id.vp_main) ViewPager mViewPager;
 
@@ -83,7 +83,7 @@ public class MainActivity extends AbstractActivity implements MainView {
         MainViewPagerAdapter mainAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), createFragments());
         mViewPager.setAdapter(mainAdapter);
         ParallaxTransformer transformer = new ParallaxTransformer(R.id.container_assign);
-        transformer.setBorder(20);
+        transformer.setBorder(getResources().getInteger(R.integer.view_pager_border));
         mViewPager.setPageTransformer(false, transformer);
     }
 
@@ -92,14 +92,14 @@ public class MainActivity extends AbstractActivity implements MainView {
         mTabStrip.setViewPager(mViewPager);
         mTabStrip.setTypeface(TypefaceUtil.getFont(this, RobotoTypeface.LIGHT), 0);
         mTabStrip.setIndicatorColorResource(R.color.application_colour);
-        mTabStrip.setIndicatorHeight(5);
+        mTabStrip.setIndicatorHeight(getResources().getInteger(R.integer.indicator_height));
         mTabStrip.setTabBackground(R.drawable.selector_tab_strip);
     }
 
     private List<Fragment> createFragments() {
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(AssignedChoreFragment.get());
-        fragments.add(AssignChoreFragment.get(this));
+        fragments.add(CreateChoreFragment.get());
         fragments.add(CompleteFragment.get());
 
         return fragments;

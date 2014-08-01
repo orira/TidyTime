@@ -13,7 +13,7 @@ import dagger.Module;
         TaskModule.class,
         ServiceModule.class,
         MainModule.class,
-        AssignChorePresenterModule.class,
+        CreateChoreModule.class,
         CreateChildModule.class,
     }
 )

@@ -20,7 +20,6 @@ public class CompleteFragment extends Fragment {
         CompleteFragment fragment = new CompleteFragment();
 
         Bundle args = new Bundle();
-        //args.putInt("someInt", someInt);
         fragment.setArguments(args);
 
         return fragment;

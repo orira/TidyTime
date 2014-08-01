@@ -21,7 +21,6 @@ import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;

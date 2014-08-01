@@ -1,7 +1,6 @@
 package com.baws.tidytime.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.TidyTimeApplication;
-import com.baws.tidytime.module.ActivityModule;
 import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.widget.TypefaceSpan;
 import com.squareup.otto.Bus;

@@ -33,11 +33,6 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
         return fragment;
     }
 
-    /*@Override
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(new BusModule());
-    }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_assigned, container, false);
@@ -50,7 +45,6 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
     public void onStart() {
         super.onStart();
 
-        mBus.register(this);
         mAdapter = new AssignedChoreAdapter(getActivity(), Child.getAll());
         mAssignedChoresListView.setAdapter(mAdapter);
         mAssignedChoresListView.setDivider(null);

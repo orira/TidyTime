@@ -9,7 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.baws.tidytime.R;
-import com.baws.tidytime.view.AssignView;
+import com.baws.tidytime.view.CreateChoreView;
 
 /**
  * Created by wadereweti on 22/07/14.
@@ -27,15 +27,15 @@ public class ChoreZoneSpinner extends Spinner {
         setAdapter(zoneAdapter);
     }
 
-    public void setCallback(AssignView assignFragmentView) {
+    public void setCallback(CreateChoreView assignFragmentView) {
         setOnItemSelectedListener(new ZoneSelector(assignFragmentView));
     }
 
     private class ZoneSelector implements OnItemSelectedListener {
 
-        private AssignView mAssignFragmentView;
+        private CreateChoreView mAssignFragmentView;
 
-        private ZoneSelector(AssignView assignFragmentView) {
+        private ZoneSelector(CreateChoreView assignFragmentView) {
             mAssignFragmentView = assignFragmentView;
         }
 

@@ -7,21 +7,21 @@ import com.baws.tidytime.dto.ChoreDto;
 import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.util.AnimationLength;
-import com.baws.tidytime.view.AssignView;
+import com.baws.tidytime.view.CreateChoreView;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
  * Created by wadereweti on 22/07/14.
  */
-public class AssignChorePresenterImpl extends AbstractPresenter implements AssignFragmentPresenter {
+public class CreateChorePresenterImpl extends AbstractPresenter implements CreateChorePresenter {
 
-    private final AssignView mView;
+    private final CreateChoreView mView;
     private final CreateChoreTask mTask;
 
-    public AssignChorePresenterImpl(Bus bus, AssignView fragmentView, CreateChoreTask task) {
+    public CreateChorePresenterImpl(Bus bus, CreateChoreView view, CreateChoreTask task) {
         super(bus);
-        mView = fragmentView;
+        mView = view;
         mTask = task;
     }
 

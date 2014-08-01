@@ -3,8 +3,6 @@ package com.baws.tidytime.util;
 import android.content.res.Resources;
 import android.util.TypedValue;
 
-import com.baws.tidytime.R;
-
 /**
  * Created by wadereweti on 1/08/14.
  */

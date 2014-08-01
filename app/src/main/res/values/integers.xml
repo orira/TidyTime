@@ -6,4 +6,7 @@
 
     <integer name="default_view_value">1</integer>
     <integer name="hide_view_value">0</integer>
+
+    <integer name="view_pager_border">20</integer>
+    <integer name="indicator_height">5</integer>
 </resources>
