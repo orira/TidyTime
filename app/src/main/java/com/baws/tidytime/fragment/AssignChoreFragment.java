@@ -17,6 +17,7 @@ import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.AssignChorePresenterModule;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
 import com.baws.tidytime.util.DateUtil;
+import com.baws.tidytime.util.DimensionUtil;
 import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.DateView;
@@ -43,15 +44,14 @@ import butterknife.OnClick;
 public class AssignChoreFragment extends AbstractFragment implements AssignView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
-    private static final float SCALE_SELECTED = 1.3f;
-    private static final float SCALE_DEFAULT = 1;
-    private static final String CHORE_STATE = "creatingChore";
-    private static final String PRESENTER = "presenter";
 
     private String mChoreZone;
     private String mChoreType;
     private Child mChildSelected;
     private MainView mMainView;
+
+    private int mDefaultViewValue;
+    private int mHiddenViewValue;
 
     @Inject AssignFragmentPresenter mPresenter;
     @InjectView(R.id.container_assign_fragment) RelativeLayout mContainer;
@@ -63,7 +63,6 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
     @InjectView(R.id.sp_chore_type) ChoreTypeSpinner mChoreTypeSpinner;
     @InjectView(R.id.chore_date) EditText mChoreDate;
     @InjectView(R.id.sp_amount) Spinner mAmount;
-    //@InjectView(R.id.gv_child_selector) GridView mChildSelectorGridView;
     @InjectView(R.id.gv_child_selector) GridLayout mChildSelectorGridView;
     @InjectView(R.id.btn_create_chore) CircularProgressButton mButton;
 
@@ -78,9 +77,8 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new AssignChorePresenterModule(this));
     }
 
     @Override
@@ -88,26 +86,16 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
         View view = inflater.inflate(R.layout.fragment_assign, container, false);
         ButterKnife.inject(this, view);
 
+        mDefaultViewValue = getResources().getInteger(R.integer.default_view_value);
+        mHiddenViewValue = getResources().getInteger(R.integer.hide_view_value);
+
         return view;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mPresenter.initialiseView();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(CHORE_STATE, mButton.getProgress());
-        //outState.putParcelable(PRESENTER, (AssignFragmentPresenterImpl) mPresenter);
-    }
-
-    @Override
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(new AssignChorePresenterModule(this));
+    public void onResume() {
+        super.onResume();
+        mPresenter.onResume();
     }
 
     @Override
@@ -125,7 +113,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
             public void onClick(View view) {
                 CalendarDialogFragment calendar = new CalendarDialogFragment();
                 calendar.setDateView(AssignChoreFragment.this);
-                calendar.show(getActivity().getSupportFragmentManager(), "calendarDialogFragment");
+                calendar.show(getActivity().getSupportFragmentManager(), getString(R.string.title_calendar_dialog_fragment));
             }
         });
     }
@@ -157,9 +145,10 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
             avatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     boolean selected = (Boolean) view.getTag();
-                    float scaleFactor = selected ? SCALE_DEFAULT : SCALE_SELECTED;
-                    float alpha = selected ? .6f : 1;
+                    float scaleFactor = selected ? mDefaultViewValue: DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
+                    float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
                     mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
 
@@ -213,7 +202,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
 
     @Override
     public void enableButton(final boolean enabled) {
-        float alphaValue = enabled ? 1 : .3f;
+        float alphaValue = enabled ? mDefaultViewValue : DimensionUtil.getFloat(R.dimen.disabled_element_opacity, getResources());
 
         mButton.animate().alpha(alphaValue).withEndAction(new Runnable() {
             @Override
@@ -236,7 +225,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
 
     @Override
     public void displayInput(boolean display) {
-        int alphaValue = display ? 1 : 0;
+        int alphaValue = display ? mDefaultViewValue : mHiddenViewValue;
 
         mLabelChoreSelection.animate().alpha(alphaValue);
         mLabelChoreDate.animate().alpha(alphaValue);
@@ -270,7 +259,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
 
     @Override
     public void restoreButtonPosition() {
-        mButton.animate().translationY(1).withEndAction(new Runnable() {
+        mButton.animate().translationY(mDefaultViewValue).withEndAction(new Runnable() {
             @Override
             public void run() {
                 mPresenter.onButtonReturnedToDefaultState();
@@ -280,7 +269,7 @@ public class AssignChoreFragment extends AbstractFragment implements AssignView,
 
     @Override
     public void resetZoneSpinner() {
-        mChoreZoneSpinner.setSelection(0);
+        mChoreZoneSpinner.setSelection(mHiddenViewValue);
     }
 
     @OnClick(R.id.btn_create_chore)

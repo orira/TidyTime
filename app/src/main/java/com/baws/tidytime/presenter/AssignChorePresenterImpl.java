@@ -3,11 +3,11 @@ package com.baws.tidytime.presenter;
 import android.os.Handler;
 
 import com.baws.tidytime.asynctask.CreateChoreTask;
+import com.baws.tidytime.dto.ChoreDto;
 import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.util.AnimationLength;
 import com.baws.tidytime.view.AssignView;
-import com.baws.tidytime.view.PresenterView;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -17,23 +17,24 @@ import com.squareup.otto.Subscribe;
 public class AssignChorePresenterImpl extends AbstractPresenter implements AssignFragmentPresenter {
 
     private final AssignView mView;
+    private final CreateChoreTask mTask;
 
-    public AssignChorePresenterImpl(Bus bus, AssignView fragmentView) {
+    public AssignChorePresenterImpl(Bus bus, AssignView fragmentView, CreateChoreTask task) {
         super(bus);
         mView = fragmentView;
+        mTask = task;
     }
 
     @Override
     public void onResume() {
-
-    }
-
-    @Override
-    public void initialiseView() {
-        mView.initialiseChoreSpinners();
-        mView.initialiseDate();
-        mView.initialiseIncentive();
-        mView.initialiseChildSelector();
+        if (mTask.isWorking()) {
+            mView.displayLoadingState();
+        } else {
+            mView.initialiseChoreSpinners();
+            mView.initialiseDate();
+            mView.initialiseIncentive();
+            mView.initialiseChildSelector();
+        }
     }
 
     @Override
@@ -61,7 +62,8 @@ public class AssignChorePresenterImpl extends AbstractPresenter implements Assig
             mView.displayInput(false);
             mView.enableInput(false);
 
-            new CreateChoreTask(child).execute(choreType, choreDate);
+            ChoreDto dto = new ChoreDto(choreDate, choreType, child);
+            mTask.execute(dto);
         }
     }
 

@@ -1,7 +1,5 @@
 package com.baws.tidytime.asynctask;
 
-import android.os.AsyncTask;
-
 import com.baws.tidytime.dto.ChildDto;
 import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.model.Child;
@@ -11,21 +9,18 @@ import com.squareup.otto.Bus;
 /**
  * Created by wadereweti on 29/07/14.
  */
-public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
+public class CreateChildTask extends AbstractTask<ChildDto, Void, Child> {
 
-    private final Bus mBus;
     private final ImageService mService;
 
-    private boolean mWorking = false;
-
     public CreateChildTask(Bus bus, ImageService service) {
-        mBus = bus;
+        super(bus);
         mService = service;
     }
 
     @Override
     protected Child doInBackground(ChildDto... dto) {
-        mWorking = true;
+        mutateWorkingState();
 
         ChildDto childDto = dto[0];
 
@@ -47,12 +42,8 @@ public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
     @Override
     protected void onPostExecute(Child child) {
         super.onPostExecute(child);
-        mWorking = false;
+        mutateWorkingState();
 
         mBus.post(new ChildCreatedEvent(child));
-    }
-
-    public boolean isCurrentlyWorking() {
-        return mWorking;
     }
 }

@@ -14,6 +14,11 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
+    public void onResume() {
+
+    }
+
+    @Override
     public void onViewInitialised() {
         mView.initialiseViewPager();
         mView.initialiseTabStrip();

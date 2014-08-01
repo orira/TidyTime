@@ -5,6 +5,7 @@ import android.content.Context;
 import com.baws.tidytime.TidyTimeApplication;
 import com.baws.tidytime.activity.CreateChildActivity;
 import com.baws.tidytime.asynctask.CreateChildTask;
+import com.baws.tidytime.module.annotation.ForActivity;
 import com.baws.tidytime.module.annotation.ForApplication;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
@@ -37,7 +38,7 @@ public class CreateChildModule {
     }
 
     @Provides @Singleton
-    CreateChildPresenter providePresenter(Bus bus, CreateChildView view, @ForApplication TidyTimeApplication context, CreateChildTask task) {
+    CreateChildPresenter providePresenter(Bus bus, CreateChildView view, @ForActivity Context context, CreateChildTask task) {
         return new CreateChildPresenterImpl(bus, view, context, task);
     }
 }

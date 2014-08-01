@@ -30,6 +30,7 @@
     <dimen name="assign_chore_input_top_margin">17dp</dimen>
     <dimen name="profile_avatar_dimension">75dp</dimen>
 
-
-    <item name="disabled_element" format="float" type="dimen">0.3</item>
+    <item name="disabled_element_opacity" format="float" type="dimen">0.3</item>
+    <item name="default_image_opacity" format="float" type="dimen">0.6</item>
+    <item name="scale_enabled" format="float" type="dimen">1.3</item>
 </resources>

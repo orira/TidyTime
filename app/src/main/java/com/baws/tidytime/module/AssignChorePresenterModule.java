@@ -1,5 +1,6 @@
 package com.baws.tidytime.module;
 
+import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.presenter.AssignChorePresenterImpl;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
@@ -32,7 +33,7 @@ public class AssignChorePresenterModule {
     }
 
     @Provides @Singleton
-    AssignFragmentPresenter providePresenter(Bus bus, AssignView view) {
-        return new AssignChorePresenterImpl(bus, view);
+    AssignFragmentPresenter providePresenter(Bus bus, AssignView view, CreateChoreTask task) {
+        return new AssignChorePresenterImpl(bus, view, task);
     }
 }

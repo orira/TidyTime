@@ -1,6 +1,7 @@
 package com.baws.tidytime.asynctask;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.baws.tidytime.util.BitmapUtil;
@@ -10,7 +11,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by wadereweti on 28/07/14.
  */
-public class BitmapTask extends AbstractTask<String, Void, Bitmap> {
+public class BitmapTask extends AsyncTask<String, Void, Bitmap> {
     private final WeakReference<ImageView> mImageViewReference;
     private String mFilePath;
 

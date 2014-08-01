@@ -15,6 +15,7 @@ import com.baws.tidytime.adapter.MainViewPagerAdapter;
 import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
+import com.baws.tidytime.module.ActivityModule;
 import com.baws.tidytime.module.MainModule;
 import com.baws.tidytime.presenter.MainPresenter;
 import com.baws.tidytime.transformer.ParallaxTransformer;

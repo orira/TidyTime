@@ -6,13 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_default"
-    android:alpha="@dimen/disabled_element">
-
-    <!--<ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />-->
+    android:alpha="@dimen/disabled_element_opacity">
 
     <com.baws.tidytime.widget.CircularImageView
         xmlns:android="http://schemas.android.com/apk/res/android"

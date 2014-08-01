@@ -3,10 +3,7 @@ package com.baws.tidytime.module;
 import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
-import com.baws.tidytime.presenter.AssignChorePresenterImpl;
-import com.baws.tidytime.presenter.CreateChildPresenterImpl;
 import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import javax.inject.Singleton;
 

@@ -1,29 +1,31 @@
 package com.baws.tidytime.asynctask;
 
+import com.baws.tidytime.dto.ChoreDto;
 import com.baws.tidytime.event.ChoreCreatedEvent;
-import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.util.DateUtil;
+import com.squareup.otto.Bus;
 
 /**
  * Created by wadereweti on 21/07/14.
  */
-public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
+public class CreateChoreTask extends AbstractTask<ChoreDto, Void, Chore> {
 
-    private Child child;
-
-    public CreateChoreTask(Child mChildSelected) {
-        super();
-        child = mChildSelected;
+    public CreateChoreTask(Bus bus) {
+        super(bus);
     }
 
     @Override
-    protected Chore doInBackground(String... strings) {
+    protected Chore doInBackground(ChoreDto... dtos) {
+        mutateWorkingState();
+
+        ChoreDto dto = dtos[0];
+
         Chore chore = new Chore();
-        chore.description = strings[0];
+        chore.description = dto.getChoreType();
         chore.assignedDate = DateUtil.getCurrentDate();
-        chore.dueDate = DateUtil.getFormattedDate(strings[1]);
-        chore.child = child;
+        chore.dueDate = DateUtil.getFormattedDate(dto.getChoreDate());
+        chore.child = dto.getChild();
         chore.complete = false;
 
         chore.save();
@@ -39,6 +41,7 @@ public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
 
     @Override
     protected void onPostExecute(Chore chore) {
+        mutateWorkingState();
         mBus.post(new ChoreCreatedEvent(chore));
     }
 }

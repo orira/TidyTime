@@ -13,6 +13,4 @@ public abstract class AbstractPresenter {
         mBus = bus;
         mBus.register(this);
     }
-
-    public abstract void onResume();
 }

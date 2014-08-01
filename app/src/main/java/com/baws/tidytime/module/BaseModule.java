@@ -8,6 +8,7 @@ import dagger.Module;
 @Module(
     includes = {
         ApplicationModule.class,
+        ActivityModule.class,
         BusModule.class,
         TaskModule.class,
         ServiceModule.class,

@@ -3,6 +3,6 @@ package com.baws.tidytime.presenter;
 /**
  * Created by wadereweti on 29/07/14.
  */
-public interface MainPresenter {
+public interface MainPresenter extends Presenter {
     void onViewInitialised();
 }

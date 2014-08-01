@@ -113,7 +113,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_regular"
             android:enabled="false"
-            android:alpha="@dimen/disabled_element"
+            android:alpha="@dimen/disabled_element_opacity"
             android:layout_below="@id/sp_amount"
             android:layout_marginTop="@dimen/margin_default_x2"
             custom:cpb_selectorIdle="@color/complimentary_colour"

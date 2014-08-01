@@ -1,6 +1,7 @@
 package com.baws.tidytime.module;
 
 import com.baws.tidytime.asynctask.CreateChildTask;
+import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.service.ImageService;
 import com.squareup.otto.Bus;
 
@@ -22,5 +23,10 @@ public class TaskModule {
     @Provides @Singleton
     public CreateChildTask provideCreateChildTask(Bus bus, ImageService service) {
         return new CreateChildTask(bus, service);
+    }
+
+    @Provides @Singleton
+    public CreateChoreTask provideCreateChoreTask(Bus bus) {
+        return new CreateChoreTask(bus);
     }
 }

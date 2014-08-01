@@ -47,7 +47,7 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void onResume() {
-        if (mTask.isCurrentlyWorking()) {
+        if (mTask.isWorking()) {
             mView.displayCreationState();
         } else {
             mView.initialiseActionBar();

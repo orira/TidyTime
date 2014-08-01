@@ -13,15 +13,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.baws.tidytime.R;
+import com.baws.tidytime.module.ActivityModule;
 import com.baws.tidytime.module.CreateChildModule;
-import com.baws.tidytime.module.TaskModule;
-import com.baws.tidytime.presenter.AbstractPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,7 +51,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     protected void onResume() {
         super.onResume();
-        ((AbstractPresenter) mPresenter).onResume();
+        mPresenter.onResume();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new CreateChildModule(this));
+        return Arrays.<Object>asList(new ActivityModule(this), new CreateChildModule(this));
     }
 
     private void reverseActivityAnimation() {
