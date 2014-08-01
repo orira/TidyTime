@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.module.CreateChildModule;
+import com.baws.tidytime.module.TaskModule;
 import com.baws.tidytime.presenter.AbstractPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.view.CreateChildView;
@@ -50,14 +51,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     protected void onResume() {
         super.onResume();
-        ((AbstractPresenter) mPresenter).onResume(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //mPresenter.initialise();
-        //mBus.post(new RecreatedViewEvent(this));
+        ((AbstractPresenter) mPresenter).onResume();
     }
 
     @Override

@@ -18,7 +18,9 @@ import dagger.Provides;
         TidyTimeApplication.class,
     },
     includes = {
-        BusModule.class
+        BusModule.class,
+        TaskModule.class,
+        ServiceModule.class
     },
     library = true
 )

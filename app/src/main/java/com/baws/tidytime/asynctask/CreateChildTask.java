@@ -1,46 +1,34 @@
 package com.baws.tidytime.asynctask;
 
-import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
+import com.baws.tidytime.dto.ChildDto;
 import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.model.Child;
-import com.baws.tidytime.module.ServiceModule;
 import com.baws.tidytime.service.ImageService;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
+import com.squareup.otto.Bus;
 
 /**
  * Created by wadereweti on 29/07/14.
  */
-public class CreateChildTask extends AbstractTask<String, Void, Child> {
+public class CreateChildTask extends AsyncTask<ChildDto, Void, Child> {
 
-    private final Bitmap mBitmap;
-    private final int mOrientation;
-
-    @Inject
+    Bus mBus;
     ImageService mService;
 
-    public CreateChildTask(Bitmap bitmap, int orientation) {
-        super();
-        mBitmap = bitmap;
-        mOrientation = orientation;
+    public CreateChildTask(Bus bus, ImageService service) {
+        mBus = bus;
+        mService = service;
     }
 
     @Override
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(new ServiceModule());
-    }
-
-    @Override
-    protected Child doInBackground(String... strings) {
+    protected Child doInBackground(ChildDto... dto) {
+        ChildDto childDto = dto[0];
 
         Child child = Child.get();
-        child.firstName = strings[0];
-        child.profilePicture = mService.saveImage(mBitmap, mOrientation, child);
-        child.profilePictureOrientation = mOrientation;
+        child.firstName = childDto.getName();
+        child.profilePicture = mService.saveImage(childDto.getBitmap(), childDto.getOrientation(), child);
+        child.profilePictureOrientation = childDto.getOrientation();
         child.save();
 
         try {

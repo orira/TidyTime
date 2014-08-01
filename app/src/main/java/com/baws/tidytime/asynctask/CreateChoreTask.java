@@ -29,7 +29,7 @@ public class CreateChoreTask extends AbstractTask<String, Void, Chore> {
         chore.save();
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,8 @@ import dagger.Module;
         BusModule.class,
         ServiceModule.class,
         CreateChildModule.class,
-        MainPresenterModule.class
+        MainPresenterModule.class,
+        TaskModule.class
     },
     complete = false
 )

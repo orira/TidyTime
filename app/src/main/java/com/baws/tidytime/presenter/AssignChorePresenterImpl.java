@@ -8,6 +8,7 @@ import com.baws.tidytime.model.Child;
 import com.baws.tidytime.util.AnimationLength;
 import com.baws.tidytime.view.AssignView;
 import com.baws.tidytime.view.PresenterView;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -15,16 +16,16 @@ import com.squareup.otto.Subscribe;
  */
 public class AssignChorePresenterImpl extends AbstractPresenter implements AssignFragmentPresenter {
 
-    private AssignView mView;
+    private final AssignView mView;
 
-    public AssignChorePresenterImpl(AssignView fragmentView) {
-        super();
+    public AssignChorePresenterImpl(Bus bus, AssignView fragmentView) {
+        super(bus);
         mView = fragmentView;
     }
 
     @Override
-    public void onResume(PresenterView view) {
-        mView = (AssignView) view;
+    public void onResume() {
+
     }
 
     @Override

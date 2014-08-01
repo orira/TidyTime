@@ -4,6 +4,9 @@ import com.baws.tidytime.fragment.AssignChoreFragment;
 import com.baws.tidytime.presenter.AssignChorePresenterImpl;
 import com.baws.tidytime.presenter.AssignFragmentPresenter;
 import com.baws.tidytime.view.AssignView;
+import com.squareup.otto.Bus;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -23,13 +26,13 @@ public class AssignChorePresenterModule {
         mView = view;
     }
 
-    @Provides
+    @Provides @Singleton
     AssignView provideView() {
         return mView;
     }
 
-    @Provides
-    AssignFragmentPresenter providePresenter(AssignView view) {
-        return new AssignChorePresenterImpl(view);
+    @Provides @Singleton
+    AssignFragmentPresenter providePresenter(Bus bus, AssignView view) {
+        return new AssignChorePresenterImpl(bus, view);
     }
 }

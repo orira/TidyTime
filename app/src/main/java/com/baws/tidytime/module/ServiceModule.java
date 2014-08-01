@@ -1,6 +1,5 @@
 package com.baws.tidytime.module;
 
-import com.baws.tidytime.asynctask.CreateChildTask;
 import com.baws.tidytime.service.ImageService;
 import com.baws.tidytime.service.ImageServiceImpl;
 
@@ -12,8 +11,7 @@ import dagger.Provides;
  */
 
 @Module(
-    injects = CreateChildTask.class,
-    complete = false
+    library = true
 )
 public class ServiceModule {
 
