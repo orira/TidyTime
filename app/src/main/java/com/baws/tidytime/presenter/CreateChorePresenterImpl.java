@@ -66,15 +66,6 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void onRestoreState(int selectedChildId, int selectedChoreZone, int selectedChoreType, String selectedChoreDate, int choreAmount) {
-        mSelectedChildViewId = selectedChildId;
-        mSelectedChoreZone = selectedChoreZone;
-        mSelectedChoreType = selectedChoreType;
-        mSelectedChoreDate = selectedChoreDate;
-        mChoreAmount = choreAmount;
-    }
-
-    @Override
     public void onResume() {
         if (mTask.isWorking()) {
             mView.displayLoadingState();
@@ -148,7 +139,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Subscribe
     public void answerAvailable(ChoreCreatedEvent event) {
-        int progress = event.getChore() != null ? 100 : -1;
+        int progress = event.getChore() != null ? 100 : DEFAULT_VALUE;
         mView.setButtonProgress(progress);
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -44,11 +44,6 @@ import butterknife.OnClick;
 public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
-    private static final String SELECTED_CHILD = "selectedChild";
-    private static final String SELECTED_CHORE_ZONE = "selectedZone";
-    private static final String SELECTED_CHORE_TYPE = "selectedType";
-    private static final String SELECTED_CHORE_DATE = "selectedDate";
-    private static final String SELECTED_CHORE_AMOUNT = "selectedAmount";
 
     private String mChoreZone;
     private String mChoreType;
@@ -92,12 +87,6 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mPresenter.saveState(outState, mChildSelectedViewId, mChoreZoneSpinner, mChoreTypeSpinner, mChoreDate, mAmount);
-
-        /*outState.putInt(SELECTED_CHILD, mChildSelectedViewId);
-        outState.putInt(SELECTED_CHORE_ZONE, mChoreZoneSpinner.getSelectedItemPosition());
-        outState.putInt(SELECTED_CHORE_TYPE, mChoreTypeSpinner.getSelectedItemPosition());
-        outState.putString(SELECTED_CHORE_DATE, mChoreDate.getText().toString());
-        outState.putInt(SELECTED_CHORE_AMOUNT, mAmount.getSelectedItemPosition());*/
     }
 
     @Override

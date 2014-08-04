@@ -13,11 +13,9 @@ import com.baws.tidytime.widget.ChoreZoneSpinner;
  */
 public interface CreateChorePresenter extends Presenter {
     void saveState(Bundle outState, int childSelectedViewId, ChoreZoneSpinner choreZoneSpinner, ChoreTypeSpinner choreTypeSpinner, EditText choreDate, Spinner amount);
-    void onRestoreState(int selectedChildId, int selectedChoreZone, int selectedChoreType, String selectedChoreDate, int choreAmount);
+    void onRestoreState(Bundle savedInstanceState);
     void onChoreZoneSelected(String zone, int zonePosition);
     void validateInput(String choreZone, String choreType, Child childSelected);
     void onCreateChoreRequested(int progress, Child child, String choreType, String choreDate);
     void onButtonReturnedToDefaultState();
-
-    void onRestoreState(Bundle savedInstanceState);
 }
