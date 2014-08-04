@@ -7,7 +7,7 @@ import com.squareup.otto.Bus;
  */
 public abstract class AbstractPresenter {
 
-    private final Bus mBus;
+    protected Bus mBus;
 
     public AbstractPresenter(Bus bus) {
         mBus = bus;

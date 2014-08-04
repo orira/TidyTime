@@ -36,6 +36,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     private static final String TAG = "CreateChildActivity";
 
     @Inject CreateChildPresenter mPresenter;
+
     @InjectView(R.id.iv_profile_picture) CircularImageView mProfilePicture;
     @InjectView(R.id.fl_enter_name) FloatLabel mNameEditText;
     @InjectView(R.id.pb_create_child) ProgressBar mProgressBar;

@@ -25,7 +25,7 @@ public class TaskModule {
         return new CreateChildTask(bus, service);
     }
 
-    @Provides @Singleton
+    @Provides
     public CreateChoreTask provideCreateChoreTask(Bus bus) {
         return new CreateChoreTask(bus);
     }

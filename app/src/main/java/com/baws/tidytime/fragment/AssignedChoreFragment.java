@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.AssignedChoreAdapter;
+import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.view.AssignedView;
+import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -51,9 +53,9 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
         mAssignedChoresListView.setDividerHeight(0);
     }
 
-    /*@Subscribe
-    public void answerAvailable(ChoreCreatedEvent event) {
+    @Subscribe
+    public void answerAvailable(RefreshChoresEvent event) {
         mAdapter.setData(Child.getAll());
         mAdapter.notifyDataSetChanged();
-    }*/
+    }
 }

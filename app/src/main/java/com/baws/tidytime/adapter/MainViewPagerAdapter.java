@@ -36,4 +36,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         return mFragments.get(position);
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

@@ -8,6 +8,7 @@ import android.widget.Spinner;
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.dto.ChoreDto;
 import com.baws.tidytime.event.ChoreCreatedEvent;
+import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.util.AnimationLength;
 import com.baws.tidytime.view.CreateChoreView;
@@ -134,11 +135,13 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
         mView.initialiseChildSelector();
         mView.displayInput(true);
         mView.enableInput(true);
+
+        mBus.post(new RefreshChoresEvent(true));
     }
 
 
     @Subscribe
-    public void answerAvailable(ChoreCreatedEvent event) {
+    public void onChoreCreated(ChoreCreatedEvent event) {
         int progress = event.getChore() != null ? 100 : DEFAULT_VALUE;
         mView.setButtonProgress(progress);
         new Handler().postDelayed(new Runnable() {
