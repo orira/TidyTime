@@ -1,6 +1,7 @@
 package com.baws.tidytime.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,11 @@ import butterknife.OnClick;
 public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView {
 
     private static final String TAG = "AssignFragment";
+    private static final String SELECTED_CHILD = "selectedChild";
+    private static final String SELECTED_CHORE_ZONE = "selectedZone";
+    private static final String SELECTED_CHORE_TYPE = "selectedType";
+    private static final String SELECTED_CHORE_DATE = "selectedDate";
+    private static final String SELECTED_CHORE_AMOUNT = "selectedAmount";
 
     private String mChoreZone;
     private String mChoreType;
@@ -50,6 +56,9 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
 
     private int mDefaultViewValue;
     private int mHiddenViewValue;
+
+    // Config Change varialble
+    private int mChildSelectedViewId = -1;
 
     @Inject CreateChorePresenter mPresenter;
 
@@ -80,6 +89,18 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mPresenter.saveState(outState, mChildSelectedViewId, mChoreZoneSpinner, mChoreTypeSpinner, mChoreDate, mAmount);
+
+        /*outState.putInt(SELECTED_CHILD, mChildSelectedViewId);
+        outState.putInt(SELECTED_CHORE_ZONE, mChoreZoneSpinner.getSelectedItemPosition());
+        outState.putInt(SELECTED_CHORE_TYPE, mChoreTypeSpinner.getSelectedItemPosition());
+        outState.putString(SELECTED_CHORE_DATE, mChoreDate.getText().toString());
+        outState.putInt(SELECTED_CHORE_AMOUNT, mAmount.getSelectedItemPosition());*/
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_assign, container, false);
         ButterKnife.inject(this, view);
@@ -88,6 +109,12 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
         mHiddenViewValue = getResources().getInteger(R.integer.hide_view_value);
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mPresenter.onRestoreState(savedInstanceState);
     }
 
     @Override
@@ -149,16 +176,57 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                     float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
                     mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
+                    mChildSelectedViewId = selected ? -1 : ((View) view.getParent()).getId();
 
                     view.setTag(!selected);
                     ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alpha);
 
-                    mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+                    validateInput();
                 }
             });
 
+            // Add id programatically for state refresh on config change
+            view.setId(child.getId().intValue());
+
             mChildSelectorGridView.addView(view);
         }
+    }
+
+    @Override
+    public void restoreChildViewState(int selectedChildId) {
+        mChildSelectedViewId = selectedChildId;
+        View view = mChildSelectorGridView.findViewById(selectedChildId);
+        mChildSelected = (Child) view.getTag();
+
+        View childView = ((ViewGroup) view).getChildAt(0);
+        childView.setTag(true);
+
+        float scaleFactor = DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
+        view.animate().setDuration(mDefaultViewValue).scaleX(scaleFactor).scaleY(scaleFactor).alpha(mDefaultViewValue);
+    }
+
+    @Override
+    public void restoreChoreSpinnerState(int selectedChoreZone, final int selectedChoreType) {
+        mChoreZoneSpinner.setSelection(selectedChoreZone);
+
+        // Add a delay to allow animation layout to run
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mChoreTypeSpinner.setSelection(selectedChoreType);
+            }
+        }, getResources().getInteger(R.integer.animation_duration_standard));
+
+    }
+
+    @Override
+    public void restoreChoreDateState(String selectedChoreDate) {
+        mChoreDate.setText(selectedChoreDate);
+    }
+
+    @Override
+    public void restoreAmountState(int choreAmount) {
+        mAmount.setSelection(choreAmount);
     }
 
     @Override
@@ -177,25 +245,25 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     public void onChoreZoneSelected(String zone, int zonePosition) {
         mChoreZone = zone;
         mPresenter.onChoreZoneSelected(zone, zonePosition);
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        validateInput();
     }
 
     @Override
     public void onChoreTypeSelected(String type) {
         mChoreType = type;
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        validateInput();
     }
 
     @Override
     public void onDateSelected(Date date) {
         mChoreDate.setText(DateUtil.formatDate(date));
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        validateInput();
     }
 
     @Override
     public void onChildSelected(Child child) {
         mChildSelected = child;
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        validateInput();
     }
 
     @Override
@@ -272,6 +340,11 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public void resetZoneSpinner() {
         mChoreZoneSpinner.setSelection(mHiddenViewValue);
+    }
+
+    @Override
+    public void validateInput() {
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
     @OnClick(R.id.btn_create_chore)

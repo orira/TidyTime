@@ -1,6 +1,9 @@
 package com.baws.tidytime.presenter;
 
+import android.os.Bundle;
 import android.os.Handler;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.dto.ChoreDto;
@@ -8,6 +11,8 @@ import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.util.AnimationLength;
 import com.baws.tidytime.view.CreateChoreView;
+import com.baws.tidytime.widget.ChoreTypeSpinner;
+import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -16,13 +21,57 @@ import com.squareup.otto.Subscribe;
  */
 public class CreateChorePresenterImpl extends AbstractPresenter implements CreateChorePresenter {
 
+    private static final int DEFAULT_VALUE = -1;
+
+    private static final String SELECTED_CHILD = "selectedChild";
+    private static final String SELECTED_CHORE_ZONE = "selectedZone";
+    private static final String SELECTED_CHORE_TYPE = "selectedType";
+    private static final String SELECTED_CHORE_DATE = "selectedDate";
+    private static final String SELECTED_CHORE_AMOUNT = "selectedAmount";
+
     private final CreateChoreView mView;
     private final CreateChoreTask mTask;
+
+    // Config Change variables
+    private int mSelectedChildViewId = DEFAULT_VALUE;
+    private int mSelectedChoreZone = DEFAULT_VALUE;
+    private int mSelectedChoreType = DEFAULT_VALUE;
+    private String mSelectedChoreDate = null;
+    private int mChoreAmount = DEFAULT_VALUE;
 
     public CreateChorePresenterImpl(Bus bus, CreateChoreView view, CreateChoreTask task) {
         super(bus);
         mView = view;
         mTask = task;
+    }
+
+    @Override
+    public void saveState(Bundle outState, int childSelectedViewId, ChoreZoneSpinner choreZoneSpinner, ChoreTypeSpinner choreTypeSpinner, EditText choreDate, Spinner amount) {
+        outState.putInt(SELECTED_CHILD, childSelectedViewId);
+        outState.putInt(SELECTED_CHORE_ZONE, choreZoneSpinner.getSelectedItemPosition());
+        outState.putInt(SELECTED_CHORE_TYPE, choreTypeSpinner.getSelectedItemPosition());
+        outState.putString(SELECTED_CHORE_DATE, choreDate.getText().toString());
+        outState.putInt(SELECTED_CHORE_AMOUNT, amount.getSelectedItemPosition());
+    }
+
+    @Override
+    public void onRestoreState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mSelectedChildViewId = savedInstanceState.getInt(SELECTED_CHILD);
+            mSelectedChoreZone = savedInstanceState.getInt(SELECTED_CHORE_ZONE);
+            mSelectedChoreType = savedInstanceState.getInt(SELECTED_CHORE_TYPE);
+            mSelectedChoreDate = savedInstanceState.getString(SELECTED_CHORE_DATE);
+            mChoreAmount = savedInstanceState.getInt(SELECTED_CHORE_AMOUNT);
+        }
+    }
+
+    @Override
+    public void onRestoreState(int selectedChildId, int selectedChoreZone, int selectedChoreType, String selectedChoreDate, int choreAmount) {
+        mSelectedChildViewId = selectedChildId;
+        mSelectedChoreZone = selectedChoreZone;
+        mSelectedChoreType = selectedChoreType;
+        mSelectedChoreDate = selectedChoreDate;
+        mChoreAmount = choreAmount;
     }
 
     @Override
@@ -34,6 +83,24 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
             mView.initialiseDate();
             mView.initialiseIncentive();
             mView.initialiseChildSelector();
+
+            if (mSelectedChildViewId != DEFAULT_VALUE) {
+                mView.restoreChildViewState(mSelectedChildViewId);
+            }
+
+            if (mSelectedChoreZone != DEFAULT_VALUE) {
+                mView.restoreChoreSpinnerState(mSelectedChoreZone, mSelectedChoreType);
+            }
+
+            if (mSelectedChoreDate != null) {
+                 mView.restoreChoreDateState(mSelectedChoreDate);
+            }
+
+            if (mChoreAmount != DEFAULT_VALUE) {
+                mView.restoreAmountState(mChoreAmount);
+            }
+
+            mView.validateInput();
         }
     }
 
@@ -77,6 +144,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
         mView.displayInput(true);
         mView.enableInput(true);
     }
+
 
     @Subscribe
     public void answerAvailable(ChoreCreatedEvent event) {

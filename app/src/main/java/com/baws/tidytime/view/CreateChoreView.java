@@ -8,6 +8,10 @@ public interface CreateChoreView extends PresenterView {
     void initialiseDate();
     void initialiseIncentive();
     void initialiseChildSelector();
+    void restoreChildViewState(int selectedChildId);
+    void restoreChoreSpinnerState(int selectedChoreZone, int selectedChoreType);
+    void restoreChoreDateState(String selectedChoreDate);
+    void restoreAmountState(int choreAmount);
     void displayChoreTypeSpinner(boolean display);
     void enableButton(final boolean enabled);
     void displayLoadingState();
@@ -19,4 +23,5 @@ public interface CreateChoreView extends PresenterView {
     void onChoreTypeSelected(String zone);
     void restoreButtonPosition();
     void resetZoneSpinner();
+    void validateInput();
 }
