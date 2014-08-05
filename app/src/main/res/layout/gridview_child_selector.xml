@@ -15,10 +15,7 @@
         android:layout_width="@dimen/profile_avatar_dimension"
         app:border="true"
         app:border_width="@dimen/margin_smallest"
-        app:border_color="@color/application_colour"
         app:shadow="true"
         app:selector="true"
-        app:selector_color="@color/application_colour_translucent"
-        app:selector_stroke_color="@color/application_colour_dark"
         app:selector_stroke_width="@dimen/margin_smallest" />
 </RelativeLayout>

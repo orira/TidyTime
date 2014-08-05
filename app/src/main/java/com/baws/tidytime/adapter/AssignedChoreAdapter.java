@@ -94,7 +94,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
             headerViewHolder.profilePicture.setImageBitmap(getBitmapFromCache(child.getId().toString()));
         }
 
-
         headerViewHolder.profileName.setText(child.firstName);
         int color = Color.parseColor(child.profileColour);
         headerViewHolder.profilePicture.setBorderColor(color);

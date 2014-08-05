@@ -8,4 +8,6 @@ public class Constants {
 
     public static final int VIEW_GONE = 0;
     public static final int VIEW_VISIBLE = 1;
+
+    public static final int DEFAULT_VALUE = -1;
 }

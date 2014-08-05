@@ -104,11 +104,4 @@ public class MainActivity extends AbstractActivity implements MainView {
 
         return fragments;
     }
-
-    /*@Subscribe
-    public void onRefreshCreateChoreFragment(RefreshChoresEvent event) {
-        if (event.isRefresh()) {
-            mViewPager.getAdapter().notifyDataSetChanged();
-        }
-    }*/
 }

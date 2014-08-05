@@ -112,4 +112,12 @@
         <item name="android:paddingLeft">@dimen/margin_default_half</item>
         <item name="android:paddingTop">@dimen/margin_default</item>
     </style>
+
+    <style name="Avatar">
+        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_height">125dp</item>
+        <item name="android:src">@drawable/image_placeholder</item>
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
+        <item name="android:alpha">0</item>
+    </style>
 </resources>

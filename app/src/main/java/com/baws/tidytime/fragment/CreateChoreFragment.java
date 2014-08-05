@@ -1,6 +1,7 @@
 package com.baws.tidytime.fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.LruCache;
@@ -19,6 +20,7 @@ import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.CreateChoreModule;
 import com.baws.tidytime.presenter.CreateChorePresenter;
+import com.baws.tidytime.util.Constants;
 import com.baws.tidytime.util.DateUtil;
 import com.baws.tidytime.util.DimensionUtil;
 import com.baws.tidytime.view.AvatarView;
@@ -56,7 +58,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     private int mHiddenViewValue;
 
     // Config Change varialble
-    private int mChildSelectedViewId = -1;
+    private int mChildSelectedViewId = Constants.DEFAULT_VALUE;
 
     @Inject CreateChorePresenter mPresenter;
     @Inject LruCache<String, Bitmap> mBitmapCache;
@@ -168,6 +170,12 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                 avatar.setImageBitmap(getBitmapFromCache(child.getId().toString()));
             }
 
+            int color = Color.parseColor(child.profileColour);
+            int translucentColor = Color.parseColor(child.profileColourTranslucent);
+            avatar.setBorderColor(color);
+            avatar.setSelectorColor(translucentColor);
+            avatar.setSelectorStrokeColor(color);
+
             if (child.profilePicture != null) {
                 BitmapTask bitmapTask = new BitmapTask(avatar, mBitmapCache);
                 bitmapTask.execute(child.profilePicture, child.getId().toString());
@@ -185,7 +193,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                     float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
                     mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
-                    mChildSelectedViewId = selected ? -1 : ((View) view.getParent()).getId();
+                    mChildSelectedViewId = selected ? Constants.DEFAULT_VALUE : ((View) view.getParent()).getId();
 
                     view.setTag(!selected);
                     ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alpha);
@@ -359,7 +367,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public void resetInput() {
         mChildSelected = null;
-        mChildSelectedViewId = -1;
+        mChildSelectedViewId = Constants.DEFAULT_VALUE;
     }
 
     @OnClick(R.id.btn_create_chore)

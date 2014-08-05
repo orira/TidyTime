@@ -35,6 +35,7 @@ import butterknife.InjectView;
 public class CreateChildActivity extends AbstractActivity implements CreateChildView {
 
     private static final String TAG = "CreateChildActivity";
+    private boolean mActionItemEnabled = true;
 
     @Inject CreateChildPresenter mPresenter;
 
@@ -75,6 +76,14 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.getItem(0);
+        item.setEnabled(mActionItemEnabled);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -127,6 +136,12 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     public void setProfileImage(Bitmap bitmap) {
         mProfilePicture.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void disableActionItem() {
+        mActionItemEnabled = false;
+        invalidateOptionsMenu();
     }
 
     @Override

@@ -122,10 +122,10 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
             return;
         }
 
+        mView.disableActionItem();
         mView.displayCreationState();
 
         ChildDto dto = new ChildDto(mBitmap, mOrientation, name);
-        //mTask.execute(dto);
         mService.createChild(dto);
     }
 

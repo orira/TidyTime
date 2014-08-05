@@ -11,6 +11,7 @@ import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.service.ChoreService;
 import com.baws.tidytime.util.AnimationLength;
+import com.baws.tidytime.util.Constants;
 import com.baws.tidytime.view.CreateChoreView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
@@ -22,8 +23,6 @@ import com.squareup.otto.Subscribe;
  */
 public class CreateChorePresenterImpl extends AbstractPresenter implements CreateChorePresenter {
 
-    private static final int DEFAULT_VALUE = -1;
-
     private static final String SELECTED_CHILD = "selectedChild";
     private static final String SELECTED_CHORE_ZONE = "selectedZone";
     private static final String SELECTED_CHORE_TYPE = "selectedType";
@@ -31,21 +30,14 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     private static final String SELECTED_CHORE_AMOUNT = "selectedAmount";
 
     private final CreateChoreView mView;
-    //private final CreateChoreTask mTask;
     private final ChoreService mService;
 
     // Config Change variables
-    private int mSelectedChildViewId = DEFAULT_VALUE;
-    private int mSelectedChoreZone = DEFAULT_VALUE;
-    private int mSelectedChoreType = DEFAULT_VALUE;
+    private int mSelectedChildViewId = Constants.DEFAULT_VALUE;
+    private int mSelectedChoreZone = Constants.DEFAULT_VALUE;
+    private int mSelectedChoreType = Constants.DEFAULT_VALUE;
     private String mSelectedChoreDate = null;
-    private int mChoreAmount = DEFAULT_VALUE;
-
-    /*public CreateChorePresenterImpl(Bus bus, CreateChoreView view, CreateChoreTask task) {
-        super(bus);
-        mView = view;
-        mTask = task;
-    }*/
+    private int mChoreAmount = Constants.DEFAULT_VALUE;
 
     public CreateChorePresenterImpl(Bus bus, CreateChoreView view, ChoreService service) {
         super(bus);
@@ -84,11 +76,11 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
             mView.initialiseIncentive();
             mView.initialiseChildSelector();
 
-            if (mSelectedChildViewId != DEFAULT_VALUE) {
+            if (mSelectedChildViewId != Constants.DEFAULT_VALUE) {
                 mView.restoreChildViewState(mSelectedChildViewId);
             }
 
-            if (mSelectedChoreZone != DEFAULT_VALUE) {
+            if (mSelectedChoreZone != Constants.DEFAULT_VALUE) {
                 mView.restoreChoreSpinnerState(mSelectedChoreZone, mSelectedChoreType);
             }
 
@@ -96,7 +88,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
                  mView.restoreChoreDateState(mSelectedChoreDate);
             }
 
-            if (mChoreAmount != DEFAULT_VALUE) {
+            if (mChoreAmount != Constants.DEFAULT_VALUE) {
                 mView.restoreAmountState(mChoreAmount);
             }
 
@@ -152,7 +144,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Subscribe
     public void onChoreCreated(ChoreCreatedEvent event) {
-        int progress = event.getChore() != null ? 100 : DEFAULT_VALUE;
+        int progress = event.getChore() != null ? 100 : Constants.DEFAULT_VALUE;
         mView.setButtonProgress(progress);
         new Handler().postDelayed(new Runnable() {
             @Override
