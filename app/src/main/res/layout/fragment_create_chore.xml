@@ -31,19 +31,10 @@
             android:text="@string/pick_a_child"
             custom:typeface="THIN" />
 
-        <!--<GridView
-            style="@style/Size.MatchParentWidth"
-            android:id="@+id/gv_child_selector"
-            android:numColumns="3"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_below="@id/label_child"
-            android:listSelector="@android:color/transparent" />-->
-
         <GridLayout
             style="@style/Size.MatchParentWidth"
             android:id="@+id/gv_child_selector"
-            android:columnCount="3"
+            android:columnCount="@integer/avatar_column_number"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_below="@id/label_child" />
 

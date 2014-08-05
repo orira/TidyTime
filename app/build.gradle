@@ -50,7 +50,6 @@ dependencies {
 
     // Morph Button
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.0'
-
     // Espresso
     androidTestCompile 'com.jakewharton.espresso:espresso:1.1-r3'
 }

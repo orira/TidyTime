@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.baws.tidytime.R;
 import com.baws.tidytime.adapter.MainViewPagerAdapter;
-import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.fragment.AssignedChoreFragment;
 import com.baws.tidytime.fragment.CompleteFragment;
 import com.baws.tidytime.fragment.CreateChoreFragment;
@@ -22,7 +21,6 @@ import com.baws.tidytime.transformer.ParallaxTransformer;
 import com.baws.tidytime.typeface.RobotoTypeface;
 import com.baws.tidytime.util.TypefaceUtil;
 import com.baws.tidytime.view.MainView;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;

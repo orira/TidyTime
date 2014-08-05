@@ -2,9 +2,11 @@ package com.baws.tidytime.asynctask;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import com.baws.tidytime.util.BitmapUtil;
+import com.baws.tidytime.widget.CircularImageView;
 
 import java.lang.ref.WeakReference;
 
@@ -13,18 +15,23 @@ import java.lang.ref.WeakReference;
  */
 public class BitmapTask extends AsyncTask<String, Void, Bitmap> {
     private final WeakReference<ImageView> mImageViewReference;
-    private String mFilePath;
+    private final WeakReference<LruCache<String, Bitmap>> mBitmapCacheReference;
 
-    public BitmapTask(ImageView imageView) {
+    public BitmapTask(CircularImageView imageView, LruCache<String, Bitmap> bitmapCache) {
         super();
         mImageViewReference = new WeakReference<ImageView>(imageView);
+        mBitmapCacheReference = new WeakReference<LruCache<String, Bitmap>>(bitmapCache);
     }
 
     @Override
     protected Bitmap doInBackground(String... params) {
-        mFilePath = params[0];
+        String filePath = params[0];
+        String bitmapKey = params[1];
 
-        return BitmapUtil.fetchAvatarBitmap(mFilePath);
+        Bitmap bitmap = BitmapUtil.fetchAvatarBitmap(filePath);
+        mBitmapCacheReference.get().put(bitmapKey, bitmap);
+
+        return bitmap;
     }
 
     @Override

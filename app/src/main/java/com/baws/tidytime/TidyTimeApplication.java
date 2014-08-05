@@ -2,6 +2,7 @@ package com.baws.tidytime;
 
 import com.activeandroid.app.Application;
 import com.baws.tidytime.module.ApplicationModule;
+import com.baws.tidytime.module.CacheModule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +34,7 @@ public class TidyTimeApplication extends Application {
     }
 
     private List<Object> getModules() {
-        return Arrays.<Object>asList(new ApplicationModule(this));
+        return Arrays.<Object>asList(new ApplicationModule(this), new CacheModule());
     }
 
     public ObjectGraph getApplicationObjectGraph() {

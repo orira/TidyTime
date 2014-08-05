@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,32 +17,41 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.model.Chore;
+import com.baws.tidytime.view.AvatarView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import dagger.ObjectGraph;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 /**
  * Created by wadereweti on 7/07/14.
  */
-public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeadersAdapter {
+public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeadersAdapter, AvatarView {
 
     private static final String TAG = "AssignedChoreAdapter";
 
     private final LayoutInflater mInflater;
-    private final Resources mResources;
     private List<Chore> mChores = new ArrayList<Chore>();
 
-    public AssignedChoreAdapter(Context context, List<Child> children) {
-        mInflater = LayoutInflater.from(context);
-        mResources = context.getResources();
+    @Inject LruCache<String, Bitmap> mBitmapCache;
 
+    public AssignedChoreAdapter(Context context, List<Child> children, ObjectGraph objectGraph) {
+        mInflater = LayoutInflater.from(context);
         setData(children);
+        objectGraph.inject(this);
+    }
+
+    @Override
+    public Bitmap getBitmapFromCache(String key) {
+        return mBitmapCache.get(key);
     }
 
     public void setData(List<Child> children) {
@@ -72,31 +83,20 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
         Child child = mChores.get(position).child;
 
-        /*if (child.firstName.equals("Tayla-Paige")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
-        } else if (child.firstName.equals("Kauri")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
-        } else if (child.firstName.equals("Nevaeh")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
+        if (getBitmapFromCache(child.getId().toString()) == null) {
+            if (child.profilePicture != null) {
+                BitmapTask bitmapTask = new BitmapTask(headerViewHolder.profilePicture, mBitmapCache);
+                bitmapTask.execute(child.profilePicture, child.getId().toString());
+            } else {
+                headerViewHolder.profilePicture.setImageResource(R.drawable.image_placeholder);
+            }
         } else {
-            //bitmap = BitmapUtil.fetchAvatarBitmap(child.profilePicture);
-        }*/
+            headerViewHolder.profilePicture.setImageBitmap(getBitmapFromCache(child.getId().toString()));
+        }
 
-
-        BitmapTask bitmapTask = new BitmapTask(headerViewHolder.profilePicture);
-        bitmapTask.execute(child.profilePicture);
-
-        /*RoundedAvatarDrawable roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
-        headerViewHolder.profilePicture.setImageDrawable(roundedAvatarDrawable);
-        headerViewHolder.profilePicture.invalidateDrawable(roundedAvatarDrawable);
-        headerViewHolder.profilePicture.invalidate();*/
-
-        //headerViewHolder.profilePicture.setImageBitmap(bitmap);
 
         headerViewHolder.profileName.setText(child.firstName);
         int color = Color.parseColor(child.profileColour);
-        //headerViewHolder.rootContainer.setBackgroundColor(color);
-        //((CircularImageView) headerViewHolder.profilePicture).setBorderColor(color);
         headerViewHolder.profilePicture.setBorderColor(color);
         headerViewHolder.profileName.setTextColor(color);
 
@@ -143,9 +143,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
      static class HeaderViewHolder {
         @InjectView(R.id.rl_root_container_main_header)
         RelativeLayout rootContainer;
-
-        /*@InjectView(R.id.iv_profile_picture)
-        ImageView profilePicture;*/
 
          @InjectView(R.id.iv_profile_picture)
         CircularImageView profilePicture;

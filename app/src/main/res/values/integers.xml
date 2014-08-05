@@ -9,4 +9,6 @@
 
     <integer name="view_pager_border">20</integer>
     <integer name="indicator_height">5</integer>
+
+    <integer name="avatar_column_number">3</integer>
 </resources>

@@ -1,7 +1,9 @@
 package com.baws.tidytime.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +15,13 @@ import android.widget.Spinner;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
-import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.CreateChoreModule;
 import com.baws.tidytime.presenter.CreateChorePresenter;
 import com.baws.tidytime.util.DateUtil;
 import com.baws.tidytime.util.DimensionUtil;
+import com.baws.tidytime.view.AvatarView;
 import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.CreateChoreView;
 import com.baws.tidytime.view.DateView;
@@ -28,7 +30,6 @@ import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
-import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -43,7 +44,7 @@ import butterknife.OnClick;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView {
+public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView, AvatarView {
 
     private static final String TAG = "AssignFragment";
 
@@ -58,6 +59,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     private int mChildSelectedViewId = -1;
 
     @Inject CreateChorePresenter mPresenter;
+    @Inject LruCache<String, Bitmap> mBitmapCache;
 
     @InjectView(R.id.container_assign_fragment) RelativeLayout mContainer;
     @InjectView(R.id.label_chore_selection) RobotoTextView mLabelChoreSelection;
@@ -93,7 +95,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_assign, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_chore, container, false);
         ButterKnife.inject(this, view);
 
         mDefaultViewValue = getResources().getInteger(R.integer.default_view_value);
@@ -154,10 +156,26 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
             container.setTag(child);
 
             CircularImageView avatar = ButterKnife.findById(view, R.id.iv_profile_picture);
-            BitmapTask bitmapTask = new BitmapTask(avatar);
-            bitmapTask.execute(child.profilePicture);
-            avatar.setTag(false);
 
+            if (getBitmapFromCache(child.getId().toString()) == null) {
+                if (child.profilePicture != null) {
+                    BitmapTask bitmapTask = new BitmapTask(avatar, mBitmapCache);
+                    bitmapTask.execute(child.profilePicture, child.getId().toString());
+                } else {
+                    avatar.setImageResource(R.drawable.image_placeholder);
+                }
+            } else {
+                avatar.setImageBitmap(getBitmapFromCache(child.getId().toString()));
+            }
+
+            if (child.profilePicture != null) {
+                BitmapTask bitmapTask = new BitmapTask(avatar, mBitmapCache);
+                bitmapTask.execute(child.profilePicture, child.getId().toString());
+            } else {
+                avatar.setImageResource(R.drawable.image_placeholder);
+            }
+
+            avatar.setTag(false);
             avatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -338,8 +356,19 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
         mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
     }
 
+    @Override
+    public void resetInput() {
+        mChildSelected = null;
+        mChildSelectedViewId = -1;
+    }
+
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
         mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
+    }
+
+    @Override
+    public Bitmap getBitmapFromCache(String key) {
+        return mBitmapCache.get(key);
     }
 }

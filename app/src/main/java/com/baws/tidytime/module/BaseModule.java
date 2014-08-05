@@ -10,11 +10,12 @@ import dagger.Module;
         ApplicationModule.class,
         ActivityModule.class,
         BusModule.class,
-        TaskModule.class,
-        ServiceModule.class,
-        MainModule.class,
+        CacheModule.class,
         CreateChoreModule.class,
         CreateChildModule.class,
+        MainModule.class,
+        TaskModule.class,
+        ServiceModule.class,
     }
 )
 public class BaseModule {

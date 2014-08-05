@@ -47,7 +47,7 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
     public void onStart() {
         super.onStart();
 
-        mAdapter = new AssignedChoreAdapter(getActivity(), Child.getAll());
+        mAdapter = new AssignedChoreAdapter(getActivity(), Child.getAll(), mFragmentObjectGraph);
         mAssignedChoresListView.setAdapter(mAdapter);
         mAssignedChoresListView.setDivider(null);
         mAssignedChoresListView.setDividerHeight(0);
@@ -55,7 +55,9 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
 
     @Subscribe
     public void answerAvailable(RefreshChoresEvent event) {
-        mAdapter.setData(Child.getAll());
-        mAdapter.notifyDataSetChanged();
+        if (event.isRefresh()) {
+            mAdapter.setData(Child.getAll());
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

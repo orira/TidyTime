@@ -1,9 +1,9 @@
 package com.baws.tidytime.module;
 
-import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.fragment.CreateChoreFragment;
 import com.baws.tidytime.presenter.CreateChorePresenter;
 import com.baws.tidytime.presenter.CreateChorePresenterImpl;
+import com.baws.tidytime.service.ChoreService;
 import com.baws.tidytime.view.CreateChoreView;
 import com.squareup.otto.Bus;
 
@@ -32,7 +32,7 @@ public class CreateChoreModule {
     }
 
     @Provides @Singleton
-    CreateChorePresenter providePresenter(Bus bus, CreateChoreView view, CreateChoreTask task) {
-        return new CreateChorePresenterImpl(bus, view, task);
+    CreateChorePresenter providePresenter(Bus bus, CreateChoreView view, ChoreService service) {
+        return new CreateChorePresenterImpl(bus, view, service);
     }
 }

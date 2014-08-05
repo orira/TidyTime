@@ -24,4 +24,5 @@ public interface CreateChoreView extends PresenterView {
     void restoreButtonPosition();
     void resetZoneSpinner();
     void validateInput();
+    void resetInput();
 }

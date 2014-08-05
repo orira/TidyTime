@@ -5,11 +5,11 @@ import android.os.Handler;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.baws.tidytime.asynctask.CreateChoreTask;
 import com.baws.tidytime.dto.ChoreDto;
 import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.baws.tidytime.event.RefreshChoresEvent;
 import com.baws.tidytime.model.Child;
+import com.baws.tidytime.service.ChoreService;
 import com.baws.tidytime.util.AnimationLength;
 import com.baws.tidytime.view.CreateChoreView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
@@ -31,7 +31,8 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     private static final String SELECTED_CHORE_AMOUNT = "selectedAmount";
 
     private final CreateChoreView mView;
-    private final CreateChoreTask mTask;
+    //private final CreateChoreTask mTask;
+    private final ChoreService mService;
 
     // Config Change variables
     private int mSelectedChildViewId = DEFAULT_VALUE;
@@ -40,10 +41,16 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     private String mSelectedChoreDate = null;
     private int mChoreAmount = DEFAULT_VALUE;
 
-    public CreateChorePresenterImpl(Bus bus, CreateChoreView view, CreateChoreTask task) {
+    /*public CreateChorePresenterImpl(Bus bus, CreateChoreView view, CreateChoreTask task) {
         super(bus);
         mView = view;
         mTask = task;
+    }*/
+
+    public CreateChorePresenterImpl(Bus bus, CreateChoreView view, ChoreService service) {
+        super(bus);
+        mView = view;
+        mService = service;
     }
 
     @Override
@@ -68,7 +75,8 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void onResume() {
-        if (mTask.isWorking()) {
+        //if (mTask.isWorking()) {
+        if (mService.isWorking()) {
             mView.displayLoadingState();
         } else {
             mView.initialiseChoreSpinners();
@@ -122,12 +130,14 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
             mView.enableInput(false);
 
             ChoreDto dto = new ChoreDto(choreDate, choreType, child);
-            mTask.execute(dto);
+            mService.createChore(dto);
+            //mTask.execute(dto);
         }
     }
 
     @Override
     public void onButtonReturnedToDefaultState() {
+        mView.resetInput();
         mView.setButtonProgress(0);
         mView.resetZoneSpinner();
         mView.initialiseDate();
