@@ -5,4 +5,7 @@ package com.baws.tidytime.util;
  */
 public class Constants {
     public static final String BASE_EXTERNAL_DIRECTORY_IMAGES = "/images/";
+
+    public static final int VIEW_GONE = 0;
+    public static final int VIEW_VISIBLE = 1;
 }

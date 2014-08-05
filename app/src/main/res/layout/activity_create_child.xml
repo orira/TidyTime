@@ -14,6 +14,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/image_placeholder"
         android:layout_marginBottom="@dimen/margin_default"
+        android:alpha="0"
         custom:border="true"
         custom:border_width="@dimen/margin_smallest"
         custom:border_color="@color/application_colour"
@@ -27,6 +28,7 @@
         android:id="@+id/fl_enter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:alpha="0"
         android:layout_below="@id/iv_profile_picture"
         android:layout="@layout/floating_layout" />
 

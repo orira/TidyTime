@@ -7,6 +7,7 @@ import com.baws.tidytime.asynctask.CreateChildTask;
 import com.baws.tidytime.module.annotation.ForActivity;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.presenter.CreateChildPresenterImpl;
+import com.baws.tidytime.service.ChildService;
 import com.baws.tidytime.view.CreateChildView;
 import com.squareup.otto.Bus;
 
@@ -34,8 +35,13 @@ public class CreateChildModule {
         return mView;
     }
 
-    @Provides @Singleton
+    /*@Provides @Singleton
     CreateChildPresenter providePresenter(Bus bus, CreateChildView view, @ForActivity Context context, CreateChildTask task) {
         return new CreateChildPresenterImpl(bus, view, context, task);
+    }*/
+
+    @Provides @Singleton
+    CreateChildPresenter providePresenter(Bus bus, CreateChildView view, @ForActivity Context context, ChildService service) {
+        return new CreateChildPresenterImpl(bus, view, context, service);
     }
 }

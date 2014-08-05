@@ -11,6 +11,7 @@ public class AbstractService {
 
     public AbstractService(Bus bus) {
         mBus = bus;
+        mBus.register(this);
     }
 
     public boolean isWorking() {

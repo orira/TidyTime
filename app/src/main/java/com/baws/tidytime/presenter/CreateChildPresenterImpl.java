@@ -17,6 +17,7 @@ import com.baws.tidytime.activity.CreateChildActivity;
 import com.baws.tidytime.asynctask.CreateChildTask;
 import com.baws.tidytime.dto.ChildDto;
 import com.baws.tidytime.event.ChildCreatedEvent;
+import com.baws.tidytime.service.ChildService;
 import com.baws.tidytime.util.ImageUtil;
 import com.baws.tidytime.view.CreateChildView;
 import com.squareup.otto.Bus;
@@ -33,23 +34,24 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
 
     private final CreateChildView mView;
     private final Context mContext;
-    private final CreateChildTask mTask;
+    private final ChildService mService;
 
     private Bitmap mBitmap;
     private int mOrientation;
 
-    public CreateChildPresenterImpl(Bus bus, CreateChildView view, Context context, CreateChildTask task) {
+    public CreateChildPresenterImpl(Bus bus, CreateChildView view, Context context, ChildService service) {
         super(bus);
         mView = view;
         mContext = context;
-        mTask = task;
+        mService = service;
     }
 
     @Override
     public void onResume() {
-        if (mTask.isWorking()) {
+        if (mService.isWorking()) {
             mView.displayCreationState();
         } else {
+            mView.initialiseView();
             mView.initialiseActionBar();
             mView.initialiseInput();
         }
@@ -123,7 +125,8 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
         mView.displayCreationState();
 
         ChildDto dto = new ChildDto(mBitmap, mOrientation, name);
-        mTask.execute(dto);
+        //mTask.execute(dto);
+        mService.createChild(dto);
     }
 
     @Subscribe

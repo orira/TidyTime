@@ -16,6 +16,7 @@ import com.baws.tidytime.R;
 import com.baws.tidytime.module.ActivityModule;
 import com.baws.tidytime.module.CreateChildModule;
 import com.baws.tidytime.presenter.CreateChildPresenter;
+import com.baws.tidytime.util.Constants;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.iangclifton.android.floatlabel.FloatLabel;
@@ -91,6 +92,12 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
+    public void initialiseView() {
+        mProfilePicture.animate().alpha(1);
+        mNameEditText.animate().alpha(1);
+    }
+
+    @Override
     public void initialiseActionBar() {
         super.setTitle(getString(R.string.create_child));
         getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
@@ -124,9 +131,9 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
 
     @Override
     public void displayCreationState() {
-        mProfilePicture.animate().alpha(0);
-        mNameEditText.animate().alpha(0);
-        mProgressBar.animate().alpha(1);
+        mProfilePicture.animate().alpha(Constants.VIEW_GONE);
+        mNameEditText.animate().alpha(Constants.VIEW_GONE);
+        mProgressBar.animate().alpha(Constants.VIEW_VISIBLE);
     }
 
     @Override
