@@ -8,5 +8,6 @@ import android.content.Intent;
 public interface CreateChildPresenter extends Presenter {
     void photoRequested();
     void onImageReturned(int requestCode, int resultCode, Intent data);
+    void onNameEntered(CharSequence charSequence);
     void createChildRequest(String name);
 }

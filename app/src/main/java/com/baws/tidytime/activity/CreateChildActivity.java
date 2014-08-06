@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +23,7 @@ import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.util.Constants;
 import com.baws.tidytime.view.CreateChildView;
 import com.baws.tidytime.widget.CircularImageView;
+import com.baws.tidytime.widget.RobotoTextView;
 import com.iangclifton.android.floatlabel.FloatLabel;
 
 import java.util.Arrays;
@@ -35,10 +40,13 @@ import butterknife.InjectView;
 public class CreateChildActivity extends AbstractActivity implements CreateChildView {
 
     private static final String TAG = "CreateChildActivity";
+
     private boolean mActionItemEnabled = true;
+    private ActionMode mActionMode;
 
     @Inject CreateChildPresenter mPresenter;
 
+    @InjectView(R.id.tv_add_photo) RobotoTextView mLabelAddPhoto;
     @InjectView(R.id.iv_profile_picture) CircularImageView mProfilePicture;
     @InjectView(R.id.fl_enter_name) FloatLabel mNameEditText;
     @InjectView(R.id.pb_create_child) ProgressBar mProgressBar;
@@ -79,14 +87,6 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.getItem(0);
-        item.setEnabled(mActionItemEnabled);
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public void onBackPressed() {
         reverseActivityAnimation();
     }
@@ -102,8 +102,9 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
 
     @Override
     public void initialiseView() {
-        mProfilePicture.animate().alpha(1);
-        mNameEditText.animate().alpha(1);
+        mLabelAddPhoto.animate().alpha(Constants.VIEW_VISIBLE);
+        mProfilePicture.animate().alpha(Constants.VIEW_VISIBLE);
+        mNameEditText.animate().alpha(Constants.VIEW_VISIBLE);
     }
 
     @Override
@@ -115,6 +116,19 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     public void initialiseInput() {
         mNameEditText.setLabel(R.string.enter_name);
+        mNameEditText.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mPresenter.onNameEntered(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
         mProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,13 +153,28 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
-    public void disableActionItem() {
-        mActionItemEnabled = false;
-        invalidateOptionsMenu();
+    public void enableCreate() {
+        if (mActionMode == null) {
+            mActionMode = CreateChildActivity.this.startActionMode(mCallBack);
+        }
     }
 
     @Override
+    public void disableCreate() {
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
+    }
+
+    /*@Override
+    public void disableActionItem() {
+        mActionItemEnabled = false;
+        invalidateOptionsMenu();
+    }*/
+
+    @Override
     public void displayCreationState() {
+        mLabelAddPhoto.animate().alpha(Constants.VIEW_GONE);
         mProfilePicture.animate().alpha(Constants.VIEW_GONE);
         mNameEditText.animate().alpha(Constants.VIEW_GONE);
         mProgressBar.animate().alpha(Constants.VIEW_VISIBLE);
@@ -161,4 +190,44 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     public void onChildCreated() {
         reverseActivityAnimation();
     }
+
+    private ActionMode.Callback mCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.create_child, menu);
+
+            MenuItem item = menu.getItem(0);
+
+            Log.e(TAG, "onCreateActionMode");
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            Log.e(TAG, "onPrepareActionMode");
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            Log.e(TAG, "onActionItemClicked");
+            /*switch (menuItem.getItemId()) {
+                case R.id.action_add_child:
+                    mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
+                    break;
+            }*/
+
+            //mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            Log.e(TAG, "onDestroyActionMode");
+            mActionMode = null;
+        }
+    };
 }

@@ -52,4 +52,11 @@ dependencies {
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.0'
     // Espresso
     androidTestCompile 'com.jakewharton.espresso:espresso:1.1-r3'
+
+    /*androidTestCompile 'info.cukes:cucumber-java:1.0.11'
+    androidTestCompile 'info.cukes:cucumber-jvm:1.0.11'
+    androidTestCompile 'info.cukes:cucumber-android:1.1.5'
+    androidTestCompile 'info.cukes:cucumber-junit:1.1.5'
+    androidTestCompile 'info.cukes:cucumber-picocontainer:1.1.5'
+    androidTestCompile 'info.cukes:gherkin:2.12.2'*/
 }

@@ -13,8 +13,8 @@ public interface CreateChildView extends PresenterView {
     void onInvalidInput();
     void showDialog(AlertDialog.Builder builder);
     void setProfileImage(Bitmap bitmap);
-    void disableActionItem();
+    void enableCreate();
+    void disableCreate();
     void displayCreationState();
     void onChildCreated();
-
 }
