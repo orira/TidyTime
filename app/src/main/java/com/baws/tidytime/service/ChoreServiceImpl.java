@@ -6,6 +6,8 @@ import com.baws.tidytime.event.ChoreCreatedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 /**
  * Created by wadereweti on 21/07/14.
  */
@@ -18,16 +20,16 @@ public class ChoreServiceImpl extends AbstractService implements ChoreService {
     }
 
     @Override
-    public void createChore(ChoreDto dto) {
+    public void createChore(List<ChoreDto> dtos) {
         mutateWorkingState();
 
-        mTask = new CreateChoreTask(mBus);
-        mTask.execute(dto);
+        mTask = new CreateChoreTask(mBus, dtos);
+        mTask.execute();
     }
 
     @Subscribe
     public void onChoreCreated(ChoreCreatedEvent event) {
-        if (event.getChore() != null) {
+        if (event.isCreated()) {
             mutateWorkingState();
         }
     }

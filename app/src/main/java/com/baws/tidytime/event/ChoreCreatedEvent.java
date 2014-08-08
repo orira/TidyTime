@@ -1,19 +1,17 @@
 package com.baws.tidytime.event;
 
-import com.baws.tidytime.model.Chore;
-
 /**
  * Created by wadereweti on 21/07/14.
  */
 public class ChoreCreatedEvent {
 
-    private Chore mChore;
+    private boolean mCreated;
 
-    public ChoreCreatedEvent(Chore chore) {
-        mChore = chore;
+    public ChoreCreatedEvent(boolean created) {
+        mCreated = created;
     }
 
-    public Chore getChore() {
-        return mChore;
+    public boolean isCreated() {
+        return mCreated;
     }
 }

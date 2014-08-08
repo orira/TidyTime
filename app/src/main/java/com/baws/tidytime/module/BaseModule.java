@@ -14,7 +14,6 @@ import dagger.Module;
         CreateChoreModule.class,
         CreateChildModule.class,
         MainModule.class,
-        TaskModule.class,
         ServiceModule.class,
     }
 )

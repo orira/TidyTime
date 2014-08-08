@@ -3,7 +3,6 @@ package com.baws.tidytime.module;
 import android.content.res.Resources;
 
 import com.baws.tidytime.TidyTimeApplication;
-import com.baws.tidytime.adapter.AssignedChoreAdapter;
 import com.baws.tidytime.module.annotation.ForApplication;
 
 import javax.inject.Singleton;
@@ -21,8 +20,7 @@ import dagger.Provides;
     includes = {
         BusModule.class,
         CacheModule.class,
-        ServiceModule.class,
-        TaskModule.class
+        ServiceModule.class
     },
     library = true
 )

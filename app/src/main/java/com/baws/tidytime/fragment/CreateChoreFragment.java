@@ -25,7 +25,6 @@ import com.baws.tidytime.util.Constants;
 import com.baws.tidytime.util.DateUtil;
 import com.baws.tidytime.util.DimensionUtil;
 import com.baws.tidytime.view.AvatarView;
-import com.baws.tidytime.view.ChildSelectorView;
 import com.baws.tidytime.view.CreateChoreView;
 import com.baws.tidytime.view.DateView;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
@@ -37,7 +36,9 @@ import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,13 +49,13 @@ import butterknife.OnClick;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView, AvatarView {
+public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, AvatarView {
 
     private static final String TAG = "AssignFragment";
 
     private String mChoreZone;
     private String mChoreType;
-    private Child mChildSelected;
+    private Map<Long, Child> mSelectedChildren = new HashMap<Long, Child>();
 
     private int mDefaultViewValue;
     private int mHiddenViewValue;
@@ -194,7 +195,14 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                     float scaleFactor = selected ? mDefaultViewValue: DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
                     float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
-                    mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
+                    Child selectedChild = (Child) ((View) view.getParent()).getTag();
+                    if (!selected) {
+                        mSelectedChildren.put(selectedChild.getId(), selectedChild);
+                    } else {
+                        mSelectedChildren.remove(selectedChild);
+                    }
+
+                    /*** need to set to a map for multiple children selected for rotation ***/
                     mChildSelectedViewId = selected ? Constants.DEFAULT_VALUE : ((View) view.getParent()).getId();
 
                     view.setTag(!selected);
@@ -215,7 +223,6 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     public void restoreChildViewState(int selectedChildId) {
         mChildSelectedViewId = selectedChildId;
         View view = mChildSelectorGridView.findViewById(selectedChildId);
-        mChildSelected = (Child) view.getTag();
 
         View childView = ((ViewGroup) view).getChildAt(0);
         childView.setTag(true);
@@ -276,12 +283,6 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public void onDateSelected(Date date) {
         mChoreDate.setText(DateUtil.formatDate(date));
-        validateInput();
-    }
-
-    @Override
-    public void onChildSelected(Child child) {
-        mChildSelected = child;
         validateInput();
     }
 
@@ -363,18 +364,18 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
 
     @Override
     public void validateInput() {
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        mPresenter.validateInput(mChoreZone, mChoreType, mSelectedChildren.size());
     }
 
     @Override
     public void resetInput() {
-        mChildSelected = null;
+        mSelectedChildren.clear();
         mChildSelectedViewId = Constants.DEFAULT_VALUE;
     }
 
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
-        mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
+        mPresenter.onCreateChoreRequested(mButton.getProgress(), mSelectedChildren, mChoreType, mChoreDate.getText().toString());
     }
 
     @Override

@@ -9,12 +9,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.activity.CreateChildActivity;
-import com.baws.tidytime.asynctask.CreateChildTask;
 import com.baws.tidytime.dto.ChildDto;
 import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.service.ChildService;

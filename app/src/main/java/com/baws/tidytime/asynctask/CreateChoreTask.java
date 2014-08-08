@@ -6,29 +6,34 @@ import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.util.DateUtil;
 import com.squareup.otto.Bus;
 
+import java.util.List;
+
 /**
  * Created by wadereweti on 21/07/14.
  */
-public class CreateChoreTask extends AbstractTask<ChoreDto, Void, Chore> {
+public class CreateChoreTask extends AbstractTask<Void, Void, Boolean> {
 
-    public CreateChoreTask(Bus bus) {
+    private List<ChoreDto> mDtos;
+
+    public CreateChoreTask(Bus bus, List<ChoreDto> dtos) {
         super(bus);
+        mDtos = dtos;
     }
 
     @Override
-    protected Chore doInBackground(ChoreDto... dtos) {
+    protected Boolean doInBackground(Void... aVoid) {
         mutateWorkingState();
 
-        ChoreDto dto = dtos[0];
+        for (ChoreDto dto : mDtos) {
+            Chore chore = new Chore();
+            chore.description = dto.getChoreType();
+            chore.assignedDate = DateUtil.getCurrentDate();
+            chore.dueDate = DateUtil.getFormattedDate(dto.getChoreDate());
+            chore.child = dto.getChild();
+            chore.complete = false;
 
-        Chore chore = new Chore();
-        chore.description = dto.getChoreType();
-        chore.assignedDate = DateUtil.getCurrentDate();
-        chore.dueDate = DateUtil.getFormattedDate(dto.getChoreDate());
-        chore.child = dto.getChild();
-        chore.complete = false;
-
-        chore.save();
+            chore.save();
+        }
 
         try {
             Thread.sleep(5000);
@@ -36,12 +41,12 @@ public class CreateChoreTask extends AbstractTask<ChoreDto, Void, Chore> {
             e.printStackTrace();
         }
 
-        return chore;
+        return true;
     }
 
     @Override
-    protected void onPostExecute(Chore chore) {
+    protected void onPostExecute(Boolean created) {
         mutateWorkingState();
-        mBus.post(new ChoreCreatedEvent(chore));
+        mBus.post(new ChoreCreatedEvent(created));
     }
 }

@@ -18,6 +18,10 @@ import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by wadereweti on 22/07/14.
  */
@@ -67,7 +71,6 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void onResume() {
-        //if (mTask.isWorking()) {
         if (mService.isWorking()) {
             mView.displayLoadingState();
         } else {
@@ -104,10 +107,10 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void validateInput(String choreZone, String choreType, Child childSelected) {
+    public void validateInput(String choreZone, String choreType, int childrenSelected) {
         boolean enabled = false;
 
-        if (choreZone != null && choreType != null && childSelected != null) {
+        if (choreZone != null && choreType != null && childrenSelected > 0) {
             enabled = true;
         }
 
@@ -115,15 +118,18 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void onCreateChoreRequested(int progress, Child child, String choreType, String choreDate) {
+    public void onCreateChoreRequested(int progress, Map<Long, Child> selectedChildren, String choreType, String choreDate) {
         if (progress == 0) {
             mView.displayLoadingState();
             mView.displayInput(false);
             mView.enableInput(false);
 
-            ChoreDto dto = new ChoreDto(choreDate, choreType, child);
-            mService.createChore(dto);
-            //mTask.execute(dto);
+            List<ChoreDto> dtos = new ArrayList<ChoreDto>();
+            for (Map.Entry<Long, Child> entry : selectedChildren.entrySet()) {
+                dtos.add(new ChoreDto(choreDate, choreType, entry.getValue()));
+            }
+
+            mService.createChore(dtos);
         }
     }
 
@@ -144,7 +150,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Subscribe
     public void onChoreCreated(ChoreCreatedEvent event) {
-        int progress = event.getChore() != null ? 100 : Constants.DEFAULT_VALUE;
+        int progress = event.isCreated() ? 100 : Constants.DEFAULT_VALUE;
         mView.setButtonProgress(progress);
         new Handler().postDelayed(new Runnable() {
             @Override
