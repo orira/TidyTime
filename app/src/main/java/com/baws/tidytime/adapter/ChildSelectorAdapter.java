@@ -84,20 +84,7 @@ public class ChildSelectorAdapter extends BaseAdapter {
         }
 
         Child child = mChildren.get(position);
-        Bitmap bitmap;
-
-        Log.e(TAG, "child first name is " + child.firstName);
-
-        if (child.firstName.equals("Tayla-Paige")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_tayla);
-        } else if (child.firstName.equals("Kauri")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_kauri);
-        } else if (child.firstName.equals("Nevaeh")) {
-            bitmap = BitmapFactory.decodeResource(mResources, R.drawable.profile_nevaeh);
-        } else {
-            bitmap = BitmapFactory.decodeFile(child.profilePicture);
-            /*bitmap = BitmapFactory.decodeResource(mResources, R.drawable.ic_action_person);*/
-        }
+        Bitmap bitmap = BitmapFactory.decodeFile(child.profilePicture);
 
         viewHolder.imageView.setImageBitmap(bitmap);
         viewHolder.imageView.setOnClickListener(new View.OnClickListener() {

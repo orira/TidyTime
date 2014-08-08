@@ -1,28 +1,27 @@
 package com.baws.tidytime.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.module.ActivityModule;
 import com.baws.tidytime.module.CreateChildModule;
 import com.baws.tidytime.presenter.CreateChildPresenter;
 import com.baws.tidytime.util.Constants;
+import com.baws.tidytime.util.KeyboardUtil;
 import com.baws.tidytime.view.CreateChildView;
-import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.iangclifton.android.floatlabel.FloatLabel;
 
@@ -33,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Raukawa on 7/24/2014.
@@ -41,13 +41,13 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
 
     private static final String TAG = "CreateChildActivity";
 
-    private boolean mActionItemEnabled = true;
     private ActionMode mActionMode;
+    private Context mCurrentContext;
 
     @Inject CreateChildPresenter mPresenter;
 
     @InjectView(R.id.tv_add_photo) RobotoTextView mLabelAddPhoto;
-    @InjectView(R.id.iv_profile_picture) CircularImageView mProfilePicture;
+    @InjectView(R.id.iv_profile_picture) CircleImageView mProfilePicture;
     @InjectView(R.id.fl_enter_name) FloatLabel mNameEditText;
     @InjectView(R.id.pb_create_child) ProgressBar mProgressBar;
 
@@ -56,6 +56,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child);
         ButterKnife.inject(this);
+        mCurrentContext = this;
     }
 
     @Override
@@ -65,21 +66,10 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.create_child, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 reverseActivityAnimation();
-                return true;
-            case R.id.action_add_child:
-                mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,11 +128,6 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     }
 
     @Override
-    public void onInvalidInput() {
-        Toast.makeText(this, getString(R.string.error_no_details_entered), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showDialog(AlertDialog.Builder builder) {
         builder.show();
     }
@@ -156,6 +141,19 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     public void enableCreate() {
         if (mActionMode == null) {
             mActionMode = CreateChildActivity.this.startActionMode(mCallBack);
+
+            int doneButtonId = Resources.getSystem().getIdentifier("action_mode_close_button", "id", "android");
+            View doneButton = this.findViewById(doneButtonId);
+            doneButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    KeyboardUtil.hideKeyboard(mCurrentContext, mNameEditText.getEditText());
+                    mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
+                    mActionMode.finish();
+                }
+            });
+
         }
     }
 
@@ -165,12 +163,6 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
             mActionMode.finish();
         }
     }
-
-    /*@Override
-    public void disableActionItem() {
-        mActionItemEnabled = false;
-        invalidateOptionsMenu();
-    }*/
 
     @Override
     public void displayCreationState() {
@@ -194,39 +186,25 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     private ActionMode.Callback mCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = actionMode.getMenuInflater();
-            inflater.inflate(R.menu.create_child, menu);
-
-            MenuItem item = menu.getItem(0);
-
-            Log.e(TAG, "onCreateActionMode");
+            // We don't need to inflate a menu as the default tick is all we need
+            /*MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.create_child, menu);*/
 
             return true;
         }
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            Log.e(TAG, "onPrepareActionMode");
             return false;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            Log.e(TAG, "onActionItemClicked");
-            /*switch (menuItem.getItemId()) {
-                case R.id.action_add_child:
-                    mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
-                    break;
-            }*/
-
-            //mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
-
             return false;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            Log.e(TAG, "onDestroyActionMode");
             mActionMode = null;
         }
     };

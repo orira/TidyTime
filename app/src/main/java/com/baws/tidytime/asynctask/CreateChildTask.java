@@ -22,6 +22,12 @@ public class CreateChildTask extends AbstractTask<ChildDto, Void, Child> {
     protected Child doInBackground(ChildDto... dto) {
         mutateWorkingState();
 
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ChildDto childDto = dto[0];
 
         Child child = Child.get();
@@ -30,11 +36,6 @@ public class CreateChildTask extends AbstractTask<ChildDto, Void, Child> {
         child.profilePictureOrientation = childDto.getOrientation();
         child.save();
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         return child;
     }

@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/margin_default"
         custom:typeface="THIN" />
 
-    <com.baws.tidytime.widget.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         style="@style/Avatar"
         android:id="@+id/iv_profile_picture"
         android:layout_centerHorizontal="true"
@@ -24,11 +24,7 @@
         custom:border="true"
         custom:border_width="@dimen/margin_smallest"
         custom:border_color="@color/application_colour"
-        custom:shadow="true"
-        custom:selector="true"
-        custom:selector_color="@color/application_colour_translucent"
-        custom:selector_stroke_color="@color/application_colour_dark"
-        custom:selector_stroke_width="@dimen/margin_smallest" />
+        custom:shadow="true" />
 
     <com.iangclifton.android.floatlabel.FloatLabel
         android:id="@+id/fl_enter_name"

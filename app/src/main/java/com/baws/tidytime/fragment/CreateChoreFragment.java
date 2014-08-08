@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
+import com.baws.tidytime.event.ChildCreatedEvent;
 import com.baws.tidytime.fragment.dialog.CalendarDialogFragment;
 import com.baws.tidytime.model.Child;
 import com.baws.tidytime.module.CreateChoreModule;
@@ -32,6 +33,7 @@ import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
+import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -378,5 +380,16 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public Bitmap getBitmapFromCache(String key) {
         return mBitmapCache.get(key);
+    }
+
+    /**
+     * We subscribe here as well, because a user can navigate back from the create Activity
+     * while the child is still being created, thereby making things nice and responsive
+     */
+    @Subscribe
+    public void onChildCreated(ChildCreatedEvent event) {
+        if (event.getChild() != null) {
+            initialiseChildSelector();
+        }
     }
 }
