@@ -191,11 +191,10 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
 
                     boolean selected = (Boolean) view.getTag();
                     float scaleFactor = selected ? mDefaultViewValue: DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
-                    float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
+                    float alphaValue = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
                     Child currentChild = (Child) ((View) view.getParent()).getTag();
-                    int selectedViewId = ((View) view.getParent()).getId();
-                    //mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
+                    Integer selectedViewId = currentChild.getId().intValue();
 
                     if (selected) {
                         mChildrenSelected.remove(currentChild);
@@ -206,7 +205,8 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                     }
 
                     view.setTag(!selected);
-                    ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alpha);
+                    ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alphaValue);
+                    //view.animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alphaValue);
 
                     validateInput();
                 }
@@ -231,7 +231,9 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
             childView.setTag(true);
 
             float scaleFactor = DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
-            view.animate().setDuration(mDefaultViewValue).scaleX(scaleFactor).scaleY(scaleFactor).alpha(mDefaultViewValue);
+            view.setScaleX(scaleFactor);
+            view.setScaleY(scaleFactor);
+            view.setAlpha(mDefaultViewValue);
         }
     }
 
@@ -246,7 +248,6 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                 mChoreTypeSpinner.setSelection(selectedChoreType);
             }
         }, getResources().getInteger(R.integer.animation_duration_standard));
-
     }
 
     @Override

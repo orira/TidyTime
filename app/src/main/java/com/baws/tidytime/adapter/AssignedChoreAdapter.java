@@ -162,10 +162,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     }
 
      static class HeaderViewHolder {
-        @InjectView(R.id.rl_root_container_main_header)
-        RelativeLayout rootContainer;
-
-         @InjectView(R.id.iv_profile_picture)
+        @InjectView(R.id.iv_profile_picture)
         CircularImageView profilePicture;
 
         @InjectView(R.id.tv_profile_name)
@@ -198,7 +195,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
             container.animate().translationX(width).alpha(alpha).withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(container.getContext(), "This item has been moved to complete ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(container.getContext(), mContext.getString(R.string.toast_chore_completed), Toast.LENGTH_SHORT).show();
                     Chore chore = mChores.get(position);
                     chore.complete = true;
                     chore.save();

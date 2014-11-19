@@ -21,6 +21,7 @@
     <string name="label_cancel">Cancel</string>
     <string name="title_calendar_dialog_fragment">calendarDialogFragment</string>
     <string name="ok">ok</string>
+    <string name="toast_chore_completed">This item has been moved to complete</string>
 
 
 </resources>
