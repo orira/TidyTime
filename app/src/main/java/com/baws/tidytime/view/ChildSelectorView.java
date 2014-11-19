@@ -7,4 +7,5 @@ import com.baws.tidytime.model.Child;
  */
 public interface ChildSelectorView extends PresenterView {
     void onChildSelected(Child child);
+    void onChildDeselected(Child child);
 }

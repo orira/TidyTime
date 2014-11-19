@@ -102,6 +102,7 @@ public class ChildSelectorAdapter extends BaseAdapter {
                         mChildSelectorView.onChildSelected(selectedChild);
                     } else {
                         presenter.setSelected(false);
+                        mChildSelectorView.onChildDeselected(presenter.getChild());
                     }
 
                     presenter.setViewState();

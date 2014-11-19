@@ -35,6 +35,7 @@ import com.baws.tidytime.widget.RobotoTextView;
 import com.dd.CircularProgressButton;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -48,19 +49,17 @@ import butterknife.OnClick;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, ChildSelectorView, AvatarView {
+public class CreateChoreFragment extends AbstractFragment implements CreateChoreView, DateView, AvatarView {
 
     private static final String TAG = "AssignFragment";
 
     private String mChoreZone;
     private String mChoreType;
-    private Child mChildSelected;
+    private List<Child> mChildrenSelected = new ArrayList<Child>();
+    private List<Integer> mChildrenSelectedViewIds = new ArrayList<Integer>();
 
     private int mDefaultViewValue;
     private int mHiddenViewValue;
-
-    // Config Change varialble
-    private int mChildSelectedViewId = Constants.DEFAULT_VALUE;
 
     @Inject CreateChorePresenter mPresenter;
     @Inject LruCache<String, Bitmap> mBitmapCache;
@@ -94,7 +93,7 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mPresenter.saveState(outState, mChildSelectedViewId, mChoreZoneSpinner, mChoreTypeSpinner, mChoreDate, mAmount);
+        mPresenter.saveState(outState, (ArrayList) mChildrenSelectedViewIds, mChoreZoneSpinner.getSelectedItemPosition(), mChoreTypeSpinner.getSelectedItemPosition(), mChoreDate.getText().toString(), mAmount.getSelectedItemPosition());
     }
 
     @Override
@@ -194,8 +193,17 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
                     float scaleFactor = selected ? mDefaultViewValue: DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
                     float alpha = selected ? DimensionUtil.getFloat(R.dimen.default_image_opacity, getResources()) : mDefaultViewValue;
 
-                    mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
-                    mChildSelectedViewId = selected ? Constants.DEFAULT_VALUE : ((View) view.getParent()).getId();
+                    Child currentChild = (Child) ((View) view.getParent()).getTag();
+                    int selectedViewId = ((View) view.getParent()).getId();
+                    //mChildSelected = selected ? null : (Child) ((View) view.getParent()).getTag();
+
+                    if (selected) {
+                        mChildrenSelected.remove(currentChild);
+                        mChildrenSelectedViewIds.remove(selectedViewId);
+                    } else {
+                        mChildrenSelected.add(currentChild);
+                        mChildrenSelectedViewIds.add(selectedViewId);
+                    }
 
                     view.setTag(!selected);
                     ((View) view.getParent()).animate().scaleX(scaleFactor).scaleY(scaleFactor).alpha(alpha);
@@ -212,16 +220,19 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     }
 
     @Override
-    public void restoreChildViewState(int selectedChildId) {
-        mChildSelectedViewId = selectedChildId;
-        View view = mChildSelectorGridView.findViewById(selectedChildId);
-        mChildSelected = (Child) view.getTag();
+    public void restoreChildViewState(List<Integer> selectedChildrenViewIds) {
+        mChildrenSelectedViewIds = selectedChildrenViewIds;
 
-        View childView = ((ViewGroup) view).getChildAt(0);
-        childView.setTag(true);
+        for (Integer selectedChildId : selectedChildrenViewIds) {
+            View view = mChildSelectorGridView.findViewById(selectedChildId);
+            mChildrenSelected.add((Child) view.getTag());
 
-        float scaleFactor = DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
-        view.animate().setDuration(mDefaultViewValue).scaleX(scaleFactor).scaleY(scaleFactor).alpha(mDefaultViewValue);
+            View childView = ((ViewGroup) view).getChildAt(0);
+            childView.setTag(true);
+
+            float scaleFactor = DimensionUtil.getFloat(R.dimen.scale_enabled, getResources());
+            view.animate().setDuration(mDefaultViewValue).scaleX(scaleFactor).scaleY(scaleFactor).alpha(mDefaultViewValue);
+        }
     }
 
     @Override
@@ -276,12 +287,6 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
     @Override
     public void onDateSelected(Date date) {
         mChoreDate.setText(DateUtil.formatDate(date));
-        validateInput();
-    }
-
-    @Override
-    public void onChildSelected(Child child) {
-        mChildSelected = child;
         validateInput();
     }
 
@@ -363,18 +368,17 @@ public class CreateChoreFragment extends AbstractFragment implements CreateChore
 
     @Override
     public void validateInput() {
-        mPresenter.validateInput(mChoreZone, mChoreType, mChildSelected);
+        mPresenter.validateInput(mChoreZone, mChoreType, mChildrenSelected);
     }
 
     @Override
     public void resetInput() {
-        mChildSelected = null;
-        mChildSelectedViewId = Constants.DEFAULT_VALUE;
+        mChildrenSelected.clear();
     }
 
     @OnClick(R.id.btn_create_chore)
     public void onCreateChoreSelected() {
-        mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildSelected, mChoreType, mChoreDate.getText().toString());
+        mPresenter.onCreateChoreRequested(mButton.getProgress(), mChildrenSelected, mChoreType, mChoreDate.getText().toString());
     }
 
     @Override

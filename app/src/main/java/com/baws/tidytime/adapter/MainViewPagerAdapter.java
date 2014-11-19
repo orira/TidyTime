@@ -12,7 +12,7 @@ import java.util.List;
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragments;
-    private final String[] TITLES = {"Assigned", "Assign", "Complete"};
+    private final String[] TITLES = {"Assigned", "Create", "Completed"};
 
 
     public MainViewPagerAdapter(FragmentManager fragmentManager, List<Fragment> fragments) {

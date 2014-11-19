@@ -1,5 +1,7 @@
 package com.baws.tidytime.view;
 
+import java.util.List;
+
 /**
  * Created by wadereweti on 22/07/14.
  */
@@ -8,7 +10,7 @@ public interface CreateChoreView extends PresenterView {
     void initialiseDate();
     void initialiseIncentive();
     void initialiseChildSelector();
-    void restoreChildViewState(int selectedChildId);
+    void restoreChildViewState(List<Integer> mSelectedChildrenViewIds);
     void restoreChoreSpinnerState(int selectedChoreZone, int selectedChoreType);
     void restoreChoreDateState(String selectedChoreDate);
     void restoreAmountState(int choreAmount);

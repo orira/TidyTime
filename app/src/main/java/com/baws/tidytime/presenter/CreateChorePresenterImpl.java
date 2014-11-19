@@ -18,6 +18,9 @@ import com.baws.tidytime.widget.ChoreZoneSpinner;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wadereweti on 22/07/14.
  */
@@ -33,7 +36,7 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     private final ChoreService mService;
 
     // Config Change variables
-    private int mSelectedChildViewId = Constants.DEFAULT_VALUE;
+    private List<Integer> mSelectedChildrenViewIds = new ArrayList<Integer>();
     private int mSelectedChoreZone = Constants.DEFAULT_VALUE;
     private int mSelectedChoreType = Constants.DEFAULT_VALUE;
     private String mSelectedChoreDate = null;
@@ -46,18 +49,18 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void saveState(Bundle outState, int childSelectedViewId, ChoreZoneSpinner choreZoneSpinner, ChoreTypeSpinner choreTypeSpinner, EditText choreDate, Spinner amount) {
-        outState.putInt(SELECTED_CHILD, childSelectedViewId);
-        outState.putInt(SELECTED_CHORE_ZONE, choreZoneSpinner.getSelectedItemPosition());
-        outState.putInt(SELECTED_CHORE_TYPE, choreTypeSpinner.getSelectedItemPosition());
-        outState.putString(SELECTED_CHORE_DATE, choreDate.getText().toString());
-        outState.putInt(SELECTED_CHORE_AMOUNT, amount.getSelectedItemPosition());
+    public void saveState(Bundle outState, ArrayList childrenSelectedViewIds, int choreZone, int choreType, String choreDate, int amount) {
+        outState.putSerializable(SELECTED_CHILD, childrenSelectedViewIds);
+        outState.putInt(SELECTED_CHORE_ZONE, choreZone);
+        outState.putInt(SELECTED_CHORE_TYPE, choreType);
+        outState.putString(SELECTED_CHORE_DATE, choreDate);
+        outState.putInt(SELECTED_CHORE_AMOUNT, amount);
     }
 
     @Override
     public void onRestoreState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mSelectedChildViewId = savedInstanceState.getInt(SELECTED_CHILD);
+            mSelectedChildrenViewIds = (List<Integer>) savedInstanceState.getSerializable(SELECTED_CHILD);
             mSelectedChoreZone = savedInstanceState.getInt(SELECTED_CHORE_ZONE);
             mSelectedChoreType = savedInstanceState.getInt(SELECTED_CHORE_TYPE);
             mSelectedChoreDate = savedInstanceState.getString(SELECTED_CHORE_DATE);
@@ -67,7 +70,6 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void onResume() {
-        //if (mTask.isWorking()) {
         if (mService.isWorking()) {
             mView.displayLoadingState();
         } else {
@@ -76,9 +78,14 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
             mView.initialiseIncentive();
             mView.initialiseChildSelector();
 
-            if (mSelectedChildViewId != Constants.DEFAULT_VALUE) {
-                mView.restoreChildViewState(mSelectedChildViewId);
+            if (mSelectedChildrenViewIds.size() > 0) {
+                mView.restoreChildViewState(mSelectedChildrenViewIds);
             }
+
+            //mView.restoreChildViewState(mSelectedChildViewId);
+
+            /*if (mSelectedChildViewId != Constants.DEFAULT_VALUE) {
+            }*/
 
             if (mSelectedChoreZone != Constants.DEFAULT_VALUE) {
                 mView.restoreChoreSpinnerState(mSelectedChoreZone, mSelectedChoreType);
@@ -104,10 +111,10 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void validateInput(String choreZone, String choreType, Child childSelected) {
+    public void validateInput(String choreZone, String choreType, List<Child> childrenSelected) {
         boolean enabled = false;
 
-        if (choreZone != null && choreType != null && childSelected != null) {
+        if (choreZone != null && choreType != null && childrenSelected.size() > 0) {
             enabled = true;
         }
 
@@ -115,15 +122,19 @@ public class CreateChorePresenterImpl extends AbstractPresenter implements Creat
     }
 
     @Override
-    public void onCreateChoreRequested(int progress, Child child, String choreType, String choreDate) {
+    public void onCreateChoreRequested(int progress, List<Child> childrenSelected, String choreType, String choreDate) {
         if (progress == 0) {
             mView.displayLoadingState();
             mView.displayInput(false);
             mView.enableInput(false);
 
-            ChoreDto dto = new ChoreDto(choreDate, choreType, child);
-            mService.createChore(dto);
-            //mTask.execute(dto);
+            List<ChoreDto> chores = new ArrayList<ChoreDto>();
+            for (Child child : childrenSelected) {
+                ChoreDto dto = new ChoreDto(choreDate, choreType, child);
+                chores.add(dto);
+            }
+
+            mService.createChores(chores);
         }
     }
 

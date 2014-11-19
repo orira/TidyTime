@@ -8,14 +8,22 @@ import com.baws.tidytime.model.Child;
 import com.baws.tidytime.widget.ChoreTypeSpinner;
 import com.baws.tidytime.widget.ChoreZoneSpinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by wadereweti on 22/07/14.
  */
 public interface CreateChorePresenter extends Presenter {
-    void saveState(Bundle outState, int childSelectedViewId, ChoreZoneSpinner choreZoneSpinner, ChoreTypeSpinner choreTypeSpinner, EditText choreDate, Spinner amount);
+    void saveState(Bundle outState, ArrayList childSelectedViewId, int choreZoneSpinner, int choreTypeSpinner, String choreDate, int amount);
+
     void onRestoreState(Bundle savedInstanceState);
     void onChoreZoneSelected(String zone, int zonePosition);
-    void validateInput(String choreZone, String choreType, Child childSelected);
-    void onCreateChoreRequested(int progress, Child child, String choreType, String choreDate);
+
+    void validateInput(String mChoreZone, String mChoreType, List<Child> childrenSelected);
+
+    void onCreateChoreRequested(int progress, List<Child> childrenSelected, String mChoreType, String choreDate);
     void onButtonReturnedToDefaultState();
+
+
 }

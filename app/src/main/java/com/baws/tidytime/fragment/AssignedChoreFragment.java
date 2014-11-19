@@ -56,7 +56,7 @@ public class AssignedChoreFragment extends AbstractFragment implements AssignedV
     @Subscribe
     public void answerAvailable(RefreshChoresEvent event) {
         if (event.isRefresh()) {
-            mAdapter.setData(Child.getAll());
+            mAdapter.setData();
             mAdapter.notifyDataSetChanged();
         }
     }

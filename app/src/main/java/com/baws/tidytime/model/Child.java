@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,17 @@ public class Child extends Model {
 
     public List<Chore> chores() {
         return getMany(Chore.class, "Child");
+    }
+
+    public List<Chore> assignedChores() {
+        List<Chore> assignedChores = new ArrayList<Chore>();
+        for (Chore chore : getMany(Chore.class, "Child")) {
+            if (!chore.complete) {
+                assignedChores.add(chore);
+            }
+        }
+
+        return assignedChores;
     }
 
     public static List<Child> getAll() {

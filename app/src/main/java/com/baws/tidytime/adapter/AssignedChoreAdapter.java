@@ -1,17 +1,18 @@
 package com.baws.tidytime.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.asynctask.BitmapTask;
@@ -38,14 +39,20 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
     private static final String TAG = "AssignedChoreAdapter";
 
+    private Context mContext;
+    private List<Child> mChildren;
     private final LayoutInflater mInflater;
     private List<Chore> mChores = new ArrayList<Chore>();
+    private boolean mItemPressed = false;
+    private boolean mSwiping = false;
 
     @Inject LruCache<String, Bitmap> mBitmapCache;
 
     public AssignedChoreAdapter(Context context, List<Child> children, ObjectGraph objectGraph) {
+        mContext = context;
+        mChildren = children;
         mInflater = LayoutInflater.from(context);
-        setData(children);
+        setData();
         objectGraph.inject(this);
     }
 
@@ -54,11 +61,11 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         return mBitmapCache.get(key);
     }
 
-    public void setData(List<Child> children) {
+    public void setData() {
         mChores.clear();
 
-        for (Child child : children) {
-            mChores.addAll(child.chores());
+        for (Child child : mChildren) {
+            mChores.addAll(child.assignedChores());
         }
     }
 
@@ -123,11 +130,14 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
+        // Reset view if previous delete taken place
         if (view != null) {
             viewHolder = (ViewHolder) view.getTag();
+            view.setX(0);
+            view.setAlpha(1);
         } else {
             view = mInflater.inflate(R.layout.list_view_assigned_body, viewGroup, false);
             viewHolder = new ViewHolder(view);
@@ -136,7 +146,20 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
         viewHolder.assignedChore.setText(mChores.get(position).description);
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewHolder holder = (ViewHolder) view.getTag();
+                holder.changeSelectionState(position);
+            }
+        });
+
         return view;
+    }
+
+    private void updateList() {
+        setData();
+        notifyDataSetChanged();
     }
 
      static class HeaderViewHolder {
@@ -154,15 +177,36 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         }
     }
 
-    static class ViewHolder {
-        @InjectView(R.id.tv_assigned_chore)
-        RobotoTextView assignedChore;
-
-        @InjectView(R.id.cb_chore_state)
-        CheckBox checkBox;
+    class ViewHolder {
+        @InjectView(R.id.container_created_chore_body) RelativeLayout container;
+        @InjectView(R.id.tv_assigned_chore) RobotoTextView assignedChore;
+        @InjectView(R.id.cb_chore_state)CheckBox checkBox;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
+        }
+
+        public void changeSelectionState(int position) {
+            checkBox.setChecked(!checkBox.isChecked());
+
+            runAnimation(checkBox.isChecked(), position);
+        }
+
+        private void runAnimation(boolean checked, final int position) {
+            int alpha = checked ? 0 : 1;
+            int width = checked ? container.getWidth() : 0;
+
+            container.animate().translationX(width).alpha(alpha).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(container.getContext(), "This item has been moved to complete ", Toast.LENGTH_LONG).show();
+                    Chore chore = mChores.get(position);
+                    chore.complete = true;
+                    chore.save();
+
+                    updateList();
+                }
+            });
         }
     }
 }
