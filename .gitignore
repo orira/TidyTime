@@ -13,3 +13,9 @@
 app/app.iml
 
 gradle/wrapper/gradle-wrapper.properties
+
+.idea/libraries/support_v13_13_0_0.xml
+
+.idea/libraries/support_v4_19_1_0.xml
+
+app/app.iml
