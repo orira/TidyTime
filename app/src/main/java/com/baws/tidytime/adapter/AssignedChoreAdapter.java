@@ -43,8 +43,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
     private List<Child> mChildren;
     private final LayoutInflater mInflater;
     private List<Chore> mChores = new ArrayList<Chore>();
-    private boolean mItemPressed = false;
-    private boolean mSwiping = false;
 
     @Inject LruCache<String, Bitmap> mBitmapCache;
 
@@ -145,6 +143,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         }
 
         viewHolder.assignedChore.setText(mChores.get(position).description);
+        viewHolder.checkBox.setChecked(mChores.get(position).complete);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
