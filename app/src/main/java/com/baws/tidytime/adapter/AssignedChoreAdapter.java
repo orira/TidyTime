@@ -200,7 +200,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
             container.animate().translationX(width).alpha(alpha).withEndAction(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(container.getContext(), mContext.getString(R.string.toast_chore_completed), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(container.getContext(), mContext.getString(R.string.toast_chore_completed), Toast.LENGTH_SHORT).show();
                     Chore chore = mChores.get(position);
                     chore.complete = true;
                     chore.save();

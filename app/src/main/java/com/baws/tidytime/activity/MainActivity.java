@@ -73,12 +73,6 @@ public class MainActivity extends AbstractActivity implements MainView {
         return Arrays.<Object>asList(new MainModule(this));
     }
 
-    private void createNewPerson() {
-        Intent intent = new Intent(this, CreateChildActivity.class);
-        Bundle bundle = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.scale_down_alpha).toBundle();
-        startActivity(intent, bundle);
-    }
-
     @Override
     public void initialiseViewPager() {
         MainViewPagerAdapter mainAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), createFragments());
@@ -104,5 +98,11 @@ public class MainActivity extends AbstractActivity implements MainView {
         fragments.add(CompleteFragment.get());
 
         return fragments;
+    }
+
+    private void createNewPerson() {
+        Intent intent = new Intent(this, CreateChildActivity.class);
+        Bundle bundle = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.scale_down_alpha).toBundle();
+        startActivity(intent, bundle);
     }
 }
