@@ -126,12 +126,6 @@ public class CreateChildPresenterImpl extends AbstractPresenter implements Creat
 
     @Override
     public void createChildRequest(String name) {
-        /*if (TextUtils.isEmpty(name)) {
-            mView.onInvalidInput();
-            return;
-        }*/
-
-        //mView.disableActionItem();
         mView.displayCreationState();
 
         ChildDto dto = new ChildDto(mBitmap, mOrientation, name);

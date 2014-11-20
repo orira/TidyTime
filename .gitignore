@@ -25,3 +25,17 @@ app/app.iml
 .idea/libraries/support_v4_19_1_0.xml
 
 app/app.iml
+
+.idea/libraries/appcompat_v7_21_0_2.xml
+
+.idea/libraries/library_1_0_1.xml
+
+.idea/libraries/play_services_6_1_71.xml
+
+.idea/libraries/support_v13_20_0_0.xml
+
+.idea/libraries/support_v4_21_0_2.xml
+
+.idea/libraries/support_annotations_21_0_2.xml
+
+app/build.gradle

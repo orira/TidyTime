@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/MyActionBarStyle</item>
+
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+
+        <!-- ...and here we setting appcompat’s color theming attrs -->
+        <item name="colorPrimary">@color/application_colour</item>
+        <item name="colorPrimaryDark">@color/application_colour_dark</item>
+        <item name="colorAccent">@color/complimentary_colour</item>
+
+        <item name="colorControlNormal">#fff</item>
+        <item name="colorControlHighlight">#3fff</item>
+
+        <!--<item name="android:actionBarStyle">@style/ActionBar</item>-->
+        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>-->
+        <!--<item name="android:dropDownSpinnerStyle">@style/SpinnerAppTheme</item>-->
+        <!--<item name="android:listChoiceBackgroundIndicator">@drawable/apptheme_list_selector_holo_light</item>-->
+        <!--<item name="android:activatedBackgroundIndicator">@drawable/apptheme_activated_background_holo_light</item>-->
+        <!--<item name="android:editTextBackground">@drawable/apptheme_edit_text_holo_light</item>-->
+    </style>
+
+    <style name="MyActionBarStyle">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+    </style>
+
+    <style name="ActionBarTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="SpinnerAppTheme" parent="android:Widget.Holo.Light.Spinner">
+        <!--<item name="android:background">@drawable/apptheme_spinner_background_holo_light</item>-->
+        <!--<item name="android:dropDownSelector">@drawable/apptheme_list_selector_holo_light</item>-->
+    </style>
+
+</resources>

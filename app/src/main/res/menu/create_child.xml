@@ -1,14 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".CreateChildActivity" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CreateChildActivity">
     <item
         android:id="@+id/action_add_child"
         android:title="@string/ok"
-        android:showAsAction="always|withText"
+        app:showAsAction="always|withText"
         android:icon="@drawable/ic_action_accept" />
-    <!--<item
-        android:id="@+id/action_foo"
-        android:title="@string/ok"
-        android:showAsAction="always|withText"
-        android:icon="@drawable/ic_action_accept" />-->
 </menu>

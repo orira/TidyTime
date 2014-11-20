@@ -46,6 +46,7 @@ public class MainActivity extends AbstractActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        initialisesActionBar();
         mMainPresenter.onViewInitialised();
     }
 

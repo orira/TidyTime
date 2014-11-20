@@ -5,26 +5,27 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container_created_chore_body"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/margin_default_half"
-    android:paddingBottom="@dimen/margin_default_half">
+    android:layout_height="match_parent">
 
-    <com.baws.tidytime.widget.RobotoTextView
-        android:id="@+id/tv_assigned_chore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textSize="@dimen/text_regular"
-        android:textColor="@color/primary_text"
-        custom:typeface="THIN" />
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/ripple_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:rb_color="#0099CC"
+        custom:rb_radius="24dp"
+        custom:rb_rippleAmount="1"
+        custom:rb_duration="150"
+        custom:rb_scale="11">
 
-    <CheckBox
-        android:id="@+id/cb_chore_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        <com.baws.tidytime.widget.RobotoTextView
+            android:id="@+id/tv_assigned_chore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/text_regular"
+            android:textColor="@color/primary_text"
+            custom:typeface="THIN"/>
+    </com.skyfishjy.library.RippleBackground>
 
 </RelativeLayout>

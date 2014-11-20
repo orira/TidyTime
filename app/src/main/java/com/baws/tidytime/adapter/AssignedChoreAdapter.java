@@ -3,14 +3,12 @@ package com.baws.tidytime.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.LruCache;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -21,6 +19,7 @@ import com.baws.tidytime.model.Chore;
 import com.baws.tidytime.view.AvatarView;
 import com.baws.tidytime.widget.CircularImageView;
 import com.baws.tidytime.widget.RobotoTextView;
+import com.skyfishjy.library.RippleBackground;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +49,7 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         mContext = context;
         mChildren = children;
         mInflater = LayoutInflater.from(context);
+
         setData();
         objectGraph.inject(this);
     }
@@ -83,8 +83,6 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         view = mInflater.inflate(R.layout.list_view_assigned_header, viewGroup, false);
         headerViewHolder = new HeaderViewHolder(view);
         view.setTag(headerViewHolder);
-
-        Bitmap bitmap = null;
 
         Child child = mChores.get(position).child;
 
@@ -143,13 +141,22 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
         }
 
         viewHolder.assignedChore.setText(mChores.get(position).description);
-        viewHolder.checkBox.setChecked(mChores.get(position).complete);
+
+        final long duration = (long) view.getResources().getInteger(R.integer.ripple_animation_duration);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ViewHolder holder = (ViewHolder) view.getTag();
-                holder.changeSelectionState(position);
+                final ViewHolder holder = (ViewHolder) view.getTag();
+                holder.rippleBackground.startRippleAnimation();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.rippleBackground.stopRippleAnimation();
+                        holder.changeSelectionState(position);
+                    }
+                },  duration);
             }
         });
 
@@ -175,17 +182,15 @@ public class AssignedChoreAdapter extends BaseAdapter implements StickyListHeade
 
     class ViewHolder {
         @InjectView(R.id.container_created_chore_body) RelativeLayout container;
+        @InjectView(R.id.ripple_background) RippleBackground rippleBackground;
         @InjectView(R.id.tv_assigned_chore) RobotoTextView assignedChore;
-        @InjectView(R.id.cb_chore_state)CheckBox checkBox;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
 
         public void changeSelectionState(int position) {
-            checkBox.setChecked(!checkBox.isChecked());
-
-            runAnimation(checkBox.isChecked(), position);
+            runAnimation(true, position);
         }
 
         private void runAnimation(boolean checked, final int position) {

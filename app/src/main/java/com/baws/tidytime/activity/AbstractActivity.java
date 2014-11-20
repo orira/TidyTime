@@ -1,12 +1,12 @@
 package com.baws.tidytime.activity;
 
-import android.app.ActionBar;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.baws.tidytime.R;
 import com.baws.tidytime.TidyTimeApplication;
@@ -25,9 +25,10 @@ import dagger.ObjectGraph;
 /**
  * Created by wadereweti on 6/07/14.
  */
-public class AbstractActivity extends FragmentActivity {
+public class AbstractActivity extends ActionBarActivity {
 
     private ObjectGraph mFragmentObjectGraph;
+    private Toolbar mToolbar;
 
     @Inject
     Bus mBus;
@@ -40,8 +41,6 @@ public class AbstractActivity extends FragmentActivity {
         mFragmentObjectGraph.inject(this);
 
         mBus.register(this);
-
-        initialisesActionBar();
     }
 
     @Override
@@ -55,24 +54,59 @@ public class AbstractActivity extends FragmentActivity {
         return Arrays.<Object>asList();
     }
 
-    private void initialisesActionBar() {
+    /*protected void initialisesActionBar() {
         setTitle(null);
 
         // Set some padding between icon and title
         ImageView icon = (ImageView) findViewById(android.R.id.home);
-        FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
-        iconLp.rightMargin = (int) getResources().getDimension(R.dimen.margin_default_x1_5);
-        icon.setLayoutParams(iconLp);
+
+        if (icon != null) {
+            FrameLayout.LayoutParams iconLp = (FrameLayout.LayoutParams) icon.getLayoutParams();
+            iconLp.rightMargin = (int) getResources().getDimension(R.dimen.margin_default_x1_5);
+            icon.setLayoutParams(iconLp);
+        }
+    }*/
+
+    protected void initialisesActionBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(mToolbar);
+        mToolbar.setLogo(getResources().getDrawable(R.drawable.ic_launcher));
+        mToolbar.setTitle(getSpannableTitleString(getResources().getString(R.string.app_name)));
+    }
+
+    protected void setLogo(Drawable drawable) {
+        if (mToolbar == null) {
+            initialisesActionBar();
+        }
+
+        Drawable logo = drawable == null ? new ColorDrawable(getResources().getColor(android.R.color.transparent)) : drawable;
+        mToolbar.setLogo(logo);
+
+        if (drawable == null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     protected void setTitle(String title) {
-        String actionBarTitle = title != null ? title : getResources().getString(R.string.app_name);
-        SpannableString s = new SpannableString(actionBarTitle);
-        s.setSpan(new TypefaceSpan(this, RobotoTypeface.LIGHT), 0, s.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (mToolbar == null) {
+            initialisesActionBar();
+        }
 
-        // Update the action bar title with the TypefaceSpan instance
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(s);
+        if (title != null) {
+            mToolbar.setTitle(getSpannableTitleString(title));
+        } else {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    private SpannableString getSpannableTitleString(String title) {
+        SpannableString spannableString = new SpannableString(title);
+        spannableString.setSpan(new TypefaceSpan(this, RobotoTypeface.LIGHT), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableString;
+    }
+
+    protected Toolbar getActionBarToolBar() {
+        return mToolbar;
     }
 }

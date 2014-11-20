@@ -26,7 +26,11 @@
         </activity>
         <activity
             android:parentActivityName=".activity.MainActivity"
-            android:name=".activity.CreateChildActivity" />
+            android:name=".activity.CreateChildActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+            </activity>
     </application>
 
 </manifest>

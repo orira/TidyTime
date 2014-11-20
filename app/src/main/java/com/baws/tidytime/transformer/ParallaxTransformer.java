@@ -31,7 +31,7 @@ public class ParallaxTransformer implements ViewPager.PageTransformer {
                     view.setScaleY(1);
                 } else {
                     view.setScaleX(sc);
-                    view.setScaleY(sc);
+                    //view.setScaleY(sc);
                 }
             }
         }

@@ -56,6 +56,8 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child);
         ButterKnife.inject(this);
+        setLogo(null);
+
         mCurrentContext = this;
     }
 
@@ -99,8 +101,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
 
     @Override
     public void initialiseActionBar() {
-        super.setTitle(getString(R.string.create_child));
-        getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+        setTitle(getString(R.string.create_child));
     }
 
     @Override
@@ -140,6 +141,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     @Override
     public void enableCreate() {
         if (mActionMode == null) {
+            getActionBarToolBar().setVisibility(View.GONE);
             mActionMode = CreateChildActivity.this.startActionMode(mCallBack);
 
             int doneButtonId = Resources.getSystem().getIdentifier("action_mode_close_button", "id", "android");
@@ -151,9 +153,9 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
                     KeyboardUtil.hideKeyboard(mCurrentContext, mNameEditText.getEditText());
                     mPresenter.createChildRequest(mNameEditText.getEditText().getText().toString());
                     mActionMode.finish();
+                    getActionBarToolBar().setVisibility(View.VISIBLE);
                 }
             });
-
         }
     }
 
@@ -161,6 +163,7 @@ public class CreateChildActivity extends AbstractActivity implements CreateChild
     public void disableCreate() {
         if (mActionMode != null) {
             mActionMode.finish();
+            getActionBarToolBar().setVisibility(View.VISIBLE);
         }
     }
 

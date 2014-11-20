@@ -3,11 +3,12 @@
     <integer name="animation_duration_short">150</integer>
     <integer name="animation_duration_standard">300</integer>
     <integer name="animation_duration_long">600</integer>
+    <integer name="ripple_animation_duration">125</integer>
 
     <integer name="default_view_value">1</integer>
     <integer name="hide_view_value">0</integer>
 
-    <integer name="view_pager_border">20</integer>
+    <integer name="view_pager_border">10</integer>
     <integer name="indicator_height">5</integer>
 
     <integer name="avatar_column_number">3</integer>
